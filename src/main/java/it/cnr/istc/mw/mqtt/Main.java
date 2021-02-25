@@ -115,9 +115,21 @@ public class Main {
 
                     } else if (line.startsWith("test table ")) {
                         String[] split = line.split(" ");
-                        String commandFace = split[2];
-                        System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + commandFace + "] has been sent" + ConsoleColors.ANSI_RESET);
-                        MQTTClient.getInstance().publish("user/110/to_user/table", commandFace);
+                        String message = split[2];
+                        for (int i = 3; i < split.length; i++) {
+                            message = message + " " + split[i];
+                        }
+                        System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + message + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        MQTTClient.getInstance().publish("user/110/to_user/command/table", message);
+
+                    } else if (line.startsWith("test vtable ")) {
+                        String[] split = line.split(" ");
+                        String message = split[2];
+                        for (int i = 3; i < split.length; i++) {
+                            message = message + " " + split[i];
+                        }
+                        System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + message + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        MQTTClient.getInstance().publish("user/110/to_user/command/vtable", message);
 
                     } else if (line.equals("c -video")) {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "video" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
@@ -166,6 +178,11 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "face -cry (comanda l'esecuzione della face 'cry')");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "test table");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard 2x2: A;B!C;D ");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tin alternativa si può far seguire dopo il comando il testo di una tabella da far eseguire");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "test table Laboraratorio di cucina;10:30!Laboratorio di Filatelia;19:00");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "test vtable [table]");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard generica ad esempio: A;B;C!D;D;E!F;G;H");                        
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tNota: la prima riga verrà presa come header");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "![testo libero]");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tinvia come input il testo che segue il !");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "!che ore sono? (invia il testo 'che ore sono?'");

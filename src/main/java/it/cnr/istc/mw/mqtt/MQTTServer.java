@@ -67,7 +67,7 @@ public class MQTTServer {
                         System.out.println("LOST");
                         String tid = Topics.CHAT.getTopic() + "/" + iclm.getClientID();
                         idTopicMap.remove(tid, Topics.RESPONSES.getTopic() + "/" + iclm.getClientID());
-                   //     MQTTClient.getInstance().unsubscribe(tid);
+                        //     MQTTClient.getInstance().unsubscribe(tid);
                         topicids.remove(tid);
                         MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
                     }
@@ -80,7 +80,7 @@ public class MQTTServer {
                         idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
                         topicids.add(tid);
                         MQTTClient.getInstance().subscribe(tid);
-                        
+
                     }
 
                     @Override

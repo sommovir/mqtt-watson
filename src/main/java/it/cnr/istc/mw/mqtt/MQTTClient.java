@@ -5,6 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -149,7 +150,7 @@ public class MQTTClient implements MqttCallback {
             //message = CryptoManager.getInstance().encrypt(message);
             System.out.println("PUBLISHING MESSAGE: " + message);
 //            message = Base64.getEncoder().encodeToString(message.getBytes()); //BASE 64
-            MqttMessage mx = new MqttMessage(message.getBytes());
+            MqttMessage mx = new MqttMessage(message.getBytes(StandardCharsets.UTF_8));
             mx.setQos(qos);
             if (sampleClient.isConnected()) {
                 System.out.println("CONNESSOOOO");
@@ -176,7 +177,7 @@ public class MQTTClient implements MqttCallback {
     public void messageArrived(String topic, MqttMessage mm) {
 
         System.out.println("TOPIC: " + topic);
-        System.out.println("MESSAGE: " + new String(mm.getPayload()));
+        System.out.println("MESSAGE: " + new String(mm.getPayload(),StandardCharsets.UTF_8));
         String message = new String(mm.getPayload());
 
         if (topic.startsWith("chat")) {
