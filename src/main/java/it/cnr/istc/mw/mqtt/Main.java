@@ -6,9 +6,12 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.logic.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.HistoryElement;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +24,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class Main {
 
     static MQTTServer server = new MQTTServer();
+    public static final String version = "0.9.6";
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
@@ -37,7 +41,7 @@ public class Main {
                         System.out.println(originalString);
                         System.out.println(encryptedString);
                         System.out.println(decryptedString);
-
+                        System.out.println(ConsoleColors.ANSI_RED+"[Server]"+ConsoleColors.ANSI_GREEN+"Welcome to Appia Server 0.9.6"+ConsoleColors.ANSI_RESET);
                         server.start();
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,8 +123,15 @@ public class Main {
                         for (int i = 3; i < split.length; i++) {
                             message = message + " " + split[i];
                         }
-                        System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + message + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        System.out.println(ConsoleColors.ANSI_GREEN + "topic: [" + message + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command/table", message);
+
+                    } else if (line.startsWith("secret topics")) {
+                        List<String> tid = MQTTServer.topicids;
+
+                        for (String tir : tid) {
+                            System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + ConsoleColors.ANSI_RED + tir + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        }
 
                     } else if (line.startsWith("test vtable ")) {
                         String[] split = line.split(" ");
@@ -139,6 +150,10 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "test image" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command", "test image");
 
+                    } else if (line.equals("version")) {
+                        System.out.println(ConsoleColors.ANSI_PURPLE + version + ConsoleColors.ANSI_RESET);
+                        
+
                     } else if (line.startsWith("c -img ")) {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "test image " + line.split(" ")[2] + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command", "test image " + line.split(" ")[2]);
@@ -147,11 +162,74 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "repeat" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command", "repeat");
 
+                    } else if (line.equals("multichoice")) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "multichoice" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        MQTTClient.getInstance().publish("user/110/to_user/command", "multichoice:piazza,pasta,carne:cosa ti piace di più ?");
+
                     } else if (line.equals("youtube")) {
-                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "repeat" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "youtube" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command/youtube", "test");
 
-                    } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
+                    } else if (line.startsWith("youtube ")) {
+                        String link = line.split(" ")[1];
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "repeat" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        MQTTClient.getInstance().publish("user/110/to_user/command/youtube", link);
+
+                    } else if (line.equals("history -clear")) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -clear" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
+                        HistoryBook.getInstance().clear();
+
+                    }else if (line.equals("history -all")) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -all" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
+                        List<HistoryElement> history = HistoryBook.getInstance().getHistory();
+                        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                        int i = 0;
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_GREEN);
+                        for (HistoryElement historyElement : history) {
+                            System.out.println(ConsoleColors.ANSI_RED+i+")");
+                            System.out.println(ConsoleColors.ANSI_GREEN +"time: "+ConsoleColors.ANSI_CYAN+format.format(historyElement.getTimestamp()));
+                            System.out.println(ConsoleColors.ANSI_GREEN +"input was: "+ConsoleColors.ANSI_CYAN+historyElement.getInput());
+                            System.out.println(ConsoleColors.ANSI_GREEN +"output was: "+ConsoleColors.ANSI_CYAN+historyElement.getOutput());
+                            i++;
+                        }
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_GREEN);
+
+                    }
+                    else if (line.startsWith("history -") && line.split("-").length == 2) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -n" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
+                        String[] split = line.split("-");
+                        int n = Integer.parseInt(split[1]);
+                        System.out.println("n= " + n);
+                        HistoryElement [] history = HistoryBook.getInstance().getLastElements(n);
+                        SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+                        int i = 0;
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_RESET);
+                        for (HistoryElement historyElement : history) {
+                            System.out.println(ConsoleColors.ANSI_RED+i+")");
+                            System.out.println(ConsoleColors.ANSI_GREEN +"time: "+ConsoleColors.ANSI_CYAN+format.format(historyElement.getTimestamp()));
+                            System.out.println(ConsoleColors.ANSI_GREEN +"input was: "+ConsoleColors.ANSI_CYAN+historyElement.getInput());
+                            System.out.println(ConsoleColors.ANSI_GREEN +"output was: "+ConsoleColors.ANSI_CYAN+historyElement.getOutput());
+                            i++;
+                        }
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_RESET);
+
+                    }else if (line.equals("history")) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -10" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
+                        HistoryElement [] history = HistoryBook.getInstance().getLastElements(10);
+                        SimpleDateFormat format = new SimpleDateFormat("hh:mm");
+                        int i = 0;
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_GREEN);
+                        for (HistoryElement historyElement : history) {
+                            System.out.println(ConsoleColors.ANSI_RED+i+")");
+                            System.out.println(ConsoleColors.ANSI_GREEN +"time: "+ConsoleColors.ANSI_CYAN+format.format(historyElement.getTimestamp()));
+                            System.out.println(ConsoleColors.ANSI_GREEN +"input was: "+ConsoleColors.ANSI_CYAN+historyElement.getInput());
+                            System.out.println(ConsoleColors.ANSI_GREEN +"output was: "+ConsoleColors.ANSI_CYAN+historyElement.getOutput());
+                            i++;
+                        }
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_GREEN);
+
+                    }
+                    else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                         String[] split = line.split(" ");
                         int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
                         System.out.println("idi= " + idi);
@@ -202,7 +280,14 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "t -#[id] [message]");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tinvia un messagge all'utente con id = numero intero che appare a sinistra dell'utente dal comando list.");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "t -#2 ciao come stai ? (manda all'utente 2 il messaggo 'ciao come stai ?'");
-
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "youtube [link]");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tvisualizza a schermo il video linkato (link puro generato dal pulsante share di youtube)");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "youtube https://youtu.be/krBsto5nUps");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "history [n]");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tstampa la lista degli ultimi n comandi eseguiti");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "se viene eseguito il comando senza parametri verranno listate le ultime 10");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "per eseguire la lista completa si può eseguire il comando 'history -all'");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "per cancellare la cronologia digitare il comando: 'history -clear'");
                         System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                     } else {
                         System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");

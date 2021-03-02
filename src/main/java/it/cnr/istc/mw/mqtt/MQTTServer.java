@@ -33,6 +33,8 @@ public class MQTTServer {
     final Server mqtt_broker = new Server();
     public static List<String> topicids = new LinkedList<>();
     public static Map<String, String> idTopicMap = new HashMap<>();
+    private boolean lock = false;
+    private boolean serverEntered = false;
 
     public void stop() {
         mqtt_broker.stopServer();
@@ -40,6 +42,14 @@ public class MQTTServer {
 
     public List<String> getTopicids() {
         return topicids;
+    }
+
+    public void lock() {
+        this.lock = true;
+    }
+
+    public void unlock() {
+        this.lock = true;
     }
 
     public void start() throws IOException {
@@ -56,30 +66,51 @@ public class MQTTServer {
 
                     @Override
                     public void onDisconnect(InterceptDisconnectMessage idm) {
-                        ON_LINE.removeIf(info -> info.getId().equals(idm.getClientID()));
-                        System.out.println("DISCONNECT");
-                        MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), idm.getClientID());
+                        if (idm.getClientID().equals("Server")) {
+                            System.out.println("[mqtt] disconnect ignoring s.d.");
+                            return;
+                        }
+                        synchronized (this) {
+                            ON_LINE.removeIf(info -> info.getId().equals(idm.getClientID()));
+                            System.out.println("DISCONNECT");
+                            MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), idm.getClientID());
+                        }
                     }
 
                     @Override
                     public void onConnectionLost(InterceptConnectionLostMessage iclm) {
-                        ON_LINE.removeIf(info -> info.getId().equals(iclm.getClientID()));
-                        System.out.println("LOST");
-                        String tid = Topics.CHAT.getTopic() + "/" + iclm.getClientID();
-                        idTopicMap.remove(tid, Topics.RESPONSES.getTopic() + "/" + iclm.getClientID());
-                        //     MQTTClient.getInstance().unsubscribe(tid);
-                        topicids.remove(tid);
-                        MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
+                        synchronized (this) {
+//                            if (iclm.getClientID().equals("Server")) {
+//                                System.out.println("[mqtt] connection lost -  ignoring s.d.");
+//                                return;
+//                            }
+                            ON_LINE.removeIf(info -> info.getId().equals(iclm.getClientID()));
+                            System.out.println("LOST");
+                            String tid = Topics.CHAT.getTopic() + "/" + iclm.getClientID();
+                            idTopicMap.remove(tid, Topics.RESPONSES.getTopic() + "/" + iclm.getClientID());
+                            //     MQTTClient.getInstance().unsubscribe(tid);
+                            topicids.remove(tid);
+                            MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
+                        }
                     }
 
                     @Override
                     public void onConnect(InterceptConnectMessage icm) {
-                        ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
-                        System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
-                        String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
-                        idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
-                        topicids.add(tid);
-                        MQTTClient.getInstance().subscribe(tid);
+                        synchronized (this) {
+//                            if (icm.getClientID().equals("Server") && serverEntered) {
+//                                System.out.println("[mqtt] ignoring reconection of server");
+//                                return;
+//                            }
+                            ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
+                            System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
+                            String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
+                            idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
+                            topicids.add(tid);
+                            MQTTClient.getInstance().subscribe(tid);
+                            if (icm.getClientID().equals("Server")) {
+                                serverEntered = true;
+                            }
+                        }
 
                     }
 
@@ -92,7 +123,7 @@ public class MQTTServer {
                     }
                 }));
 
-        MQTTClient.getInstance().setIp_server("localhost");
+        MQTTClient.getInstance().setIp_server("127.0.0.1");
         MQTTClient.getInstance().connect();
 
         System.out.println("[Server]started..");
@@ -105,7 +136,7 @@ public class MQTTServer {
 
     }
 
-    public List<InfoUser> getON_LINE() {
+    public synchronized List<InfoUser> getON_LINE() {
         return ON_LINE;
     }
 

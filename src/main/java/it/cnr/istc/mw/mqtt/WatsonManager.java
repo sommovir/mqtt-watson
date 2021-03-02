@@ -19,6 +19,7 @@ import com.ibm.watson.assistant.v2.model.MessageContextGlobalSystem;
 import com.ibm.watson.assistant.v2.model.MessageContextSkill;
 import com.ibm.watson.assistant.v2.model.MessageInputOptions;
 import com.ibm.watson.assistant.v2.model.SessionResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ public class WatsonManager {
     private Assistant assistant = null;
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
+    private Map<String, Long> expireTimeMap = new HashMap<>();
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -43,6 +45,25 @@ public class WatsonManager {
         } else {
             return _instance;
         }
+    }
+
+    public boolean isSessionExpired(String sessionId) {
+        if (!expireTimeMap.containsKey(sessionId)) {
+            return true;
+        } else {
+            long time = expireTimeMap.get(sessionId);
+            long delta = new Date().getTime() - time;
+            long minutFIVE = (60l * 5l * 1000l) - 15000l; //tolleranza di 15 secondi   
+            return delta >= minutFIVE;
+        }
+    }
+
+    public void refreshSessionId(String userId) {
+        CreateSessionOptions createSessionOptions = new CreateSessionOptions.Builder(assistant_id).build();
+        SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
+        this.sessionIdMap.put(userId, session.getSessionId());
+        this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
+        System.out.println("[Watson] session [" + session.getSessionId() + "] has been refreshed");
     }
 
     private WatsonManager() {
@@ -75,7 +96,12 @@ public class WatsonManager {
                     return null;
                 }
                 if (mcs.userDefined().containsKey("apptext")) {
-                    return (String) mcs.userDefined().get("apptext");
+                    if (mcs.userDefined().get("apptext") instanceof String) {
+                        System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
+                        return (String) mcs.userDefined().get("apptext");
+                    } else {
+                        return null;
+                    }
                 }
 
             }
@@ -84,67 +110,155 @@ public class WatsonManager {
         return null;
     }
 
-    public String sendMessage(String message, String userId) {
-        System.out.println("[Watson] sending message to AI.. ");
-        System.out.println("[Watson] user id:  " + userId);
-        System.out.println("[Watson] message:  " + message);
-        if (!this.sessionIdMap.containsKey(userId)) {
-            CreateSessionOptions createSessionOptions = new CreateSessionOptions.Builder(assistant_id).build();
-            SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
-            this.sessionIdMap.put(userId, session.getSessionId());
-            
+    private String isFacePresent(MessageContext context) {
+        Map<String, MessageContextSkill> skills = context.skills();
+        for (String key : skills.keySet()) {
+            if (key.equals("main skill")) {
+                MessageContextSkill mcs = skills.get(key);
+                if (mcs == null) {
+                    return null;
+                }
+                if (mcs.userDefined() == null) {
+                    System.out.println("[watson] no user defined.");
+                    return null;
+                }
+                if (mcs.userDefined().containsKey("face")) {
+                    if (mcs.userDefined().get("face") instanceof String) {
+                        System.out.println("[Server][CRITICAL ERROR] bad format in face !! --------------------------------------------- NEED REVIEW");
+                        return (String) mcs.userDefined().get("face");
+                    } else {
+                        return null;
+                    }
+                }
+
+            }
+
         }
-        String session_id = this.sessionIdMap.get(userId);
+        return null;
+    }
 
-        System.out.println("[Watson] session id: " + session_id);
+    public String parseAppText(String apptext, String userId) {
+        if (apptext.startsWith("*")) {
+            String text = "";
+            try {
+                String mixedString = apptext.substring(1);
+                String[] split = mixedString.split(";");
+                for (String string : split) {
+                    String[] commandAndValue = string.split(":");
+                    String command = commandAndValue[0];
+                    String value = commandAndValue[1];
+                    if (command.equals("face")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/face";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("table")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("link")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("youtube")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/youtube";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("img")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/img";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("text")) {
+                        text = value;
+                    }
+                }
+                return text;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return "c'è stato un errore nella gestione del messaggio da parte del server";
+            }
+        } else {
+            return apptext;
+        }
+    }
 
-        MessageInputOptions option = new MessageInputOptions.Builder()
-                .returnContext(Boolean.TRUE)
-                .build();
+    public String sendMessage(String message, String userId) {
+        try {
+            System.out.println("[Watson] sending message to AI.. ");
+            System.out.println("[Watson] user id:  " + userId);
+            System.out.println("[Watson] message:  " + message);
+            if (!this.sessionIdMap.containsKey(userId)) {
+                CreateSessionOptions createSessionOptions = new CreateSessionOptions.Builder(assistant_id).build();
+                SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
+                this.sessionIdMap.put(userId, session.getSessionId());
+                this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
 
-        MessageInput input = new MessageInput.Builder()
-                .text(message)
-                .options(option)
-                .build();
+            } else {
+                if (isSessionExpired(this.sessionIdMap.get(userId))) {
+                    System.out.println("[Watson] Session EXPIRED");
+                    refreshSessionId(userId);
+                }
+            }
+            String session_id = this.sessionIdMap.get(userId);
 
-        MessageOptions options = new MessageOptions.Builder(assistant_id, session_id)
-                .input(input)
-                .build();
+            System.out.println("[Watson] session id: " + session_id);
 
-        MessageResponse response = assistant.message(options).execute().getResult();
+            MessageInputOptions option = new MessageInputOptions.Builder()
+                    .returnContext(Boolean.TRUE)
+                    .build();
 
-        MessageContext context = response.getContext();
+            MessageInput input = new MessageInput.Builder()
+                    .text(message)
+                    .options(option)
+                    .build();
 
-        System.out.println(ConsoleColors.ANSI_GREEN + "CONTEXT= " + ConsoleColors.ANSI_RESET + context);
-        System.out.println("-----------------------------");
-        System.out.println("-----------------------------");
-        System.out.println(ConsoleColors.ANSI_GREEN + "RESPONSE= " + ConsoleColors.ANSI_RESET + response);
+            MessageOptions options = new MessageOptions.Builder(assistant_id, session_id)
+                    .input(input)
+                    .build();
 
-        String actualResponse = isAppTextPresent(context);
+            MessageResponse response = assistant.message(options).execute().getResult();
+
+            MessageContext context = response.getContext();
+
+            System.out.println(ConsoleColors.ANSI_GREEN + "CONTEXT= " + ConsoleColors.ANSI_RESET + context);
+            System.out.println("-----------------------------");
+            System.out.println("-----------------------------");
+            System.out.println(ConsoleColors.ANSI_GREEN + "RESPONSE= " + ConsoleColors.ANSI_RESET + response);
+
+            String actualResponse = isAppTextPresent(context);
+            if (actualResponse != null) {
+                actualResponse = parseAppText(actualResponse, userId);
+            }
+
+            //  String facePresent = isFacePresent(context);
 //        if (actualResponse != null) {
 //            System.out.println("-----------------------------");
 //            System.out.println(ConsoleColors.ANSI_CYAN+"APP RESPONSE= " +ConsoleColors.ANSI_RESET+actualResponse);
 //           // return actualResponse;
 //        }
+            if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
+                return "mi spiace non ho capito";
+            }
+            String risposta = response.getOutput().getGeneric().get(0).text();
+            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] input: " + ConsoleColors.PURPLE_BRIGHT + message + ConsoleColors.ANSI_RESET);
+            if (actualResponse != null) {
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_YELLOW + actualResponse + ConsoleColors.ANSI_RESET);
 
-        if(response.getOutput().getGeneric().get(0).responseType().equals("suggestion")){
-            return "mi spiace non ho capito";
+            } else {
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_RED + "not found" + ConsoleColors.ANSI_RESET);
+            }
+            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] chat response: " + ConsoleColors.ANSI_CYAN + risposta + ConsoleColors.ANSI_RESET);
+            if (actualResponse != null) {
+                risposta = actualResponse;
+            }
+            risposta = risposta.replace("è", "e'");
+            System.out.println("about to finishing the send watson method");
+            return risposta;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "errore";
         }
-        String risposta = response.getOutput().getGeneric().get(0).text();
-        System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] input: " + ConsoleColors.PURPLE_BRIGHT + message + ConsoleColors.ANSI_RESET);
-        if (actualResponse != null) {
-            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_YELLOW + actualResponse + ConsoleColors.ANSI_RESET);
+        // risposta = risposta.replace("televita", " .Televita");
 
-        } else {
-            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_RED + "not found" + ConsoleColors.ANSI_RESET);
-        }
-        System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] chat response: " + ConsoleColors.ANSI_CYAN + risposta + ConsoleColors.ANSI_RESET);
-        if (actualResponse != null) {
-            risposta = actualResponse;
-        }
-        risposta = risposta.replace("è", "e'");
-       // risposta = risposta.replace("televita", " .Televita");
-        return risposta;
     }
 
     public void quit() {
