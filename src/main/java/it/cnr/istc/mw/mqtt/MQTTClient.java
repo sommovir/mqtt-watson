@@ -202,7 +202,7 @@ public class MQTTClient implements MqttCallback {
 
         System.out.println("TOPIC: " + topic);
         System.out.println("MESSAGE: " + new String(mm.getPayload(), StandardCharsets.UTF_8));
-        String message = new String(mm.getPayload());
+        String message = new String(mm.getPayload(), StandardCharsets.UTF_8);
 
         if (topic.startsWith("chat")) {
             List<String> tid = MQTTServer.topicids;
