@@ -142,9 +142,9 @@ public class WatsonManager {
             String text = "";
             try {
                 String mixedString = apptext.substring(1);
-                String[] split = mixedString.split(";");
+                String[] split = mixedString.split("<COMMAND>");
                 for (String string : split) {
-                    String[] commandAndValue = string.split(":");
+                    String[] commandAndValue = string.split("<:>");
                     String command = commandAndValue[0];
                     String value = commandAndValue[1];
                     if (command.equals("face")) {

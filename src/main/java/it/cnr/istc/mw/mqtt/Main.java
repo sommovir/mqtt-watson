@@ -24,7 +24,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class Main {
 
     static MQTTServer server = new MQTTServer();
-    public static final String version = "0.9.6";
+    public static final String version = "0.9.7";
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
@@ -41,7 +41,7 @@ public class Main {
                         System.out.println(originalString);
                         System.out.println(encryptedString);
                         System.out.println(decryptedString);
-                        System.out.println(ConsoleColors.ANSI_RED+"[Server]"+ConsoleColors.ANSI_GREEN+"Welcome to Appia Server 0.9.6"+ConsoleColors.ANSI_RESET);
+                        System.out.println(ConsoleColors.ANSI_RED+"[Server]"+ConsoleColors.ANSI_GREEN+"Welcome to Appia Server "+version+ConsoleColors.ANSI_RESET);
                         server.start();
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,7 +115,7 @@ public class Main {
 
                     } else if (line.equals("test table")) {
                         System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + "table standard" + "] has been sent" + ConsoleColors.ANSI_RESET);
-                        MQTTClient.getInstance().publish("user/110/to_user/table", "A;B!C;D");
+                        MQTTClient.getInstance().publish("user/110/to_user/table", "A<CELL>B<ROW>C<CELL>D");
 
                     } else if (line.startsWith("test table ")) {
                         String[] split = line.split(" ");
@@ -259,11 +259,11 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una determinata animazione face.");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "face -cry (comanda l'esecuzione della face 'cry')");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "test table");
-                        System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard 2x2: A;B!C;D ");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard 2x2: A<CELL>B<ROW>C<CELL>D ");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tin alternativa si può far seguire dopo il comando il testo di una tabella da far eseguire");
-                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "test table Laboraratorio di cucina;10:30!Laboratorio di Filatelia;19:00");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "\tEs. " + ConsoleColors.ANSI_WHITE + "test table Laboraratorio di cucina<CELL>10:30<ROW>Laboratorio di Filatelia<CELL>19:00");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "test vtable [table]");
-                        System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard generica ad esempio: A;B;C!D;D;E!F;G;H");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tcomanda l'esecuzione di una tabella standard generica ad esempio: A<CELL>B<CELL>C<ROW>D<CELL>D<CELL>E<ROW>F<CELL>G<CELL>H");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tNota: la prima riga verrà presa come header");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "![testo libero]");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tinvia come input il testo che segue il !");
@@ -272,7 +272,7 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tesegue un video di test interno alla app");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "10) " + ConsoleColors.ANSI_CYAN + "c -timg");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tesegue un caricamento dal drive di un immagine di test con link embeddato");
-                        System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "c -timg [link]");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "c -img [link]");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tinvia al cellulare il comando per visualizzare a schermo un immagine esterna con il link dato in argomento");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "12) " + ConsoleColors.ANSI_CYAN + "repeat");
                         System.out.println(ConsoleColors.ANSI_WHITE + "\tfa ripetere l'ultimo messaggio ricevuto");
