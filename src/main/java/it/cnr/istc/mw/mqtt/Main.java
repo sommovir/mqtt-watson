@@ -175,7 +175,12 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "repeat" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                         MQTTClient.getInstance().publish("user/110/to_user/command/youtube", link);
 
-                    } else if (line.equals("history -clear")) {
+                    }else if (line.startsWith("link ")) {
+                        String link = line.split(" ")[1];
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "link" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                        MQTTClient.getInstance().publish("user/110/to_user/link", link);
+
+                    }  else if (line.equals("history -clear")) {
                         System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -clear" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
                         HistoryBook.getInstance().clear();
 
@@ -184,7 +189,7 @@ public class Main {
                         List<HistoryElement> history = HistoryBook.getInstance().getHistory();
                         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                         int i = 0;
-                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_GREEN);
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_RESET);
                         for (HistoryElement historyElement : history) {
                             System.out.println(ConsoleColors.ANSI_RED+i+")");
                             System.out.println(ConsoleColors.ANSI_GREEN +"time: "+ConsoleColors.ANSI_CYAN+format.format(historyElement.getTimestamp()));
@@ -192,7 +197,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN +"output was: "+ConsoleColors.ANSI_CYAN+historyElement.getOutput());
                             i++;
                         }
-                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_GREEN);
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_RESET);
 
                     }
                     else if (line.startsWith("history -") && line.split("-").length == 2) {
@@ -218,7 +223,7 @@ public class Main {
                         HistoryElement [] history = HistoryBook.getInstance().getLastElements(10);
                         SimpleDateFormat format = new SimpleDateFormat("hh:mm");
                         int i = 0;
-                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_GREEN);
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------- H I S T O R Y --------------"+ ConsoleColors.ANSI_RESET);
                         for (HistoryElement historyElement : history) {
                             System.out.println(ConsoleColors.ANSI_RED+i+")");
                             System.out.println(ConsoleColors.ANSI_GREEN +"time: "+ConsoleColors.ANSI_CYAN+format.format(historyElement.getTimestamp()));
@@ -226,7 +231,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN +"output was: "+ConsoleColors.ANSI_CYAN+historyElement.getOutput());
                             i++;
                         }
-                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_GREEN);
+                        System.out.println(ConsoleColors.ANSI_YELLOW+"-------------------------------------------"+ ConsoleColors.ANSI_RESET);
 
                     }
                     else if (line.startsWith("t -#") && line.split(" ").length > 2) {
@@ -288,6 +293,8 @@ public class Main {
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "se viene eseguito il comando senza parametri verranno listate le ultime 10");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "per eseguire la lista completa si può eseguire il comando 'history -all'");
                         System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "per cancellare la cronologia digitare il comando: 'history -clear'");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "link [link]");
+                        System.out.println(ConsoleColors.ANSI_WHITE + "\tvisualizza il link passato in argomento");
                         System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                     } else {
                         System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");
