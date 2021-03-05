@@ -250,7 +250,7 @@ public class WatsonManager {
             if (actualResponse != null) {
                 risposta = actualResponse;
             }
-            risposta = risposta.replace("è", "e'");
+           // risposta = risposta.replace("è", "e'");
             System.out.println("about to finishing the send watson method");
             return risposta;
         } catch (Exception ex) {
