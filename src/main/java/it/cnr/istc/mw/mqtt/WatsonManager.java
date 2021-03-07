@@ -46,6 +46,21 @@ public class WatsonManager {
             return _instance;
         }
     }
+    
+    public String getSessionId(String userId){
+        String session = sessionIdMap.get(userId);
+        return session == null ? "off" : session;
+    }
+    
+    public String getExpireStatus(String userId){
+        String session = getSessionId(userId);
+        boolean expired = false;
+        if(session.equals("off")){
+            return "off";
+        }
+        expired = isSessionExpired(session);
+        return expired ? "expired" : "valid";
+    }
 
     public boolean isSessionExpired(String sessionId) {
         if (!expireTimeMap.containsKey(sessionId)) {
