@@ -112,7 +112,7 @@ public class WatsonManager {
                 }
                 if (mcs.userDefined().containsKey("apptext")) {
                     if (mcs.userDefined().get("apptext") instanceof String) {
-                        System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
+                       // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
                         return (String) mcs.userDefined().get("apptext");
                     } else {
                         return null;
@@ -180,6 +180,10 @@ public class WatsonManager {
                     }
                     if (command.equals("img")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/img";
+                        MQTTClient.getInstance().publish(topic, value);
+                    }
+                    if (command.equals("listen")) {
+                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/listen";
                         MQTTClient.getInstance().publish(topic, value);
                     }
                     if (command.equals("text")) {
