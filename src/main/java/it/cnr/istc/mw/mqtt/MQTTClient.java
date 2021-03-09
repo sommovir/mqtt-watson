@@ -168,6 +168,11 @@ public class MQTTClient implements MqttCallback {
     }
 
     public void publish(String topic, String message) {
+        
+        if(WatsonManager.getInstance().isMute()){
+            System.out.println(ConsoleColors.ANSI_RED+ "[MQTT] BAN HAMMER IS ACTIVE: "+ConsoleColors.ANSI_YELLOW+ " the attempt to communicate with client has been blocked. Mute flag is active.");
+            return;
+        }
         try {
             //message = CryptoManager.getInstance().encrypt(message);
             System.out.println("PUBLISHING TOPIC: " + topic);

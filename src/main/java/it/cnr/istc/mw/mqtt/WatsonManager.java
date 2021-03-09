@@ -34,6 +34,7 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
+    private boolean mute = false;
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -62,6 +63,14 @@ public class WatsonManager {
         return expired ? "expired" : "valid";
     }
 
+    public void mute(){
+        mute = true;
+    }
+    
+    public void unmute(){
+        mute = false;
+    }
+    
     public boolean isSessionExpired(String sessionId) {
         if (!expireTimeMap.containsKey(sessionId)) {
             return true;
@@ -208,6 +217,10 @@ public class WatsonManager {
         }
     }
 
+    public boolean isMute() {
+        return mute;
+    }
+    
     public String sendMessage(String message, String userId) {
         try {
             System.out.println("[Watson] sending message to AI.. ");
