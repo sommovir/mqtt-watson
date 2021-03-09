@@ -17,7 +17,7 @@ import java.util.Queue;
 public class HistoryBook {
 
     private static HistoryBook _instance = null;
-    private List<HistoryElement> history = new LinkedList<>();
+    private LinkedList<HistoryElement> history = new LinkedList<>();
 
     public static HistoryBook getInstance() {
         if (_instance == null) {
@@ -38,7 +38,7 @@ public class HistoryBook {
     
     
     public void addHistoryElement(String input, String output){
-        this.history.add(new HistoryElement(input, output, new Date()));
+        this.history.addFirst(new HistoryElement(input, output, new Date()));
     }
     
     

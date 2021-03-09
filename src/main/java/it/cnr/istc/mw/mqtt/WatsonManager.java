@@ -46,16 +46,16 @@ public class WatsonManager {
             return _instance;
         }
     }
-    
-    public String getSessionId(String userId){
+
+    public String getSessionId(String userId) {
         String session = sessionIdMap.get(userId);
         return session == null ? "off" : session;
     }
-    
-    public String getExpireStatus(String userId){
+
+    public String getExpireStatus(String userId) {
         String session = getSessionId(userId);
         boolean expired = false;
-        if(session.equals("off")){
+        if (session.equals("off")) {
             return "off";
         }
         expired = isSessionExpired(session);
@@ -76,6 +76,7 @@ public class WatsonManager {
     public void refreshSessionId(String userId) {
         CreateSessionOptions createSessionOptions = new CreateSessionOptions.Builder(assistant_id).build();
         SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
+
         this.sessionIdMap.put(userId, session.getSessionId());
         this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
         System.out.println("[Watson] session [" + session.getSessionId() + "] has been refreshed");
@@ -112,7 +113,7 @@ public class WatsonManager {
                 }
                 if (mcs.userDefined().containsKey("apptext")) {
                     if (mcs.userDefined().get("apptext") instanceof String) {
-                       // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
+                        // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
                         return (String) mcs.userDefined().get("apptext");
                     } else {
                         return null;
@@ -190,6 +191,13 @@ public class WatsonManager {
                         text = value;
                     }
                 }
+                if (text.startsWith("<REMINDER>")) {
+                    text = text.replace("<REMINDER>", "");
+                    String topic = Topics.COMMAND.getTopic() + "/" + userId + "/reminder";
+                    String reminderText = apptext.split("<ROW>Messaggio: ")[1];
+                    String reminderTime = apptext.split("<ROW>Orario: ")[1].substring(0, 5);
+                    MQTTClient.getInstance().publish(topic, reminderText+"<:>"+reminderTime);
+                }
                 return text;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -210,6 +218,10 @@ public class WatsonManager {
                 SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
                 this.sessionIdMap.put(userId, session.getSessionId());
                 this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
+                if (isSessionExpired(this.sessionIdMap.get(userId))) {
+                    System.out.println("[Watson] Session EXPIRED");
+                    refreshSessionId(userId);
+                }
 
             } else {
                 if (isSessionExpired(this.sessionIdMap.get(userId))) {
@@ -269,7 +281,7 @@ public class WatsonManager {
             if (actualResponse != null) {
                 risposta = actualResponse;
             }
-           // risposta = risposta.replace("è", "e'");
+            // risposta = risposta.replace("è", "e'");
             System.out.println("about to finishing the send watson method");
             return risposta;
         } catch (Exception ex) {
