@@ -163,6 +163,7 @@ public class WatsonManager {
     }
 
     public String parseAppText(String apptext, String userId) {
+        apptext = apptext.replace("<AT>", "@");
         if (apptext.startsWith("*")) {
             String text = "";
             try {
@@ -178,7 +179,16 @@ public class WatsonManager {
                     }
                     if (command.equals("table")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
-                        MQTTClient.getInstance().publish(topic, value);
+                        if(value.contains("<CONTINUE>")){
+                            String[] tables = value.split("<CONTINUE>");
+                            for (String table : tables) {
+                                MQTTClient.getInstance().publish(topic, "<CONTINUE>"+table);
+                                Thread.sleep(50);
+                            }
+                        }else{
+                            MQTTClient.getInstance().publish(topic, value);
+                        }
+                        
                     }
                     if (command.equals("link")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";

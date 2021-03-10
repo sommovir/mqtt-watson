@@ -24,7 +24,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class Main {
 
     static MQTTServer server = new MQTTServer();
-    public static final String version = "0.9.9";
+    public static final String version = "1.0 RC1";
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
@@ -206,9 +206,9 @@ public class Main {
                         }
                         System.out.println(ConsoleColors.ANSI_YELLOW + "-------------------------------------------" + ConsoleColors.ANSI_RESET);
 
-                    } else if (line.startsWith("history -") && line.split("-").length == 2) {
-                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history -n" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
-                        String[] split = line.split("-");
+                    } else if (line.startsWith("history ") && (line.split(" ")).length == 2) {
+                        System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history n" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
+                        String[] split = line.split(" ");
                         int n = Integer.parseInt(split[1]);
                         System.out.println("n= " + n);
                         HistoryElement[] history = HistoryBook.getInstance().getLastElements(n);
