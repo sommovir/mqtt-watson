@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,7 +110,22 @@ public class Main {
                     } else if (line.equals("test db")) {
                         System.out.println("testing db");
                         DBManager.getInstance().test();
-                    } else if (line.startsWith("face -")) {
+                    } else if (line.equals("test emotion")) {
+                        System.out.println("testing sentiment API");
+                        List<String> targets = new LinkedList<>();
+                        targets.add("Luca");
+                        WatsonManager.getInstance().analyzeEmotionByTarget("I'm Luca. Today was a day that started badly and ended worse, plus my mother-in-law doesn't answer my phone",targets );
+                    }else if (line.equals("test sentiment")) {
+                        System.out.println("testing sentiment API");
+                        List<String> targets = new LinkedList<>();
+                        targets.add("Luca");
+                        targets.add("Fabio");
+                        targets.add("Io");
+                        WatsonManager.getInstance().analyzeSentimentByTarget("Oggi è stata una giornata cominciata male e finita peggio, e in più mia suocera non mi risponde al telefono",targets );
+                    }else if (line.equals("test translate")) {
+                        String en = WatsonManager.getInstance().toEnglish("Oggi è stata una giornata cominciata male e finita peggio, e in più mia suocera non mi risponde al telefono" );
+                        System.out.println("ENGLISH TEXT: "+en);
+                    }else if (line.startsWith("face -")) {
                         String[] split = line.split("-");
                         String commandFace = split[1];
                         System.out.println(ConsoleColors.ANSI_GREEN + "face command [" + commandFace + "] has been sent" + ConsoleColors.ANSI_RESET);

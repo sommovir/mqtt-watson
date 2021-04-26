@@ -19,8 +19,19 @@ import com.ibm.watson.assistant.v2.model.MessageContextGlobalSystem;
 import com.ibm.watson.assistant.v2.model.MessageContextSkill;
 import com.ibm.watson.assistant.v2.model.MessageInputOptions;
 import com.ibm.watson.assistant.v2.model.SessionResponse;
+import com.ibm.watson.language_translator.v3.LanguageTranslator;
+import com.ibm.watson.language_translator.v3.model.TranslateOptions;
+import com.ibm.watson.language_translator.v3.model.TranslationResult;
+import com.ibm.watson.natural_language_understanding.v1.NaturalLanguageUnderstanding;
+import com.ibm.watson.natural_language_understanding.v1.model.AnalysisResults;
+import com.ibm.watson.natural_language_understanding.v1.model.AnalyzeOptions;
+import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
+import com.ibm.watson.natural_language_understanding.v1.model.Features;
+import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
+import it.cnr.istc.mw.mqtt.logic.Emotion;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,14 +74,14 @@ public class WatsonManager {
         return expired ? "expired" : "valid";
     }
 
-    public void mute(){
+    public void mute() {
         mute = true;
     }
-    
-    public void unmute(){
+
+    public void unmute() {
         mute = false;
     }
-    
+
     public boolean isSessionExpired(String sessionId) {
         if (!expireTimeMap.containsKey(sessionId)) {
             return true;
@@ -179,16 +190,16 @@ public class WatsonManager {
                     }
                     if (command.equals("table")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
-                        if(value.contains("<CONTINUE>")){
+                        if (value.contains("<CONTINUE>")) {
                             String[] tables = value.split("<CONTINUE>");
                             for (String table : tables) {
-                                MQTTClient.getInstance().publish(topic, "<CONTINUE>"+table);
+                                MQTTClient.getInstance().publish(topic, "<CONTINUE>" + table);
                                 Thread.sleep(50);
                             }
-                        }else{
+                        } else {
                             MQTTClient.getInstance().publish(topic, value);
                         }
-                        
+
                     }
                     if (command.equals("link")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";
@@ -215,7 +226,7 @@ public class WatsonManager {
                     String topic = Topics.COMMAND.getTopic() + "/" + userId + "/reminder";
                     String reminderText = apptext.split("<ROW>Messaggio: ")[1];
                     String reminderTime = apptext.split("<ROW>Orario: ")[1].substring(0, 5);
-                    MQTTClient.getInstance().publish(topic, reminderText+"<:>"+reminderTime);
+                    MQTTClient.getInstance().publish(topic, reminderText + "<:>" + reminderTime);
                 }
                 return text;
             } catch (Exception ex) {
@@ -230,7 +241,92 @@ public class WatsonManager {
     public boolean isMute() {
         return mute;
     }
-    
+
+    public boolean analyzeSentimentByTarget(String text, List<String> targets) {
+
+        IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+
+        SentimentOptions sentiment = new SentimentOptions.Builder()
+                .targets(targets)
+                .build();
+
+        Features features = new Features.Builder()
+                .sentiment(sentiment)
+                .build();
+
+//        AnalyzeOptions parameters = new AnalyzeOptions.Builder()
+//                .html(html)
+//                .features(features)
+//                .build();
+        AnalyzeOptions parameters = new AnalyzeOptions.Builder()
+                .text(text)
+                .features(features)
+                .build();
+
+        AnalysisResults response = naturalLanguageUnderstanding
+                .analyze(parameters)
+                .execute()
+                .getResult();
+        System.out.println(response);
+
+        return true;
+
+    }
+
+    public String toEnglish(String italianText) {
+        IamAuthenticator authenticator = new IamAuthenticator("AV32Gzzrt_XadKKhjMxgr00X1Uyf66DJpOaLRm3K6R-J");
+        LanguageTranslator languageTranslator = new LanguageTranslator("2018-05-01", authenticator);
+        languageTranslator.setServiceUrl("https://api.eu-gb.language-translator.watson.cloud.ibm.com/instances/f3a46212-88ab-4423-8c06-9860c651fe14");
+
+        TranslateOptions translateOptions = new TranslateOptions.Builder()
+                .addText(italianText)
+                .modelId("it-en")
+                .build();
+
+        TranslationResult result = languageTranslator.translate(translateOptions)
+                .execute().getResult();
+
+        System.out.println(result);
+        
+        return result.getTranslations().get(0).getTranslation();
+
+    }
+
+    public Emotion analyzeEmotionByTarget(String text, List<String> targets) {
+
+        IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+
+        EmotionOptions emotion = new EmotionOptions.Builder()
+                .targets(targets)
+                .build();
+
+        Features features = new Features.Builder()
+                .emotion(emotion)
+                .build();
+
+//        AnalyzeOptions parameters = new AnalyzeOptions.Builder()
+//                .html(html)
+//                .features(features)
+//                .build();
+        AnalyzeOptions parameters = new AnalyzeOptions.Builder()
+                .text(text)
+                .features(features)
+                .build();
+
+        AnalysisResults response = naturalLanguageUnderstanding
+                .analyze(parameters)
+                .execute()
+                .getResult();
+        System.out.println(response);
+
+        return null;
+
+    }
+
     public String sendMessage(String message, String userId) {
         try {
             System.out.println("[Watson] sending message to AI.. ");

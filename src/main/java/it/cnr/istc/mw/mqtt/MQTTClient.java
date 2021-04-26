@@ -99,6 +99,9 @@ public class MQTTClient implements MqttCallback {
             /* subscribe section */
             sampleClient.subscribe("UserConnected");
             sampleClient.subscribe(Topics.CHAT.getTopic());
+            sampleClient.subscribe("AllConnected");
+            
+            
             sampleClient.setCallback(this);
 
             System.out.println("paho-client connected to broker");
@@ -165,7 +168,7 @@ public class MQTTClient implements MqttCallback {
                 Logger.getLogger(MQTTClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
+    } 
 
     public void publish(String topic, String message) {
         
