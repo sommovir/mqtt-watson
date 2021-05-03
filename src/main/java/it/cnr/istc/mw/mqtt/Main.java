@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
+import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -119,7 +120,13 @@ public class Main {
                         } else if (line.equals("test db")) {
                             System.out.println("testing db");
                             DBManager.getInstance().test();
-                        } else if (line.equals("test emotion")) {
+                        }  else if (line.equals("log on")) {
+                            System.out.println("Activating logging..");
+                            LoggerManager.getInstance().setLogActive(true);
+                        }else if (line.equals("log off")) {
+                            System.out.println("Deactivating logging..");
+                            LoggerManager.getInstance().setLogActive(false);
+                        }else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
