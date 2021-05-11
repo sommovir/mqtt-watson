@@ -12,7 +12,7 @@ package it.cnr.istc.mw.mqtt.logic;
 public enum LoggingTag {
     
     ELAPSED_TIME("ELAPSED TIME"),
-    SYSTEM_TURNS("SYSTEM_TURNS"),
+    SYSTEM_TURNS("SYSTEM TURNS"),
     USER_TURNS("USER TURNS"),
     TOTAL_TURNS("TOTAL TURNS"),
     TIMEOUT("TIMEOUT"),
@@ -30,6 +30,10 @@ public enum LoggingTag {
     
     private String tag;
     
+    /**
+     * Ritorna il valore del tag circondato da minore e maggiore
+     * @return il tag con maggiore e minore
+     */
     public String getTag(){
         return "<" + tag + ">";
     }
