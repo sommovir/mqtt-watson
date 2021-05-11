@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  * init logging prova discord 2
- *
+ *  Ciao Luca!
  * @author sommovir
  */
 public class LoggerManager {
