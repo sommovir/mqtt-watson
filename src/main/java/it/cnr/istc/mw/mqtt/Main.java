@@ -126,6 +126,10 @@ public class Main {
                         }else if (line.equals("log off")) {
                             System.out.println("Deactivating logging..");
                             LoggerManager.getInstance().setLogActive(false);
+                        }else if (line.startsWith("new log ")) {
+                            String nomeFile = line.split(" ")[2];
+                            LoggerManager.getInstance().newLog(nomeFile);
+                            System.out.println("New log file with name ["+nomeFile+"] has been created");
                         }else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
