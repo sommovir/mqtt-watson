@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * init logging prova discord
+ * init logging prova discord 2
  *
  * @author sommovir
  */
