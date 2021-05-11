@@ -6,7 +6,7 @@
 package it.cnr.istc.mw.mqtt.logic;
 
 /**
- *
+ * init logging
  * @author sommovir
  */
 public class LoggerManager {
