@@ -19,7 +19,7 @@ public enum LoggingTag {
     REJECTS("REJECTS"),
     REPROMPT("REPROMPT"),
     NOANSWER("NOANSWER"),
-    NOINPUT("NOINPUT"),
+    NO_USER_ANSWER("NO USER ANSWER"),
     CANCEL("CANCEL"),
     BARGEINS("BARGEINS");
     
