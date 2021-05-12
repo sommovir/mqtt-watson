@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -73,6 +74,7 @@ public class Main {
                     for (String script : scripts) {
                         line = script;
                         if (line.equals("quit")) {
+                            LoggerManager.getInstance().log("[Server] QUIT");
                             System.out.println("[Server] Quitting..");
                             t.interrupt();
                             System.exit(0);
