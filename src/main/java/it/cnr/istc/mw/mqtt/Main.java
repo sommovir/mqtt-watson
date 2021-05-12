@@ -132,6 +132,9 @@ public class Main {
                             String nomeFile = line.split(" ")[2];
                             LoggerManager.getInstance().newLog(nomeFile);
                             System.out.println("New log file with name ["+nomeFile+"] has been created");
+                        }else if (line.equals("stop log")) {
+                            LoggerManager.getInstance().stopLogging();
+                            System.out.println("The current logging file has been closed, no further log will be accepted on such file");
                         }else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();

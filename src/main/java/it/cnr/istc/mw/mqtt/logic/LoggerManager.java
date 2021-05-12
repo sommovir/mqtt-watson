@@ -12,6 +12,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +29,7 @@ public class LoggerManager {
     private static LoggerManager _instance = null;
     private boolean logActive = false;
     private String currentLogPath = null;
+    private long startingLoggingTime = -1;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -45,7 +49,8 @@ public class LoggerManager {
         }
 
         try {
-            this.currentLogPath = "./logs/" + logfile + "-" + (new Date().getTime()) + ".log";
+            this.startingLoggingTime = new Date().getTime();
+            this.currentLogPath = "./logs/" + logfile + "-" + startingLoggingTime + ".log";
             File storedFile = new File(currentLogPath);
             storedFile.getParentFile().mkdirs();
             System.out.println("path: " + storedFile.getAbsolutePath());
@@ -58,6 +63,22 @@ public class LoggerManager {
             ex.printStackTrace();
         }
 
+    }
+    
+    /**
+     * This method stop the current logging, disabling al further logging until
+     * a new command 'new log' will be entered. This method also prints into the
+     * log the elapsed time by the corresponding LoggingTag. 
+     */
+    public void stopLogging(){
+        long elapsedTime = new Date().getTime() - this.startingLoggingTime;
+        Duration elaps =Duration.of(elapsedTime, ChronoUnit.MILLIS);
+        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+(elaps.get(ChronoUnit.SECONDS)/(1000l*60l*60l))+"h "+
+                (elaps.get(ChronoUnit.SECONDS)/(1000l*60l))+"m "+
+                elaps.get(ChronoUnit.SECONDS)+"s ");
+        currentLogPath = null;
+        this.startingLoggingTime = -1;
+        
     }
 
     public void log(String textToLog) {
