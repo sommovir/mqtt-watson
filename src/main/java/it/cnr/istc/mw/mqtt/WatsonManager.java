@@ -29,6 +29,8 @@ import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
+import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -402,6 +404,9 @@ public class WatsonManager {
             }
             // risposta = risposta.replace("è", "e'");
             System.out.println("about to finishing the send watson method");
+            if(risposta==null || risposta.isEmpty()){
+                LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
+            }
             return risposta;
         } catch (Exception ex) {
             ex.printStackTrace();

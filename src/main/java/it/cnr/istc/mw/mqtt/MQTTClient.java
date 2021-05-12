@@ -36,7 +36,7 @@ public class MQTTClient implements MqttCallback {
     private String myNickName = "unknown";
     private String secret = "bumbu";
 
-    String content = "Visit www.hascode.com! :D";
+    String content = "Tester message";
 
     //String broker = "tcp://localhost:1883";
     String broker;
