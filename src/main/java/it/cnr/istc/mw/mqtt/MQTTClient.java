@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -245,6 +246,7 @@ public class MQTTClient implements MqttCallback {
                 if (topic.equals(t)) {
                     String id = topic.split("/")[1];
                     System.out.println("message received from: " + t + ", with id: " + id);
+                    LoggerManager.getInstance().log(LoggingTag.USER_TURNS.getTag()+" "+message);
                     System.out.println("[server] ENTERING WATSON WORLD and client is: "+(sampleClient.isConnected() ? "ONLINE":"OFFLINE"));
                     String risposta = WatsonManager.getInstance().sendMessage(message, id);
                     System.out.println("[server] EXITING WATSON WORLD and client is: "+(sampleClient.isConnected() ? "ONLINE":"OFFLINE"));

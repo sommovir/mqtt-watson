@@ -407,6 +407,7 @@ public class WatsonManager {
             if(risposta==null || risposta.isEmpty()){
                 LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
             }
+            LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag()+" "+risposta);
             return risposta;
         } catch (Exception ex) {
             ex.printStackTrace();
