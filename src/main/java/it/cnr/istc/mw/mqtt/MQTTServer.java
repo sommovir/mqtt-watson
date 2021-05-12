@@ -104,12 +104,15 @@ public class MQTTServer {
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
                             System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
+                            String tlog = Topics.LOG.getTopic() + "/" + icm.getClientID();
                             idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
                             topicids.add(tid);
                             MQTTClient.getInstance().subscribe(tid);
+                            MQTTClient.getInstance().subscribe(tlog);
                             if (icm.getClientID().equals("Server")) {
                                 serverEntered = true;
                             }
+                            
                         }
 
                     }

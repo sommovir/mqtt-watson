@@ -82,6 +82,7 @@ public class LoggerManager {
     }
 
     public void log(String textToLog) {
+        System.out.println("into log");
         if (!logActive || currentLogPath == null) {
             return;
         }

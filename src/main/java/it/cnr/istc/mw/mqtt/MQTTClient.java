@@ -164,6 +164,7 @@ public class MQTTClient implements MqttCallback {
 
                 sampleClient.connect(connOpts);
                 sampleClient.subscribe(Topics.ACK_LOGIN.getTopic() + "/" + clientId);
+                sampleClient.subscribe(Topics.LOG.getTopic());
 
             }
 
@@ -254,8 +255,9 @@ public class MQTTClient implements MqttCallback {
                 }
             }
         }
-        if(topic.equals(Topics.LOG.getTopic())){
-            LoggerManager.getInstance().log(message);
+        if(topic.startsWith(Topics.LOG.getTopic())){
+            System.out.println("logging timeout");
+            LoggerManager.getInstance().log (message);
         }
 
     }
