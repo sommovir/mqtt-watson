@@ -44,13 +44,13 @@ public class Main {
                         System.out.println(encryptedString);
                         System.out.println(decryptedString);
                         System.out.println(ConsoleColors.ANSI_RED + "[Server]" + ConsoleColors.ANSI_GREEN + "Welcome to Appia Server " + version + ConsoleColors.ANSI_RESET);
+                        System.out.println(ConsoleColors.ANSI_GREEN + "[Server IP] " + ConsoleColors.ANSI_PURPLE + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         server.start();
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     } finally {
                         //server.stop();
                     }
-
                 }
             });
 

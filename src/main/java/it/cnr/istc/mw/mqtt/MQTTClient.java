@@ -6,6 +6,10 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +55,25 @@ public class MQTTClient implements MqttCallback {
 
     private MQTTClient() {
         super();
+    }
+    
+    /**
+     * Ritorna l'ip della macchina su cui si sta operando.
+     * @return 
+     */
+    public String getIP() {
+        String ip = null;
+        try (final DatagramSocket socket = new DatagramSocket()) { //try-with (closeable)
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+        } catch (SocketException ex) {
+            Logger.getLogger(MQTTServer.class.getName()).log(Level.SEVERE, null, ex);
+            ip = "socket-exception";
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MQTTServer.class.getName()).log(Level.SEVERE, null, ex);
+            ip = "unknown-exception";
+        }
+        return ip;
     }
 
     public String getSecret() {
