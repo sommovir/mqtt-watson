@@ -6,6 +6,7 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -122,6 +123,7 @@ public class MQTTClient implements MqttCallback {
             /* subscribe section */
             sampleClient.subscribe("UserConnected");
             sampleClient.subscribe(Topics.CHAT.getTopic());
+            sampleClient.subscribe(Topics.LOG.getTopic());
             sampleClient.subscribe("AllConnected");
             
             
@@ -225,7 +227,7 @@ public class MQTTClient implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable thrwbl) {
-
+        System.out.println("connection lost..");
     }
 
     @Override
@@ -235,7 +237,7 @@ public class MQTTClient implements MqttCallback {
         System.out.println("MESSAGE: " + new String(mm.getPayload(), StandardCharsets.UTF_8));
         String message = new String(mm.getPayload(), StandardCharsets.UTF_8);
 
-        if (topic.startsWith("chat")) {
+        if (topic.startsWith(Topics.CHAT.getTopic())) {
             List<String> tid = MQTTServer.topicids;
             System.out.println("listing topic: " + tid);
             for (String t : tid) {
@@ -251,6 +253,9 @@ public class MQTTClient implements MqttCallback {
 
                 }
             }
+        }
+        if(topic.equals(Topics.LOG.getTopic())){
+            LoggerManager.getInstance().log(message);
         }
 
     }
