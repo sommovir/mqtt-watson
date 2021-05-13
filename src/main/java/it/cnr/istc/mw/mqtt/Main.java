@@ -28,7 +28,7 @@ import org.fusesource.jansi.AnsiConsole;
 public class Main {
 
     static MQTTServer server = new MQTTServer();
-    public static final String version = "1.0 RC2 DEMO VERSION";
+    public static final String version = "1.0.1 LOG VERSION";
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();

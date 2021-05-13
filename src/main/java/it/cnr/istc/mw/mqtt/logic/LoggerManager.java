@@ -81,9 +81,13 @@ public class LoggerManager {
     public void stopLogging(){
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
         Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
-        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+(elaps.get(ChronoUnit.SECONDS)/(1000l*60l*60l))+"h "+
-                (elaps.get(ChronoUnit.SECONDS)/(1000l*60l))+"m "+
-                elaps.get(ChronoUnit.SECONDS)+"s ");
+        long seconds = elaps.get(ChronoUnit.SECONDS);
+        long h = elaps.toHoursPart();
+        long m = elaps.toMinutesPart();
+        long s = elaps.toSecondsPart();
+        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+h+"h "+
+                m+"m "+
+                s+"s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getBlandTag() + ": " + userTurns + " | " + 
                 LoggingTag.TOTAL_SYSTEM_TURNS.getBlandTag() + ": " + systemTurns +  " | " + 
                 LoggingTag.TOTAL_TURNS.getBlandTag() + ": " + totalTurns +  " | ");
