@@ -16,6 +16,8 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +30,9 @@ public class LoggerManager {
 
     private static LoggerManager _instance = null;
     private boolean logActive = false;
+    private boolean notDumping = true;
     private String currentLogPath = null;
+    private List<String> cache = new LinkedList<>();
     private long startingLoggingTime = -1;
     private int userTurns = 0;
     private int systemTurns = 0;
@@ -55,6 +59,9 @@ public class LoggerManager {
         userTurns = 0;
         systemTurns = 0;
         totalTurns = 0;
+        if(notDumping){
+            cache.clear();
+        }
         
         try {
             this.startingLoggingTime = new Date().getTime();
@@ -94,6 +101,10 @@ public class LoggerManager {
 
     public void log(String textToLog) {
         System.out.println("into log");
+        String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
+        if(notDumping){
+            cache.add(timestamp + " " + textToLog);
+        }
         if (!logActive || currentLogPath == null) {
             return;
         }
@@ -101,7 +112,6 @@ public class LoggerManager {
               BufferedWriter bw = new BufferedWriter(fw);
               PrintWriter out = new PrintWriter(bw)
              ) {
-            String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
             out.println(timestamp+" "+textToLog);
             if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())){
                  systemTurns++;
@@ -117,9 +127,23 @@ public class LoggerManager {
         }
 
     }
+    
+    public void dump(){
+        notDumping = false;
+        newLog("dump");
+        for (String logLine : cache) {
+            log(logLine);
+        }
+        stopLogging();
+        notDumping = true;
+        cache.clear();
+    }
 
     public void setLogActive(boolean logActive) {
         this.logActive = logActive;
+        if(!this.logActive){
+            cache.clear();
+        }
     }
 
     public boolean isLogActive() {
