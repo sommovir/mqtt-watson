@@ -21,6 +21,7 @@ public enum LoggingTag {
     NOANSWER("NOANSWER"),
     NO_USER_ANSWER("NO USER ANSWER"),
     CANCEL("CANCEL"),
+    NOTE("NOTE"),
     BARGEINS("BARGEINS");
     
 
