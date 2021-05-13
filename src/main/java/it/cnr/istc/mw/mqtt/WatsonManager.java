@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  *
@@ -388,18 +389,30 @@ public class WatsonManager {
 //           // return actualResponse;
 //        }
             
-            /*
+            
             String[] errorMessages = new String[]{
                     "Non ho capito. Puoi riformulare la frase?",
                     "Puoi ripetere usando altre parole? Non ho capito.",
                     "Non ho capito cosa mi hai detto."
                     };
             
+            Random rand = new Random();
+            // nextInt is normally exclusive of the top value,
+            // so add 1 to make it inclusive
+            int randomNum = rand.nextInt(errorMessages.length);
+            
+            /*
             for (String errorMessage : errorMessages) {
                 if(response.getOutput().getGeneric().get(0).text().equals(errorMessage)){
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 }
             }*/
+            
+            if (response.getOutput().getGeneric() == null || response.getOutput().getGeneric().isEmpty()) {
+                LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
+                return errorMessages[randomNum];            
+            }
+            
             if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
                 LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 return "mi spiace non ho capito";
