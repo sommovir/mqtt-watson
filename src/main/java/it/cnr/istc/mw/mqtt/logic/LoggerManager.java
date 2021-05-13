@@ -108,7 +108,7 @@ public class LoggerManager {
                  totalTurns++;
             }
             else if(textToLog.contains(LoggingTag.USER_TURNS.getTag())){
-                userTurn++;
+                userTurns++;
                 totalTurns++;
             }
             
