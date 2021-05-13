@@ -9,6 +9,7 @@ import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -287,6 +288,10 @@ public class Main {
                             else{
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
+                        }
+                        else if(line.startsWith("log note ") && !line.replace("log note ","").isEmpty()){
+                            String free_text = line.substring(9, line.length());
+                            LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
                         }
                         else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
