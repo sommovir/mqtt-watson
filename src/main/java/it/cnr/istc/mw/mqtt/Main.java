@@ -280,7 +280,15 @@ public class Main {
                             }
                             System.out.println(ConsoleColors.ANSI_YELLOW + "-------------------------------------------" + ConsoleColors.ANSI_RESET);
 
-                        } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
+                        } else if(line.equals("log?")){
+                            if(LoggerManager.getInstance().isLogActive()){
+                                System.out.println("Logger is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
+                            }
+                            else{
+                                System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
+                            }
+                        }
+                        else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
                             System.out.println("idi= " + idi);
