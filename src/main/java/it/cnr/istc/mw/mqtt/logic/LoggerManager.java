@@ -30,6 +30,9 @@ public class LoggerManager {
     private boolean logActive = false;
     private String currentLogPath = null;
     private long startingLoggingTime = -1;
+    private int userTurns = 0;
+    private int systemTurns = 0;
+    private int totalTurns = 0;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -44,10 +47,15 @@ public class LoggerManager {
     }
 
     public void newLog(String logfile) {
+        
         if (!logActive) {
             return;
         }
-
+        
+        userTurns = 0;
+        systemTurns = 0;
+        totalTurns = 0;
+        
         try {
             this.startingLoggingTime = new Date().getTime();
             this.currentLogPath = "./logs/" + logfile + "-" + startingLoggingTime + ".log";
@@ -72,10 +80,13 @@ public class LoggerManager {
      */
     public void stopLogging(){
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
-        Duration elaps =Duration.of(elapsedTime, ChronoUnit.MILLIS);
+        Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
         LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+(elaps.get(ChronoUnit.SECONDS)/(1000l*60l*60l))+"h "+
                 (elaps.get(ChronoUnit.SECONDS)/(1000l*60l))+"m "+
                 elaps.get(ChronoUnit.SECONDS)+"s ");
+        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getBlandTag() + ": " + userTurns + " | " + 
+                LoggingTag.TOTAL_SYSTEM_TURNS.getBlandTag() + ": " + systemTurns +  " | " + 
+                LoggingTag.TOTAL_TURNS.getBlandTag() + ": " + totalTurns +  " | ");
         currentLogPath = null;
         this.startingLoggingTime = -1;
         
@@ -92,6 +103,15 @@ public class LoggerManager {
              ) {
             String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
             out.println(timestamp+" "+textToLog);
+            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())){
+                 systemTurns++;
+                 totalTurns++;
+            }
+            else if(textToLog.contains(LoggingTag.USER_TURNS.getTag())){
+                userTurn++;
+                totalTurns++;
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -13,7 +13,9 @@ public enum LoggingTag {
     
     ELAPSED_TIME("ELAPSED TIME"),
     SYSTEM_TURNS("SYSTEM TURNS"),
+    TOTAL_SYSTEM_TURNS("TOTAL SYSTEM TURNS"),
     USER_TURNS("USER TURNS"),
+    TOTAL_USER_TURNS("TOTAL USER TURNS"),
     TOTAL_TURNS("TOTAL TURNS"),
     TIMEOUT("TIMEOUT"),
     REJECTS("REJECTS"),
@@ -37,5 +39,14 @@ public enum LoggingTag {
      */
     public String getTag(){
         return "<" + tag + ">";
+    }
+    
+    /**
+     * Ritorna il valore del tag semplice
+     * @return il tag
+     */
+    
+    public String getBlandTag(){
+        return tag;
     }
 }
