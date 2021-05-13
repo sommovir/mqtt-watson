@@ -75,6 +75,7 @@ public class Main {
                     for (String script : scripts) {
                         line = script;
                         if (line.equals("quit")) {
+                            LoggerManager.getInstance().stopLogging();
                             LoggerManager.getInstance().log("[Server] QUIT");
                             System.out.println("[Server] Quitting..");
                             t.interrupt();
@@ -91,6 +92,8 @@ public class Main {
                                 }
                                 System.out.println(" -- THE FINAL ACT --");
                                 System.out.println("[Server] Quitting..");
+                                LoggerManager.getInstance().stopLogging();
+                                LoggerManager.getInstance().log("[Server] QUIT");
                                 t.interrupt();
                                 System.exit(0);
                             } catch (Exception ex) {
@@ -305,6 +308,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN + "publishing message " + "[" + ConsoleColors.ANSI_PURPLE + message + ConsoleColors.ANSI_GREEN + "] to user-id: " + ConsoleColors.ANSI_GREEN + id + ConsoleColors.ANSI_RESET);
                             MQTTClient.getInstance().publish(Topics.RESPONSES.getTopic() + "/" + id, message);
 
+                        } else if(line.equals("log reprompt") || line.equals("log r")){
+                            LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
                         } else if (line.equals("help")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);

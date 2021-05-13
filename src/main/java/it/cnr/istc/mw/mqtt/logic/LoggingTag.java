@@ -25,7 +25,6 @@ public enum LoggingTag {
     CANCEL("CANCEL"),
     NOTE("NOTE"),
     BARGEINS("BARGEINS");
-    
 
     private LoggingTag(String tag) {
         this.tag = tag;
