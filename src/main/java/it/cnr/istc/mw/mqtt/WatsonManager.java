@@ -387,27 +387,28 @@ public class WatsonManager {
 //            System.out.println(ConsoleColors.ANSI_CYAN+"APP RESPONSE= " +ConsoleColors.ANSI_RESET+actualResponse);
 //           // return actualResponse;
 //        }
-
+            
+            /*
             String[] errorMessages = new String[]{
                     "Non ho capito. Puoi riformulare la frase?",
                     "Puoi ripetere usando altre parole? Non ho capito.",
                     "Non ho capito cosa mi hai detto."
                     };
-            /*
+            
             for (String errorMessage : errorMessages) {
                 if(response.getOutput().getGeneric().get(0).text().equals(errorMessage)){
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 }
             }*/
+            if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
+                LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
+                return "mi spiace non ho capito";
+            }
             
             if(response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
                 LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
             }
             
-            if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
-                LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
-                return "mi spiace non ho capito";
-            }
             String risposta = response.getOutput().getGeneric().get(0).text();
             System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] input: " + ConsoleColors.PURPLE_BRIGHT + message + ConsoleColors.ANSI_RESET);
             if (actualResponse != null) {
