@@ -97,9 +97,9 @@ public class LoggerManager {
         LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+h+"h "+
                 m+"m "+
                 s+"s ");
-        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getBlandTag() + ": " + userTurns + " | " + 
-                LoggingTag.TOTAL_SYSTEM_TURNS.getBlandTag() + ": " + systemTurns +  " | " + 
-                LoggingTag.TOTAL_TURNS.getBlandTag() + ": " + totalTurns +  " | ");
+        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | " + 
+                LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns +  " | " + 
+                LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns +  " | ");
         currentLogPath = null;
         this.startingLoggingTime = -1;
         
