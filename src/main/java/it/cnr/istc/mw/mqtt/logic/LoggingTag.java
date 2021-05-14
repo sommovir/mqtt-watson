@@ -27,6 +27,11 @@ public enum LoggingTag {
     BARGEINS("BARGEINS"),
     USER_CONNECTED("USER CONNECTED"),
     USER_DISCONNECTED("USER DISCONNECTED"),
+    FACE("FACE"),
+    TABLE("TABLE"),
+    VIDEO("VIDEO"),
+    IMG("IMG"),
+    LINK("LINK"),
     CHANGE_USERNAME("CHANGE_USERNAME"); //when the user change his username
 
     private LoggingTag(String tag) {
