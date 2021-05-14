@@ -127,20 +127,7 @@ public class LoggerManager {
             else if(textToLog.contains(LoggingTag.USER_TURNS.getTag())){
                 userTurns++;
                 totalTurns++;
-            }
-            else if(textToLog.contains(LoggingTag.LINK.getTag())){
-                out.println("Inviato un link " + LoggingTag.LINK.getTag());
-            }
-            else if(textToLog.contains(LoggingTag.IMG.getTag())){
-                out.println("Inviata un'immagine " + LoggingTag.IMG.getTag());
-            }
-            else if(textToLog.contains(LoggingTag.TABLE.getTag())){
-                out.println("Inviata una tabella " + LoggingTag.TABLE.getTag());
-            }
-            else if(textToLog.contains(LoggingTag.VIDEO.getTag())){
-                out.println("Inviato un video " + LoggingTag.TABLE.getTag());
-            }
-                      
+            }                      
             
         } catch (IOException e) {
             e.printStackTrace();

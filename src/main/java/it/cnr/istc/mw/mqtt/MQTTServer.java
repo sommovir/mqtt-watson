@@ -15,6 +15,8 @@ import io.moquette.server.Server;
 import io.moquette.server.config.ClasspathResourceLoader;
 import io.moquette.server.config.ResourceLoaderConfig;
 import io.netty.buffer.ByteBufUtil;
+import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -91,7 +93,13 @@ public class MQTTServer {
                             //     MQTTClient.getInstance().unsubscribe(tid);
                             topicids.remove(tid);
                             MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
+                            
+                            LoggerManager.getInstance().log(LoggingTag.USER_DISCONNECTED.getTag() + " " + iclm.getClientID());
+                            
                         }
+                        
+                        
+                        
                     }
 
                     @Override
@@ -111,6 +119,8 @@ public class MQTTServer {
                             MQTTClient.getInstance().subscribe(tlog);
                             if (icm.getClientID().equals("Server")) {
                                 serverEntered = true;
+                            } else {
+                                LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
                             }
                             
                         }

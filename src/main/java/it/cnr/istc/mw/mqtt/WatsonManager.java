@@ -190,6 +190,7 @@ public class WatsonManager {
                     if (command.equals("face")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/face";
                         MQTTClient.getInstance().publish(topic, value);
+                        LoggerManager.getInstance().log(LoggingTag.FACE.getTag() + " " + value);
                     }
                     if (command.equals("table")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
@@ -202,19 +203,24 @@ public class WatsonManager {
                         } else {
                             MQTTClient.getInstance().publish(topic, value);
                         }
+                        
+                        LoggerManager.getInstance().log(LoggingTag.TABLE.getTag() + " " + value);
 
                     }
                     if (command.equals("link")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";
                         MQTTClient.getInstance().publish(topic, value);
+                        LoggerManager.getInstance().log(LoggingTag.LINK.getTag() + " " + value);
                     }
                     if (command.equals("youtube")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/youtube";
                         MQTTClient.getInstance().publish(topic, value);
+                        LoggerManager.getInstance().log(LoggingTag.VIDEO.getTag() + " " + value);
                     }
                     if (command.equals("img")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/img";
                         MQTTClient.getInstance().publish(topic, value);
+                        LoggerManager.getInstance().log(LoggingTag.IMG.getTag() + " " + value);
                     }
                     if (command.equals("listen")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/listen";
@@ -439,7 +445,7 @@ public class WatsonManager {
             if(risposta==null || risposta.isEmpty()){
                 LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
             }
-            LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag()+" "+risposta);
+            LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag()+" "+risposta);            
             return risposta;
         } catch (Exception ex) {
             ex.printStackTrace();
