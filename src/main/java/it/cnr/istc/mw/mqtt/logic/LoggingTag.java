@@ -24,7 +24,10 @@ public enum LoggingTag {
     NO_USER_ANSWER("NO USER ANSWER"),
     CANCEL("CANCEL"),
     NOTE("NOTE"),
-    BARGEINS("BARGEINS");
+    BARGEINS("BARGEINS"),
+    USER_CONNECTED("USER CONNECTED"),
+    USER_DISCONNECTED("USER DISCONNECTED"),
+    CHANGE_USERNAME("CHANGE_USERNAME"); //when the user change his username
 
     private LoggingTag(String tag) {
         this.tag = tag;
@@ -44,8 +47,7 @@ public enum LoggingTag {
      * Ritorna il valore del tag semplice
      * @return il tag
      */
-    
-    public String getBlandTag(){
+    public String getUndecoratedTag(){
         return tag;
     }
 }

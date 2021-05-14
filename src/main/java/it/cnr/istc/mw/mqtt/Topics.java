@@ -19,6 +19,7 @@ public enum Topics {
     USER_DISCONNECTED("UserDisconnected"),
     EMERGENCY("emergency"),
     LOG("log"),
+    USERNAME("username"),
     RESPONSES("responses"),
     COMMAND("commands"),
     INFO("info_channel");

@@ -125,6 +125,7 @@ public class MQTTClient implements MqttCallback {
             sampleClient.subscribe("UserConnected");
             sampleClient.subscribe(Topics.CHAT.getTopic());
             sampleClient.subscribe(Topics.LOG.getTopic());
+            sampleClient.subscribe(Topics.USERNAME.getTopic());
             sampleClient.subscribe("AllConnected");
             
             
@@ -166,6 +167,7 @@ public class MQTTClient implements MqttCallback {
                 sampleClient.connect(connOpts);
                 sampleClient.subscribe(Topics.ACK_LOGIN.getTopic() + "/" + clientId);
                 sampleClient.subscribe(Topics.LOG.getTopic());
+                sampleClient.subscribe(Topics.USERNAME.getTopic()+ "/" + clientId);
 
             }
 
@@ -258,8 +260,13 @@ public class MQTTClient implements MqttCallback {
             }
         }
         if(topic.startsWith(Topics.LOG.getTopic())){
-            System.out.println("logging timeout");
+            System.out.println("logging message from app device");
             LoggerManager.getInstance().log (message);
+        }
+        if(topic.startsWith(Topics.USERNAME.getTopic())){
+            System.out.println("username changed");
+            //message = id:username
+            LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag()+" "+message);
         }
 
     }
