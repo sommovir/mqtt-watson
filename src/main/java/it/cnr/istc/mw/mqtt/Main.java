@@ -130,12 +130,45 @@ public class Main {
                             System.out.println("Activating logging..");
                             LoggerManager.getInstance().setLogActive(true);
                         }else if (line.equals("log off")) {
+                            System.out.println("Vuoi eseguire un dump dei dati di log?");
+                            System.out.println("Digita y per eseguire");
+                            System.out.println("Digita n per continuare");
+                            String risposta = reader.readLine();
+                            if(risposta.equals("y")){
+                                System.out.println("Dumping...");
+                                LoggerManager.getInstance().dump();
+                            } else if(risposta.equals("n")){
+                                System.out.println("Clearing cache...");
+                            }
+                            else{
+                                System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                            }
                             System.out.println("Deactivating logging..");
                             LoggerManager.getInstance().setLogActive(false);
                         }else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
-                            LoggerManager.getInstance().newLog(nomeFile);
-                            System.out.println("New log file with name ["+nomeFile+"] has been created");
+                            if(LoggerManager.getInstance().isLogActive()){
+                                LoggerManager.getInstance().newLog(nomeFile);
+                                System.out.println("New log file with name ["+nomeFile+"] has been created");
+                            }
+                            else{
+                                System.out.println("Vuoi attivare la procedura di logging?");
+                                System.out.println("Digitare y per attivare");
+                                System.out.println("Digitare n per continuare");
+                                String answere = reader.readLine();
+                                if(answere.equals("y")){
+                                    System.out.println("Activating logging..");
+                                    LoggerManager.getInstance().setLogActive(true);
+                                    LoggerManager.getInstance().newLog(nomeFile);
+                                    System.out.println("New log file with name ["+nomeFile+"] has been created");
+                                }
+                                else if(answere.equals("n")){
+                                    System.out.println("Impossibile creare il file ["+nomeFile+"]");
+                                }
+                                else{
+                                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                                }
+                            }
                         }else if (line.equals("stop log")) {
                             LoggerManager.getInstance().stopLogging();
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
@@ -310,6 +343,8 @@ public class Main {
 
                         } else if(line.equals("log reprompt") || line.equals("log r")){
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
+                        } else if(line.equals("log dump") || line.equals("log d")){
+                            LoggerManager.getInstance().dump();
                         } else if (line.equals("help")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
@@ -360,6 +395,26 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "link [link]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tvisualizza il link passato in argomento");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
+                        } else if(line.equals("help log")){
+                            System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_WHITE + "List of log commands:" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "1) " + ConsoleColors.ANSI_CYAN + "log on");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tAbilita il sistema di logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "2) " + ConsoleColors.ANSI_CYAN + "log off");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tDisabilita il sistema di logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "3) " + ConsoleColors.ANSI_CYAN + "log?");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tFornisce informazioni sul sistema di logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "4) " + ConsoleColors.ANSI_CYAN + "new log [nomefile]");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tScriverà un file [nomefile].log dentro la cartella ./logs");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "5) " + ConsoleColors.ANSI_CYAN + "log reprompt / log r");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tScriverà nel file [nomefile].log dentro la cartella ./logs <REPROMPT>");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "6) " + ConsoleColors.ANSI_CYAN + "log note [text]");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tsalva il [text] dentro il file nomefile.log con il tag <NOTE>");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "log dump / log d");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tDa usare in caso di problemi con il nomefile.log, crea un nuovo filenome.log con tutte le azioni effettuate");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "stop log ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
+                            
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");
                         }
