@@ -32,6 +32,7 @@ public class LoggerManager {
     private boolean logActive = false;
     private boolean notDumping = true;
     private String currentLogPath = null;
+    private int numberLine = 0;
     private List<String> cache = new LinkedList<>();
     private long startingLoggingTime = -1;
     private int userTurns = 0;
@@ -59,6 +60,7 @@ public class LoggerManager {
         userTurns = 0;
         systemTurns = 0;
         totalTurns = 0;
+        numberLine = 0;
         if(notDumping){
             cache.clear();
         }
@@ -104,10 +106,11 @@ public class LoggerManager {
     }
 
     public void log(String textToLog) {
+        numberLine++;
         System.out.println("into log");
         String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
         if(notDumping){
-            cache.add(timestamp + " " + textToLog);
+            cache.add(numberLine+") "+timestamp + " " + textToLog);
         }
         if (!logActive || currentLogPath == null) {
             return;
@@ -116,7 +119,7 @@ public class LoggerManager {
               BufferedWriter bw = new BufferedWriter(fw);
               PrintWriter out = new PrintWriter(bw)
              ) {
-            out.println(timestamp+" "+textToLog);
+            out.println(numberLine+") "+timestamp+" "+textToLog);
             if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())){
                  systemTurns++;
                  totalTurns++;
