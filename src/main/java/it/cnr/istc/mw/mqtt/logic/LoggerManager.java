@@ -129,16 +129,16 @@ public class LoggerManager {
                 totalTurns++;
             }
             else if(textToLog.contains(LoggingTag.LINK.getTag())){
-                System.out.println("Inviato un link");
+                out.println("Inviato un link");
             }
             else if(textToLog.contains(LoggingTag.IMG.getTag())){
-                System.out.println("Inviata un'immagine");
+                out.println("Inviata un'immagine");
             }
             else if(textToLog.contains(LoggingTag.TABLE.getTag())){
-                System.out.println("Inviata una tabella");
+                out.println("Inviata una tabella");
             }
             else if(textToLog.contains(LoggingTag.VIDEO.getTag())){
-                System.out.println("Inviato un video");
+                out.println("Inviato un video");
             }
             
             
