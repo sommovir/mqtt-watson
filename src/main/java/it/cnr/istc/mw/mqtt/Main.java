@@ -427,6 +427,53 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "stop log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
 
+                        } else if (line.equals("help log tag")) {
+                            System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G  T A G-----------------------------" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_WHITE + "List and description of log tags:" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "1) " + ConsoleColors.ANSI_CYAN + "ELAPSED TIME:");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il tempo intercorso fra l'inizio e la fine del logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "2) " + ConsoleColors.ANSI_CYAN + "SYSTEM TURNS:");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il momento in cui sta rispondendo l'assistente virtuale Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "3) " + ConsoleColors.ANSI_CYAN + "TOTAL SYSTEM TURNS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tFornisce il numero di interventi totali dell'assistente virtuale Watson dall'inizio alla fine del logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "4) " + ConsoleColors.ANSI_CYAN + "USERN TURNS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il momento in cui sta rispondendo l'utente");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "5) " + ConsoleColors.ANSI_CYAN + "TOTAL USER TURNS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tFornisce il numero di interventi totali dell'utente dall'inizio alla fine del logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "6) " + ConsoleColors.ANSI_CYAN + "TOTAL TURNS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tFornisce il numero di interventi totali dell'utente e dell'assistente dall'inizio alla fine del logging");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "TIMEOUT");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente non risponde nel tempo atteso dopo aver iniziato la registrazione");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "REJECTS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'assistente Watson risponde 'non ho capito'");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "9) " + ConsoleColors.ANSI_CYAN + "REPROMPT");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale, a parità di campo semantico, non si ottiene una risposta immediata e l'utente è costretto a riformulare la richiesta con una diversa forma");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "10) " + ConsoleColors.ANSI_CYAN + "NOANSWER");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'assistente Watson non risponde in alcun modo alla richiesta dell'utente");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "NO USER ANSWER");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale quando l'assistente Watson chiede all'utente di rispondere e attiva automaticamente l'ascolto ma l'utente non risponde");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "12) " + ConsoleColors.ANSI_CYAN + "CANCEL");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente interrompe la richiesta");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "NOTE");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'inserimento di una nota all'interno del log");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "BARGEINS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene interrotta manualmente la sintesi vocale dell'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "USER CONNECTED");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica la connessione dell'utente al server");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "USER DISCONNECTED");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica la disconnessione dell'utente dal server");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "FACE");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene comandato un cambio emotivo dell'interfaccia utente tramite l'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "18) " + ConsoleColors.ANSI_CYAN + "TABLE");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene mostrata una tabella all'utente tramite l'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "19) " + ConsoleColors.ANSI_CYAN + "VIDEO");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene mostrato un video all'utente tramite l'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "20) " + ConsoleColors.ANSI_CYAN + "IMG");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene mostrata un'immagine all'utente tramite l'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "21) " + ConsoleColors.ANSI_CYAN + "LINK");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene associato un link alla risposta dell'assistente Watson");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "22) " + ConsoleColors.ANSI_CYAN + "CHANGE USERNAME");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente cambia username");
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");
                         }
