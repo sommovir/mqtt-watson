@@ -126,53 +126,68 @@ public class Main {
                         } else if (line.equals("test db")) {
                             System.out.println("testing db");
                             DBManager.getInstance().test();
-                        }  else if (line.equals("log on")) {
+                        } else if (line.equals("log on")) {
                             System.out.println("Activating logging..");
                             LoggerManager.getInstance().setLogActive(true);
-                        }else if (line.equals("log off")) {
+                        } else if (line.equals("log off")) {
                             System.out.println("Vuoi eseguire un dump dei dati di log?");
                             System.out.println("Digita y per eseguire");
                             System.out.println("Digita n per continuare");
                             String risposta = reader.readLine();
-                            if(risposta.equals("y")){
+                            if (risposta.equals("y")) {
                                 System.out.println("Dumping...");
                                 LoggerManager.getInstance().dump();
-                            } else if(risposta.equals("n")){
+                            } else if (risposta.equals("n")) {
                                 System.out.println("Clearing cache...");
-                            }
-                            else{
+                            } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
                             }
                             System.out.println("Deactivating logging..");
                             LoggerManager.getInstance().setLogActive(false);
-                        }else if (line.startsWith("new log ")) {
+                        } else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
-                            if(LoggerManager.getInstance().isLogActive()){
-                                LoggerManager.getInstance().newLog(nomeFile);
-                                System.out.println("New log file with name ["+nomeFile+"] has been created");
+                            if (LoggerManager.getInstance().isLogging()) {
+                                try {
+                                    System.out.println("Un log è già in esecuzione al momento, vuoi davvero avviare un nuovo log e concludere il precedente? (y/n) ");
+                                    String risposta = reader.readLine();
+                                    if (risposta.equals("y")) {
+                                        System.out.println("Log precedente concluso. Avvio nuovo log...");
+                                        LoggerManager.getInstance().stopLogging();
+                                    } else if (risposta.equals("n")) {
+                                        System.out.println("Operazione annullata, log non sovrascritto.(Il log è ancora utilizzabile)");
+                                        continue;
+                                    } else {
+                                        System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                                        continue;
+                                    }
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+
                             }
-                            else{
+                            if (LoggerManager.getInstance().isLogActive()) {
+                                LoggerManager.getInstance().newLog(nomeFile);
+                                System.out.println("New log file with name [" + nomeFile + "] has been created");
+                            } else {
                                 System.out.println("Vuoi attivare la procedura di logging?");
                                 System.out.println("Digitare y per attivare");
                                 System.out.println("Digitare n per continuare");
                                 String answere = reader.readLine();
-                                if(answere.equals("y")){
+                                if (answere.equals("y")) {
                                     System.out.println("Activating logging..");
                                     LoggerManager.getInstance().setLogActive(true);
                                     LoggerManager.getInstance().newLog(nomeFile);
-                                    System.out.println("New log file with name ["+nomeFile+"] has been created");
-                                }
-                                else if(answere.equals("n")){
-                                    System.out.println("Impossibile creare il file ["+nomeFile+"]");
-                                }
-                                else{
+                                    System.out.println("New log file with name [" + nomeFile + "] has been created");
+                                } else if (answere.equals("n")) {
+                                    System.out.println("Impossibile creare il file [" + nomeFile + "]");
+                                } else {
                                     System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
                                 }
                             }
-                        }else if (line.equals("stop log")) {
+                        } else if (line.equals("stop log")) {
                             LoggerManager.getInstance().stopLogging();
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
-                        }else if (line.equals("test emotion")) {
+                        } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
@@ -317,19 +332,16 @@ public class Main {
                             }
                             System.out.println(ConsoleColors.ANSI_YELLOW + "-------------------------------------------" + ConsoleColors.ANSI_RESET);
 
-                        } else if(line.equals("log?")){
-                            if(LoggerManager.getInstance().isLogActive()){
+                        } else if (line.equals("log?")) {
+                            if (LoggerManager.getInstance().isLogActive()) {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
-                            }
-                            else{
+                            } else {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
-                        }
-                        else if(line.startsWith("log note ") && !line.replace("log note ","").isEmpty()){
+                        } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             String free_text = line.substring(9, line.length());
                             LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
-                        }
-                        else if (line.startsWith("t -#") && line.split(" ").length > 2) {
+                        } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
                             System.out.println("idi= " + idi);
@@ -341,9 +353,9 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN + "publishing message " + "[" + ConsoleColors.ANSI_PURPLE + message + ConsoleColors.ANSI_GREEN + "] to user-id: " + ConsoleColors.ANSI_GREEN + id + ConsoleColors.ANSI_RESET);
                             MQTTClient.getInstance().publish(Topics.RESPONSES.getTopic() + "/" + id, message);
 
-                        } else if(line.equals("log reprompt") || line.equals("log r")){
+                        } else if (line.equals("log reprompt") || line.equals("log r")) {
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
-                        } else if(line.equals("log dump") || line.equals("log d")){
+                        } else if (line.equals("log dump") || line.equals("log d")) {
                             LoggerManager.getInstance().dump();
                         } else if (line.equals("help")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
@@ -395,7 +407,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "link [link]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tvisualizza il link passato in argomento");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
-                        } else if(line.equals("help log")){
+                        } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of log commands:" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_YELLOW + "1) " + ConsoleColors.ANSI_CYAN + "log on");
@@ -414,7 +426,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tDa usare in caso di problemi con il nomefile.log, crea un nuovo filenome.log con tutte le azioni effettuate");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "stop log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
-                            
+
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");
                         }

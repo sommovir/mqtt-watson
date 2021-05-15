@@ -5,11 +5,14 @@
  */
 package it.cnr.istc.mw.mqtt.logic;
 
+import it.cnr.istc.mw.mqtt.ConsoleColors;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -51,6 +54,10 @@ public class LoggerManager {
         super();
     }
 
+    public boolean isLogging(){
+        return currentLogPath != null;
+    }
+    
     public void newLog(String logfile) {
         
         if (!logActive) {
@@ -107,7 +114,7 @@ public class LoggerManager {
 
     public void log(String textToLog) {
         numberLine++;
-        System.out.println("into log");
+        //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
         if(notDumping){
             cache.add(numberLine+") "+timestamp + " " + textToLog);
