@@ -445,6 +445,10 @@ public class WatsonManager {
             if(risposta==null || risposta.isEmpty()){
                 LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
             }
+            if(risposta.contains("<NAME>")){
+                risposta = risposta.replace("<NAME>", MQTTClient.getInstance().getNameById(userId));
+            }
+            
             LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag()+" "+risposta);            
             return risposta;
         } catch (Exception ex) {

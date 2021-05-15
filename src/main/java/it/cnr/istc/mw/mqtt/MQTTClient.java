@@ -14,7 +14,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -37,6 +39,7 @@ public class MQTTClient implements MqttCallback {
     private MqttClient sampleClient = null;
     private String myNickName = "unknown";
     private String secret = "bumbu";
+    private Map<String, String> idNameMap = new HashMap<String, String>();
 
     String content = "Tester message";
 
@@ -57,6 +60,10 @@ public class MQTTClient implements MqttCallback {
 
     private MQTTClient() {
         super();
+    }
+    
+    public String getNameById(String id){
+        return idNameMap.get(id);
     }
     
     /**
@@ -267,6 +274,8 @@ public class MQTTClient implements MqttCallback {
             System.out.println("username changed");
             //message = id:username
             LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag()+" "+message);
+            String id = topic.split("/")[1];
+            idNameMap.put(id, message);
         }
 
     }
