@@ -28,10 +28,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.FileList;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidFolderNameException;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 
 /**
  *
@@ -72,7 +76,7 @@ public class GoogleDriveManager {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES
-            = Arrays.asList(DriveActivityScopes.DRIVE_ACTIVITY_READONLY,DriveScopes.DRIVE);
+            = Arrays.asList(DriveActivityScopes.DRIVE_ACTIVITY_READONLY, DriveScopes.DRIVE);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
     private static Drive drive = null;
@@ -189,23 +193,75 @@ public class GoogleDriveManager {
     }
 
     /**
+     * crea una cartella nel drive con il nome specificato in argomento
+     *
+     * @param folderName il nome della cartella da creare
+     */
+    private String createFolder(String folderName) throws InvalidFolderNameException, IOException {
+        if (folderName == null || folderName.isEmpty()) {
+            throw new InvalidFolderNameException();
+        }
+        File fileMetadata = new File();
+        fileMetadata.setName(folderName);
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+        File file = drive.files().create(fileMetadata)
+                .setFields("id")
+                .execute();
+        System.out.println("Folder ID: " + file.getId());
+        return file.getId();
+    }
+
+    /**
+     * Controlla se esiste una data cartella sul drive, nella directory principale
+     * @param folderName
+     * il nome della cartella da ricercare
+     * @return 
+     * l'id della cartella se viene trovata, null altrimenti
+     */
+    public String isFolderExisting(String folderName) {
+        try {
+            Files.List request = drive.files().list().setQ(
+                    "mimeType='application/vnd.google-apps.folder' and trashed=false");
+            FileList files = request.execute();
+            List<File> filesList = files.getFiles();
+            for (File file : filesList) {
+                //System.out.println("FOLDER_NAME: "+file.getName());
+                if (file.getName().equals(folderName)) {
+                    return file.getId();
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(GoogleDriveManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /**
      * Uploads a file using either resumable or direct media upload.
      */
     public void uploadFile(String localFilePath, String driveName) throws IOException {
+        String folderId = GoogleDriveManager.getInstance().isFolderExisting("LOGS");
+
+        if (folderId == null) {
+            try {
+                folderId = createFolder("LOGS");
+            } catch (InvalidFolderNameException ex) {
+                folderId = "1OJbhhzQHdL1Wfbfl9oOsrxisZV4M_WqH"; //appia/backup
+            } catch (Exception ex) {
+                folderId = "1OJbhhzQHdL1Wfbfl9oOsrxisZV4M_WqH"; //appia/backup
+            }
+        }
+
         File fileMetadata = new File();
         fileMetadata.setName(driveName);
+        fileMetadata.setParents(Collections.singletonList(folderId));
         java.io.File filePath = new java.io.File(localFilePath);
         FileContent mediaContent = new FileContent("text/plain", filePath);
         File file = drive.files().create(fileMetadata, mediaContent)
-                .setFields("id")
+                .setFields("id, parents") //.setFields("id") se non si vuole mettere il file in qualche sottocartella
                 .execute();
-//        File file = drive.files().insert(fileMetadata, mediaContent)
-//                .setFields("id")
-//                .execute();
         System.out.println("File ID: " + file.getId());
     }
-    
-
 
     public static void main(String[] args) throws IOException {
         // Build a new authorized API client service.
