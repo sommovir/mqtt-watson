@@ -55,6 +55,9 @@ public class LoggerManager {
         super();
     }
 
+    public String getCurrentLogPath() {
+        return currentLogPath;
+    }
     public boolean isLogging(){
         return currentLogPath != null;
     }
@@ -91,8 +94,8 @@ public class LoggerManager {
     }
     
     
-    public void openLog(){
-        File fileLog = new File(currentLogPath);
+    public void openLog(String path){
+        File fileLog = new File(path);
         
         Desktop desktop = Desktop.getDesktop();
         

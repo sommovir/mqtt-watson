@@ -185,8 +185,9 @@ public class Main {
                                 }
                             }
                         }else if (line.equals("stop log")) {
-                            LoggerManager.getInstance().openLog();
+                            String path = LoggerManager.getInstance().getCurrentLogPath();
                             LoggerManager.getInstance().stopLogging();
+                            LoggerManager.getInstance().openLog(path);
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
