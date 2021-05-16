@@ -343,6 +343,7 @@ public class Main {
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             String free_text = line.substring(9, line.length());
                             LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
+                            System.out.println("Note has been added");
                         } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
