@@ -184,7 +184,8 @@ public class Main {
                                     System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
                                 }
                             }
-                        } else if (line.equals("stop log")) {
+                        }else if (line.equals("stop log")) {
+                            LoggerManager.getInstance().openLog();
                             LoggerManager.getInstance().stopLogging();
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
                         } else if (line.equals("test emotion")) {

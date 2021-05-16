@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt.logic;
 
 import it.cnr.istc.mw.mqtt.ConsoleColors;
 import java.io.BufferedReader;
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -87,6 +88,27 @@ public class LoggerManager {
             ex.printStackTrace();
         }
 
+    }
+    
+    
+    public void openLog(){
+        File fileLog = new File(currentLogPath);
+        
+        Desktop desktop = Desktop.getDesktop();
+        
+        //first check if Desktop is supported by Platform or not
+        if (!Desktop.isDesktopSupported()) {
+            System.out.println("Desktop is not supported");
+            return;
+        }
+        
+        if (fileLog.exists()) {
+            try {
+                desktop.open(fileLog);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
     
     /**
