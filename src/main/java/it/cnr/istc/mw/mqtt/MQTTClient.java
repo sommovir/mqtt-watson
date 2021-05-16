@@ -162,9 +162,9 @@ public class MQTTClient implements MqttCallback {
             MqttMessage mx = new MqttMessage(message.getBytes());
             mx.setQos(qos);
             if (sampleClient.isConnected()) {
-                System.out.println("CONNESSOOOO");
+                System.out.println(username +" is connected");
             } else {
-                System.out.println("NOT CONNESSO");
+                 System.out.println(username +" is not connected");
                 sampleClient = new MqttClient(broker, clientId, new MemoryPersistence());
                 MqttConnectOptions connOpts = new MqttConnectOptions();
                 // connOpts.setCleanSession(true);
@@ -192,7 +192,7 @@ public class MQTTClient implements MqttCallback {
     public void reconnect() {
         synchronized (this) {
             try {
-                System.out.println("NOT CONNESSO");
+                System.out.println("reconnecting..");
                 sampleClient.close(true);
                 sampleClient = new MqttClient(broker, clientId, new MemoryPersistence());
                 MqttConnectOptions connOpts = new MqttConnectOptions();
@@ -222,11 +222,9 @@ public class MQTTClient implements MqttCallback {
             MqttMessage mx = new MqttMessage(message.getBytes(StandardCharsets.UTF_8));
             mx.setQos(qos);
             if (sampleClient.isConnected()) {
-                System.out.println("CONNESSOOOO");
                 sampleClient.publish(topic, mx);
             } else {
                 reconnect();
-
                 sampleClient.publish(topic, mx);
 
             }

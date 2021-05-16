@@ -5,6 +5,8 @@
  */
 package it.cnr.istc.mw.mqtt.logic;
 
+import io.netty.buffer.ByteBufUtil;
+import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
 import it.cnr.istc.mw.mqtt.ConsoleColors;
 import java.io.BufferedReader;
 import java.awt.Desktop;
@@ -15,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -147,7 +150,7 @@ public class LoggerManager {
         if (!logActive || currentLogPath == null) {
             return;
         }
-        try ( FileWriter fw = new FileWriter(currentLogPath, true);
+        try ( FileWriter fw = new FileWriter(currentLogPath,StandardCharsets.UTF_8, true);
               BufferedWriter bw = new BufferedWriter(fw);
               PrintWriter out = new PrintWriter(bw)
              ) {
