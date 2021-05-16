@@ -263,34 +263,34 @@ public class GoogleDriveManager {
         System.out.println("File ID: " + file.getId());
     }
 
-    public static void main(String[] args) throws IOException {
-        // Build a new authorized API client service.
-        com.google.api.services.driveactivity.v2.DriveActivity service = getDriveActivityService();
-
-        // Print the recent activity in your Google Drive.
-        QueryDriveActivityResponse result
-                = service.activity().query(new QueryDriveActivityRequest().setPageSize(10)).execute();
-        List<DriveActivity> activities = result.getActivities();
-        if (activities == null || activities.size() == 0) {
-            System.out.println("No activity.");
-        } else {
-            System.out.println("Recent activity:");
-            for (DriveActivity activity : activities) {
-                String time = getTimeInfo(activity);
-                String action = getActionInfo(activity.getPrimaryActionDetail());
-                List<String> actors
-                        = activity.getActors().stream()
-                                .map(GoogleDriveManager::getActorInfo)
-                                .collect(Collectors.toList());
-                List<String> targets
-                        = activity.getTargets().stream()
-                                .map(GoogleDriveManager::getTargetInfo)
-                                .collect(Collectors.toList());
-                System.out.printf(
-                        "%s: %s, %s, %s\n", time, truncated(actors), action, truncated(targets));
-            }
-        }
-    }
+//    public static void main(String[] args) throws IOException {
+//        // Build a new authorized API client service.
+//        com.google.api.services.driveactivity.v2.DriveActivity service = getDriveActivityService();
+//
+//        // Print the recent activity in your Google Drive.
+//        QueryDriveActivityResponse result
+//                = service.activity().query(new QueryDriveActivityRequest().setPageSize(10)).execute();
+//        List<DriveActivity> activities = result.getActivities();
+//        if (activities == null || activities.size() == 0) {
+//            System.out.println("No activity.");
+//        } else {
+//            System.out.println("Recent activity:");
+//            for (DriveActivity activity : activities) {
+//                String time = getTimeInfo(activity);
+//                String action = getActionInfo(activity.getPrimaryActionDetail());
+//                List<String> actors
+//                        = activity.getActors().stream()
+//                                .map(GoogleDriveManager::getActorInfo)
+//                                .collect(Collectors.toList());
+//                List<String> targets
+//                        = activity.getTargets().stream()
+//                                .map(GoogleDriveManager::getTargetInfo)
+//                                .collect(Collectors.toList());
+//                System.out.printf(
+//                        "%s: %s, %s, %s\n", time, truncated(actors), action, truncated(targets));
+//            }
+//        }
+//    }
 
     /**
      * Returns a string representation of the first elements in a list.
