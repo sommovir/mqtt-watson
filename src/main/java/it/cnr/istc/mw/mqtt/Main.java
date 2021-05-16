@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.AnsiConsole;
 
 /**
@@ -187,7 +188,7 @@ public class Main {
                         }else if (line.equals("stop log")) {
                             String path = LoggerManager.getInstance().getCurrentLogPath();
                             LoggerManager.getInstance().stopLogging();
-                            LoggerManager.getInstance().openLog(path);
+                            LoggerManager.getInstance().openPath(path);
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
@@ -356,7 +357,11 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN + "publishing message " + "[" + ConsoleColors.ANSI_PURPLE + message + ConsoleColors.ANSI_GREEN + "] to user-id: " + ConsoleColors.ANSI_GREEN + id + ConsoleColors.ANSI_RESET);
                             MQTTClient.getInstance().publish(Topics.RESPONSES.getTopic() + "/" + id, message);
 
-                        } else if (line.equals("log reprompt") || line.equals("log r")) {
+                        }
+                        else if(line.equals("locate log") || line.equals("log locate") || line.equals("locate logs")){
+                            String path = StringUtils.substring(LoggerManager.getInstance().getCurrentLogPath(),0,6);
+                            LoggerManager.getInstance().openPath(path);
+                        }else if (line.equals("log reprompt") || line.equals("log r")) {
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
                         } else if (line.equals("log dump") || line.equals("log d")) {
                             LoggerManager.getInstance().dump();

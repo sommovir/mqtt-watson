@@ -97,7 +97,7 @@ public class LoggerManager {
     }
     
     
-    public void openLog(String path){
+    public void openPath(String path){
         File fileLog = new File(path);
         
         Desktop desktop = Desktop.getDesktop();
