@@ -446,7 +446,11 @@ public class WatsonManager {
                 LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
             }
             if(risposta.contains("<NAME>")){
-                risposta = risposta.replace("<NAME>", MQTTClient.getInstance().getNameById(userId));
+                String nameById = MQTTClient.getInstance().getNameById(userId);
+                if(nameById == null){
+                    nameById = "";
+                }
+                risposta = risposta.replace("<NAME>", nameById);
             }
             
             LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag()+" "+risposta);            

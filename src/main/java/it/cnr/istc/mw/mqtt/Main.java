@@ -436,7 +436,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
 
                         } else if (line.equals("help log tag")) {
-                            System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G  T A G-----------------------------" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List and description of log tags:" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_YELLOW + "1) " + ConsoleColors.ANSI_CYAN + "ELAPSED TIME:");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il tempo intercorso fra l'inizio e la fine del logging");

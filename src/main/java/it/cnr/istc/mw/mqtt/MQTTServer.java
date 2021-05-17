@@ -15,6 +15,7 @@ import io.moquette.server.Server;
 import io.moquette.server.config.ClasspathResourceLoader;
 import io.moquette.server.config.ResourceLoaderConfig;
 import io.netty.buffer.ByteBufUtil;
+import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.IOException;
@@ -120,6 +121,7 @@ public class MQTTServer {
                             if (icm.getClientID().equals("Server")) {
                                 serverEntered = true;
                             } else {
+                                MQTTClient.getInstance().subscribe(Topics.USERNAME.getTopic()+ "/" + icm.getClientID());
                                 LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
                             }
                             
