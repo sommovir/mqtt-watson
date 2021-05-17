@@ -58,12 +58,17 @@ public class HistoryBook {
     
     public HistoryElement [] getLastElements(int n){
         
-        int size = history.size();
-        size = n >= size ? size : n;
-        HistoryElement [] elements = new HistoryElement[size];
+        int size = history.size();  
+        int start = size-n;
+        if(n>size){
+            n = size;
+            start = 0;
+        }
         
-        for (int i = 0; i < size; i++) {
-            elements[elements.length - size] =  history.get(elements.length - size + i);
+        HistoryElement [] elements = new HistoryElement[n];
+        
+        for (int i = size-1,k=n ; k >0; i--,k--) {
+            elements[k-1] =  history.get(i);
         }
         
         return elements;

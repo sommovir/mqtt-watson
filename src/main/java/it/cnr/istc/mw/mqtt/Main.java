@@ -302,7 +302,7 @@ public class Main {
                             }
                             System.out.println(ConsoleColors.ANSI_YELLOW + "-------------------------------------------" + ConsoleColors.ANSI_RESET);
 
-                        } else if (line.startsWith("history ") && (line.split(" ")).length == 2) {
+                        } else if (line.startsWith("history ") && (!line.contains("-")) &&(line.split(" ")).length == 2) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "history n" + ConsoleColors.ANSI_GREEN + "] has been detected" + ConsoleColors.ANSI_RESET);
                             String[] split = line.split(" ");
                             int n = Integer.parseInt(split[1]);
