@@ -6,6 +6,7 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
@@ -365,7 +366,11 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
                         } else if (line.equals("log dump") || line.equals("log d")) {
                             LoggerManager.getInstance().dump();
-                        } else if (line.equals("help")) {
+                        }
+                        else if(line.equals("upload current log")){
+                            GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getCurrentLogPath(), LoggerManager.getInstance().getLogName());
+                        }
+                        else if (line.equals("help")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_YELLOW + "1) " + ConsoleColors.ANSI_CYAN + "quit");
