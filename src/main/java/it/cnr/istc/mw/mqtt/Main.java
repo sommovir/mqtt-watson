@@ -187,10 +187,15 @@ public class Main {
                                 }
                             }
                         }else if (line.equals("stop log")) {
+                            if(!LoggerManager.getInstance().isLogActive()){
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                            }
+                            else{
                             String path = LoggerManager.getInstance().getCurrentLogPath();
                             LoggerManager.getInstance().stopLogging();
                             LoggerManager.getInstance().openPath(path);
                             System.out.println("The current logging file has been closed, no further log will be accepted on such file");
+                            }
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
@@ -343,9 +348,17 @@ public class Main {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
+                            if(!LoggerManager.getInstance().isLogActive()){
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                            }
+                            else{
                             String free_text = line.substring(9, line.length());
                             LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
                             System.out.println("Note has been added");
+                            }
+                        } else if(line.equals("log wrong") || line.equals("log w")){
+                            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
+                            System.out.println("Wrong answer has been logged");
                         } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
@@ -362,10 +375,20 @@ public class Main {
                         else if(line.equals("locate log") || line.equals("log locate") || line.equals("locate logs")){
                             //String path = StringUtils.substring(LoggerManager.getInstance().getCurrentLogPath(),0,6);
                             LoggerManager.getInstance().openPath(LoggerManager.LOG_FOLDER);
-                        }else if (line.equals("log reprompt") || line.equals("log r")) { 
+                        }else if (line.equals("log reprompt") || line.equals("log r")) {
+                            if(!LoggerManager.getInstance().isLogActive()){
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                            }
+                            else{
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
+                            }
                         } else if (line.equals("log dump") || line.equals("log d")) {
+                            if(!LoggerManager.getInstance().isLogActive()){
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                            }
+                            else{
                             LoggerManager.getInstance().dump();
+                            }
                         }
                         else if(line.equals("upload current log")){
                             GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getCurrentLogPath(), LoggerManager.getInstance().getLogName());

@@ -433,7 +433,7 @@ public class WatsonManager {
                 return "mi spiace non ho capito";
             }
             
-            if(response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
+            if(response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
                 LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
             }
             
