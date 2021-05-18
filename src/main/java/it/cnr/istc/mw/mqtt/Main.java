@@ -142,7 +142,7 @@ public class Main {
                             } else if (risposta.equals("n")) {
                                 System.out.println("Clearing cache...");
                             } else {
-                                System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                                System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)"  + ConsoleColors.ANSI_RESET);
                             }
                             System.out.println("Deactivating logging..");
                             LoggerManager.getInstance().setLogActive(false);
@@ -159,7 +159,7 @@ public class Main {
                                         System.out.println("Operazione annullata, log non sovrascritto.(Il log è ancora utilizzabile)");
                                         continue;
                                     } else {
-                                        System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                                        System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
                                         continue;
                                     }
                                 } catch (IOException ex) {
@@ -183,7 +183,7 @@ public class Main {
                                 } else if (answere.equals("n")) {
                                     System.out.println("Impossibile creare il file [" + nomeFile + "]");
                                 } else {
-                                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
                                 }
                             }
                         }else if (line.equals("stop log")) {
@@ -495,7 +495,7 @@ public class Main {
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)");
+                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
                 }
             }
 
