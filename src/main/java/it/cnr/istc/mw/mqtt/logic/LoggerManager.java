@@ -156,7 +156,7 @@ public class LoggerManager {
               PrintWriter out = new PrintWriter(bw)
              ) {
             out.println(numberLine+") "+timestamp+" "+textToLog);
-            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())){
+            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())||textToLog.contains(LoggingTag.REJECTS.getTag())){
                  systemTurns++;
                  totalTurns++;
             }

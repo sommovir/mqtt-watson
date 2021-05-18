@@ -482,6 +482,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale viene associato un link alla risposta dell'assistente Watson");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "22) " + ConsoleColors.ANSI_CYAN + "CHANGE USERNAME");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente cambia username");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "23) " + ConsoleColors.ANSI_CYAN + "WRONG ANSWER");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale il sistema risponde in maniera semanticamente errata rispoetto all'input in arrivo");
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)");
                         }
