@@ -62,6 +62,13 @@ public class MQTTClient implements MqttCallback {
         super();
     }
     
+    public boolean isConnected(){
+        if(this.sampleClient==null){
+            return false;
+        }
+        return this.sampleClient.isConnected();
+    }
+    
     public String getNameById(String id){
         return idNameMap.get(id);
     }
