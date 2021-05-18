@@ -359,9 +359,9 @@ public class Main {
 
                         }
                         else if(line.equals("locate log") || line.equals("log locate") || line.equals("locate logs")){
-                            String path = StringUtils.substring(LoggerManager.getInstance().getCurrentLogPath(),0,6);
-                            LoggerManager.getInstance().openPath(path);
-                        }else if (line.equals("log reprompt") || line.equals("log r")) {
+                            //String path = StringUtils.substring(LoggerManager.getInstance().getCurrentLogPath(),0,6);
+                            LoggerManager.getInstance().openPath(LoggerManager.LOG_FOLDER);
+                        }else if (line.equals("log reprompt") || line.equals("log r")) { 
                             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
                         } else if (line.equals("log dump") || line.equals("log d")) {
                             LoggerManager.getInstance().dump();

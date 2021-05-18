@@ -45,6 +45,7 @@ public class LoggerManager {
     private int userTurns = 0;
     private int systemTurns = 0;
     private int totalTurns = 0;
+    public static final String LOG_FOLDER = "./logs";
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -81,7 +82,7 @@ public class LoggerManager {
         
         try {
             this.startingLoggingTime = new Date().getTime();
-            this.currentLogPath = "./logs/" + logfile + "-" + startingLoggingTime + ".log";
+            this.currentLogPath = LOG_FOLDER+"/" + logfile + "-" + startingLoggingTime + ".log";
             File storedFile = new File(currentLogPath);
             storedFile.getParentFile().mkdirs();
             System.out.println("path: " + storedFile.getAbsolutePath());
