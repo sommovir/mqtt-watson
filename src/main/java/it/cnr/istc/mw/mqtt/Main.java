@@ -346,6 +346,9 @@ public class Main {
                             String free_text = line.substring(9, line.length());
                             LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
                             System.out.println("Note has been added");
+                        } else if(line.equals("log wrong") || line.equals("log w")){
+                            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
+                            System.out.println("Wrong answer has been logged");
                         } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
