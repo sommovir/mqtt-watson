@@ -45,6 +45,7 @@ public class LoggerManager {
     private int userTurns = 0;
     private int systemTurns = 0;
     private int totalTurns = 0;
+    private String logName;
     public static final String LOG_FOLDER = "./logs";
 
     public static LoggerManager getInstance() {
@@ -53,6 +54,14 @@ public class LoggerManager {
 
         }
         return _instance;
+    }
+
+    public String getLogName() {
+        return logName;
+    }
+
+    public void setLogName(String logName) {
+        this.logName = logName;
     }
 
     private LoggerManager() {
@@ -81,6 +90,7 @@ public class LoggerManager {
         }
         
         try {
+            setLogName(logfile);
             this.startingLoggingTime = new Date().getTime();
             this.currentLogPath = LOG_FOLDER+"/" + logfile + "-" + startingLoggingTime + ".log";
             File storedFile = new File(currentLogPath);
@@ -88,7 +98,9 @@ public class LoggerManager {
             System.out.println("path: " + storedFile.getAbsolutePath());
             storedFile.createNewFile(); // if file already exists will do nothing
             FileOutputStream currentLoggingFile = new FileOutputStream(storedFile, false);
+            String timestamp  =  new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
+            log("del giorno "+timestamp);
 
         } catch (Exception ex) {
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -144,7 +156,7 @@ public class LoggerManager {
     public void log(String textToLog) {
         numberLine++;
         //System.out.println("into log EHYLA' SON DENTRO");
-        String timestamp  =  new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(new Date());
+        String timestamp  =  new SimpleDateFormat("HH:mm:ss").format(new Date());
         if(notDumping){
             cache.add(numberLine+") "+timestamp + " " + textToLog);
         }
@@ -156,7 +168,7 @@ public class LoggerManager {
               PrintWriter out = new PrintWriter(bw)
              ) {
             out.println(numberLine+") "+timestamp+" "+textToLog);
-            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())){
+            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())||textToLog.contains(LoggingTag.REJECTS.getTag())){
                  systemTurns++;
                  totalTurns++;
             }

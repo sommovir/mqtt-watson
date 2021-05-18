@@ -32,7 +32,8 @@ public enum LoggingTag {
     VIDEO("VIDEO"),
     IMG("IMG"),
     LINK("LINK"),
-    CHANGE_USERNAME("CHANGE_USERNAME"); //when the user change his username
+    CHANGE_USERNAME("CHANGE USERNAME"), //when the user change his username
+    WRONG_ANSWER("WRONG ANSWER");
 
     private LoggingTag(String tag) {
         this.tag = tag;
