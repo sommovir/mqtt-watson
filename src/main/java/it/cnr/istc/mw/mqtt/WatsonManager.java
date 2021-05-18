@@ -78,7 +78,7 @@ public class WatsonManager {
         return expired ? "expired" : "valid";
     }
 
-    public boolean getTestMode(){
+    public boolean isTestMode(){
         return this.testMode;
     }
     
