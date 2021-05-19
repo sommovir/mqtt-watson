@@ -110,6 +110,9 @@ public class MQTTServer {
 //                                System.out.println("[mqtt] ignoring reconection of server");
 //                                return;
 //                            }
+                            if(WatsonManager.getInstance().isTestMode() && ON_LINE.size() == 2){
+                                return;
+                            }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
                             System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();

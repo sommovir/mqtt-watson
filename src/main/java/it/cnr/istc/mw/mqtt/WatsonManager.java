@@ -49,6 +49,7 @@ public class WatsonManager {
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private boolean mute = false;
+    private boolean testMode = false;
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -77,6 +78,14 @@ public class WatsonManager {
         return expired ? "expired" : "valid";
     }
 
+    public boolean isTestMode(){
+        return this.testMode;
+    }
+    
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
+    }
+    
     public void mute() {
         mute = true;
     }
@@ -424,7 +433,7 @@ public class WatsonManager {
                 return "mi spiace non ho capito";
             }
             
-            if(response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
+            if(response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
                 LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
             }
             
