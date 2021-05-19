@@ -462,11 +462,13 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tScriverà un file [nomefile].log dentro la cartella ./logs");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "5) " + ConsoleColors.ANSI_CYAN + "log reprompt / log r");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tScriverà nel file [nomefile].log dentro la cartella ./logs <REPROMPT>");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "6) " + ConsoleColors.ANSI_CYAN + "log note [text]");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "6) " + ConsoleColors.ANSI_CYAN + "log wrong / log w");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tScriverà nel file [nomefile].log dentro la cartella ./logs il tag <WRONG ANSWER>");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "log note [text]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tsalva il [text] dentro il file nomefile.log con il tag <NOTE>");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "7) " + ConsoleColors.ANSI_CYAN + "log dump / log d");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "log dump / log d");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tDa usare in caso di problemi con il nomefile.log, crea un nuovo filenome.log con tutte le azioni effettuate");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "8) " + ConsoleColors.ANSI_CYAN + "stop log ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "9) " + ConsoleColors.ANSI_CYAN + "stop log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
 
                         } else if (line.equals("help log tag")) {
