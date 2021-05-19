@@ -449,6 +449,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_YELLOW + "\tNota: " + ConsoleColors.ANSI_WHITE + "per cancellare la cronologia digitare il comando: 'history -clear'");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "link [link]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tvisualizza il link passato in argomento");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "test on");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tviene attivata la modalità di test");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "test off");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tviene disattivata la modalità di test");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
