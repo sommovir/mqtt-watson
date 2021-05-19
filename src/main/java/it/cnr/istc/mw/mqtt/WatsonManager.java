@@ -83,6 +83,7 @@ public class WatsonManager {
     }
     
     public void setTestMode(boolean testMode) {
+        //prova123
         this.testMode = testMode;
     }
     
