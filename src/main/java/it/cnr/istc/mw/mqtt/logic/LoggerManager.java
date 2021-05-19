@@ -160,7 +160,7 @@ public class LoggerManager {
         //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp  =  new SimpleDateFormat("HH:mm:ss").format(new Date());
         if(notDumping){
-            cache.add(numberLine+") "+timestamp + " " + textToLog);
+            cache.add(textToLog);
         }
         if (!logActive) {
             throw new LogOffException();
