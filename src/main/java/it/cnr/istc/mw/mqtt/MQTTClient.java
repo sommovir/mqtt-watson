@@ -140,6 +140,7 @@ public class MQTTClient implements MqttCallback {
             sampleClient.subscribe(Topics.CHAT.getTopic());
             sampleClient.subscribe(Topics.LOG.getTopic());
             sampleClient.subscribe(Topics.USERNAME.getTopic());
+            sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
             sampleClient.subscribe("AllConnected");
             
             
@@ -181,6 +182,7 @@ public class MQTTClient implements MqttCallback {
                 sampleClient.connect(connOpts);
                 sampleClient.subscribe(Topics.ACK_LOGIN.getTopic() + "/" + clientId);
                 sampleClient.subscribe(Topics.LOG.getTopic());
+                sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
                 sampleClient.subscribe(Topics.USERNAME.getTopic()+ "/" + clientId);
 
             }
@@ -281,6 +283,11 @@ public class MQTTClient implements MqttCallback {
             LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag()+" "+message);
             String id = topic.split("/")[1];
             idNameMap.put(id, message);
+        }
+        if(topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals("SPEAK")){
+            System.out.println("button speak pressed");
+            //message = id:username
+            LoggerManager.getInstance().log(LoggingTag.REC_BUTTON_PRESSED.getTag()+" "+message);
         }
 
     }

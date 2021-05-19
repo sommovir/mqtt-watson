@@ -125,6 +125,7 @@ public class MQTTServer {
                                 serverEntered = true;
                             } else {
                                 MQTTClient.getInstance().subscribe(Topics.USERNAME.getTopic()+ "/" + icm.getClientID());
+                                MQTTClient.getInstance().subscribe(Topics.BUTTON_PRESSED.getTopic()+ "/" + icm.getClientID());
                                 LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
                             }
                             

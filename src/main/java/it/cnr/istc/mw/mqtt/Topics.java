@@ -22,6 +22,7 @@ public enum Topics {
     USERNAME("username"),
     RESPONSES("responses"),
     COMMAND("commands"),
+    BUTTON_PRESSED("button_pressed"),
     INFO("info_channel");
     
     private Topics(String topic) {

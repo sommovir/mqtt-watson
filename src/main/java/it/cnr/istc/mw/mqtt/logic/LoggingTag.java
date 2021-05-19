@@ -33,6 +33,7 @@ public enum LoggingTag {
     IMG("IMG"),
     LINK("LINK"),
     CHANGE_USERNAME("CHANGE USERNAME"), //when the user change his username
+    REC_BUTTON_PRESSED("REC BUTTON PRESSED BY USER"),
     WRONG_ANSWER("WRONG ANSWER");
 
     private LoggingTag(String tag) {
