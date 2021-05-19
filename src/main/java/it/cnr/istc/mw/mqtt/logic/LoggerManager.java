@@ -8,6 +8,8 @@ package it.cnr.istc.mw.mqtt.logic;
 import io.netty.buffer.ByteBufUtil;
 import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
 import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import java.io.BufferedReader;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
@@ -135,7 +137,7 @@ public class LoggerManager {
      * a new command 'new log' will be entered. This method also prints into the
      * log the elapsed time by the corresponding LoggingTag. 
      */
-    public void stopLogging(){
+    public void stopLogging() throws LogOffException, InvalidAttemptToLogException{
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
         Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
         long seconds = elaps.get(ChronoUnit.SECONDS);
@@ -153,15 +155,19 @@ public class LoggerManager {
         
     }
 
-    public void log(String textToLog) {
+    public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         numberLine++;
         //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp  =  new SimpleDateFormat("HH:mm:ss").format(new Date());
         if(notDumping){
             cache.add(numberLine+") "+timestamp + " " + textToLog);
         }
-        if (!logActive || currentLogPath == null) {
-            return;
+        if (!logActive) {
+            throw new LogOffException();
+        }
+        
+        if (currentLogPath == null) {
+            throw new InvalidAttemptToLogException();
         }
         try ( FileWriter fw = new FileWriter(currentLogPath,StandardCharsets.UTF_8, true);
               BufferedWriter bw = new BufferedWriter(fw);
@@ -183,7 +189,7 @@ public class LoggerManager {
 
     }
     
-    public void dump(){
+    public void dump() throws LogOffException, InvalidAttemptToLogException{
         notDumping = false;
         newLog("dump");
         for (String logLine : cache) {

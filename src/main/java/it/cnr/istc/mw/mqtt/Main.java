@@ -6,6 +6,8 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
@@ -535,6 +537,9 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
                         }
                     }
+                }catch (LogOffException | InvalidAttemptToLogException ex) {
+//                    ex.printStackTrace();
+                    System.out.println(ConsoleColors.ANSI_RED + ex.getMessage() + ConsoleColors.ANSI_RESET);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
