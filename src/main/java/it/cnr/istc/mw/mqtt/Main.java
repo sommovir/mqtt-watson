@@ -128,7 +128,7 @@ public class Main {
                             System.out.println("testing db");
                             DBManager.getInstance().test();
                         } else if (line.equals("log on")) {
-                            System.out.println("Activating logging..");
+                            System.out.println(ConsoleColors.ANSI_GREEN +"Logging module is now ACTIVE"+ConsoleColors.ANSI_RESET);
                             LoggerManager.getInstance().setLogActive(true);
                         } else if (line.equals("log off")) {
                             System.out.println("Vuoi eseguire un dump dei dati di log?");
