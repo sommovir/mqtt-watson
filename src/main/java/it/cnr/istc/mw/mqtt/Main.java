@@ -131,7 +131,13 @@ public class Main {
                         } else if (line.equals("log on")) {
                             System.out.println(ConsoleColors.ANSI_GREEN +"Logging module is now ACTIVE"+ConsoleColors.ANSI_RESET);
                             LoggerManager.getInstance().setLogActive(true);
-                        } else if (line.equals("log off")) {
+                        } else if (line.equals("test on")) {
+                            System.out.println(ConsoleColors.ANSI_GREEN +"Testing procedure is now ACTIVE, it will be allowed only "+ConsoleColors.ANSI_RED +"1"+ConsoleColors.ANSI_GREEN +" connection"+ConsoleColors.ANSI_RESET);
+                            WatsonManager.getInstance().setTestMode(true);
+                        }else if (line.equals("test off")) {
+                            System.out.println(ConsoleColors.ANSI_GREEN +"Testing procedure is now OFF"+ConsoleColors.ANSI_RESET);
+                            WatsonManager.getInstance().setTestMode(false);
+                        }else if (line.equals("log off")) {
                             System.out.println("Vuoi eseguire un dump dei dati di log?");
                             System.out.println("Digita y per eseguire");
                             System.out.println("Digita n per continuare");
