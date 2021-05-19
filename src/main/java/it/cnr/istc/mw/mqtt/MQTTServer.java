@@ -16,6 +16,8 @@ import io.moquette.server.config.ClasspathResourceLoader;
 import io.moquette.server.config.ResourceLoaderConfig;
 import io.netty.buffer.ByteBufUtil;
 import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.IOException;
@@ -25,6 +27,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -95,7 +99,13 @@ public class MQTTServer {
                             topicids.remove(tid);
                             MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
                             
-                            LoggerManager.getInstance().log(LoggingTag.USER_DISCONNECTED.getTag() + " " + iclm.getClientID());
+                            try {
+                                LoggerManager.getInstance().log(LoggingTag.USER_DISCONNECTED.getTag() + " " + iclm.getClientID());
+                            } catch (LogOffException ex) {
+                                System.out.println(ex.getMessage());
+                            } catch (InvalidAttemptToLogException ex) {
+                                System.out.println(ex.getMessage());
+                            }
                             
                         }
                         
@@ -126,7 +136,13 @@ public class MQTTServer {
                             } else {
                                 MQTTClient.getInstance().subscribe(Topics.USERNAME.getTopic()+ "/" + icm.getClientID());
                                 MQTTClient.getInstance().subscribe(Topics.BUTTON_PRESSED.getTopic()+ "/" + icm.getClientID());
-                                LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
+                                try {
+                                    LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
+                                } catch (LogOffException ex) {
+                                    System.out.println(ex.getMessage());
+                                } catch (InvalidAttemptToLogException ex) {
+                                    System.out.println(ex.getMessage());
+                                }
                             }
                             
                         }

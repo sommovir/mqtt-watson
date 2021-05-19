@@ -533,6 +533,11 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale il sistema risponde in maniera semanticamente errata rispoetto all'input in arrivo");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "24) " + ConsoleColors.ANSI_CYAN + "REC BUTTON PRESSED BY USER");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tQuanto l'utente preme il bottone per iniziare la registrazione audio viene generato questo evento.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "25) " + ConsoleColors.ANSI_CYAN + "POSITIVE ANSWER");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente risponde in maniera affermativa");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "26) " + ConsoleColors.ANSI_CYAN + "NEGATIVE ANSWER");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente risponde in maniera negativa");
+                            
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
                         }

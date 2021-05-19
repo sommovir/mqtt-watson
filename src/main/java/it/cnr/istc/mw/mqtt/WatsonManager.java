@@ -18,6 +18,7 @@ import com.ibm.watson.assistant.v2.model.MessageContextGlobal;
 import com.ibm.watson.assistant.v2.model.MessageContextGlobalSystem;
 import com.ibm.watson.assistant.v2.model.MessageContextSkill;
 import com.ibm.watson.assistant.v2.model.MessageInputOptions;
+import com.ibm.watson.assistant.v2.model.RuntimeEntity;
 import com.ibm.watson.assistant.v2.model.SessionResponse;
 import com.ibm.watson.language_translator.v3.LanguageTranslator;
 import com.ibm.watson.language_translator.v3.model.TranslateOptions;
@@ -346,6 +347,24 @@ public class WatsonManager {
 
     }
 
+    private boolean isAffermative(List<RuntimeEntity> entitiesList){
+        for (RuntimeEntity runtimeEntity : entitiesList) {
+            if(runtimeEntity.entity().equals("risposta_affermativa")){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isNegative(List<RuntimeEntity> entitiesList){
+        for (RuntimeEntity runtimeEntity : entitiesList) {
+            if(runtimeEntity.entity().equals("risposta_negativa")){
+                return true;
+            }
+        }
+        return false;
+    }        
+    
     public String sendMessage(String message, String userId) {
         try {
             System.out.println("[Watson] sending message to AI.. ");
@@ -436,6 +455,14 @@ public class WatsonManager {
             
             if(response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")){
                 LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
+            }
+            
+            if(isAffermative(response.getOutput().getEntities())){
+                LoggerManager.getInstance().log(LoggingTag.POSITIVE_ANS.getTag());
+            }
+            
+            if(isNegative(response.getOutput().getEntities())){
+                LoggerManager.getInstance().log(LoggingTag.NEGATIVE_ANS.getTag());
             }
             
             String risposta = response.getOutput().getGeneric().get(0).text();

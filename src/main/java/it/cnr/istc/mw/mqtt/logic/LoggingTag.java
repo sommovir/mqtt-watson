@@ -34,7 +34,9 @@ public enum LoggingTag {
     LINK("LINK"),
     CHANGE_USERNAME("CHANGE USERNAME"), //when the user change his username
     REC_BUTTON_PRESSED("REC BUTTON PRESSED BY USER"),
-    WRONG_ANSWER("WRONG ANSWER");
+    WRONG_ANSWER("WRONG ANSWER"),
+    NEGATIVE_ANS("NEGATIVE ANSWER"),
+    POSITIVE_ANS("POSITIVE ANSWER");
 
     private LoggingTag(String tag) {
         this.tag = tag;

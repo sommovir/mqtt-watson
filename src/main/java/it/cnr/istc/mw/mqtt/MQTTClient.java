@@ -5,6 +5,8 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
@@ -61,21 +63,22 @@ public class MQTTClient implements MqttCallback {
     private MQTTClient() {
         super();
     }
-    
-    public boolean isConnected(){
-        if(this.sampleClient==null){
+
+    public boolean isConnected() {
+        if (this.sampleClient == null) {
             return false;
         }
         return this.sampleClient.isConnected();
     }
-    
-    public String getNameById(String id){
+
+    public String getNameById(String id) {
         return idNameMap.get(id);
     }
-    
+
     /**
      * Ritorna l'ip della macchina su cui si sta operando.
-     * @return 
+     *
+     * @return
      */
     public String getIP() {
         String ip = null;
@@ -142,8 +145,7 @@ public class MQTTClient implements MqttCallback {
             sampleClient.subscribe(Topics.USERNAME.getTopic());
             sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
             sampleClient.subscribe("AllConnected");
-            
-            
+
             sampleClient.setCallback(this);
 
             System.out.println("paho-client connected to broker");
@@ -153,8 +155,8 @@ public class MQTTClient implements MqttCallback {
             message.setQos(qos);
             sampleClient.publish(topic, message);
             System.out.println("paho-client message published");
-            
-            System.out.println("[Server] Status of client connection: "+(sampleClient.isConnected() ? "ONLINE": "OFFLINE"));
+
+            System.out.println("[Server] Status of client connection: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
 
 //            sampleClient.disconnect();
 //            System.out.println("paho-client disconnected");
@@ -170,9 +172,9 @@ public class MQTTClient implements MqttCallback {
             MqttMessage mx = new MqttMessage(message.getBytes());
             mx.setQos(qos);
             if (sampleClient.isConnected()) {
-                System.out.println(username +" is connected");
+                System.out.println(username + " is connected");
             } else {
-                 System.out.println(username +" is not connected");
+                System.out.println(username + " is not connected");
                 sampleClient = new MqttClient(broker, clientId, new MemoryPersistence());
                 MqttConnectOptions connOpts = new MqttConnectOptions();
                 // connOpts.setCleanSession(true);
@@ -183,7 +185,7 @@ public class MQTTClient implements MqttCallback {
                 sampleClient.subscribe(Topics.ACK_LOGIN.getTopic() + "/" + clientId);
                 sampleClient.subscribe(Topics.LOG.getTopic());
                 sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
-                sampleClient.subscribe(Topics.USERNAME.getTopic()+ "/" + clientId);
+                sampleClient.subscribe(Topics.USERNAME.getTopic() + "/" + clientId);
 
             }
 
@@ -213,20 +215,20 @@ public class MQTTClient implements MqttCallback {
                 Logger.getLogger(MQTTClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    } 
+    }
 
     public void publish(String topic, String message) {
-        
-        if(WatsonManager.getInstance().isMute()){
-            System.out.println(ConsoleColors.ANSI_RED+ "[MQTT] BAN HAMMER IS ACTIVE: "+ConsoleColors.ANSI_YELLOW+ " the attempt to communicate with client has been blocked. Mute flag is active.");
+
+        if (WatsonManager.getInstance().isMute()) {
+            System.out.println(ConsoleColors.ANSI_RED + "[MQTT] BAN HAMMER IS ACTIVE: " + ConsoleColors.ANSI_YELLOW + " the attempt to communicate with client has been blocked. Mute flag is active.");
             return;
         }
         try {
             //message = CryptoManager.getInstance().encrypt(message);
             System.out.println("PUBLISHING TOPIC: " + topic);
             System.out.println("PUBLISHING MESSAGE: " + message);
-            
-            System.out.println("[Server]Checling client status: "+(sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
+
+            System.out.println("[Server]Checling client status: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
 //            message = Base64.getEncoder().encodeToString(message.getBytes()); //BASE 64
             MqttMessage mx = new MqttMessage(message.getBytes(StandardCharsets.UTF_8));
             mx.setQos(qos);
@@ -262,10 +264,16 @@ public class MQTTClient implements MqttCallback {
                 if (topic.equals(t)) {
                     String id = topic.split("/")[1];
                     System.out.println("message received from: " + t + ", with id: " + id);
-                    LoggerManager.getInstance().log(LoggingTag.USER_TURNS.getTag()+" "+message);
-                    System.out.println("[server] ENTERING WATSON WORLD and client is: "+(sampleClient.isConnected() ? "ONLINE":"OFFLINE"));
+                    try {
+                        LoggerManager.getInstance().log(LoggingTag.USER_TURNS.getTag() + " " + message);
+                    } catch (LogOffException ex) {
+                        System.out.println(ex.getMessage());
+                    } catch (InvalidAttemptToLogException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                    System.out.println("[server] ENTERING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
                     String risposta = WatsonManager.getInstance().sendMessage(message, id);
-                    System.out.println("[server] EXITING WATSON WORLD and client is: "+(sampleClient.isConnected() ? "ONLINE":"OFFLINE"));
+                    System.out.println("[server] EXITING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
                     System.out.println("[server] going to publish the answer: " + risposta);
                     publish(MQTTServer.idTopicMap.get(t), risposta);
                     HistoryBook.getInstance().addHistoryElement(message, risposta);
@@ -273,21 +281,39 @@ public class MQTTClient implements MqttCallback {
                 }
             }
         }
-        if(topic.startsWith(Topics.LOG.getTopic())){
+        if (topic.startsWith(Topics.LOG.getTopic())) {
             System.out.println("logging message from app device");
-            LoggerManager.getInstance().log (message);
+            try {
+                LoggerManager.getInstance().log(message);
+            } catch (LogOffException ex) {
+                System.out.println(ex.getMessage());
+            } catch (InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
-        if(topic.startsWith(Topics.USERNAME.getTopic())){
+        if (topic.startsWith(Topics.USERNAME.getTopic())) {
             System.out.println("username changed");
-            //message = id:username
-            LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag()+" "+message);
+            try {
+                //message = id:username
+                LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag() + " " + message);
+            } catch (LogOffException ex) {
+                System.out.println(ex.getMessage());
+            } catch (InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+            }
             String id = topic.split("/")[1];
             idNameMap.put(id, message);
         }
-        if(topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals("SPEAK")){
+        if (topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals("SPEAK")) {
             System.out.println("button speak pressed");
-            //message = id:username
-            LoggerManager.getInstance().log(LoggingTag.REC_BUTTON_PRESSED.getTag()+" "+message);
+            try {
+                //message = id:username
+                LoggerManager.getInstance().log(LoggingTag.REC_BUTTON_PRESSED.getTag() + " " + message);
+            } catch (LogOffException ex) {
+                System.out.println(ex.getMessage());
+            } catch (InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
     }
