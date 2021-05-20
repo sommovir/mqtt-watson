@@ -73,36 +73,37 @@ public class LoggerManager {
     public String getCurrentLogPath() {
         return currentLogPath;
     }
-    public boolean isLogging(){
+
+    public boolean isLogging() {
         return currentLogPath != null;
     }
-    
+
     public void newLog(String logfile) {
-        
+
         if (!logActive) {
             return;
         }
-        
+
         userTurns = 0;
         systemTurns = 0;
         totalTurns = 0;
         numberLine = 0;
-        if(notDumping){
+        if (notDumping) {
             cache.clear();
         }
-        
+
         try {
             setLogName(logfile);
             this.startingLoggingTime = new Date().getTime();
-            this.currentLogPath = LOG_FOLDER+"/" + logfile + "-" + startingLoggingTime + ".log";
+            this.currentLogPath = LOG_FOLDER + "/" + logfile + "-" + startingLoggingTime + ".log";
             File storedFile = new File(currentLogPath);
             storedFile.getParentFile().mkdirs();
             System.out.println("path: " + storedFile.getAbsolutePath());
             storedFile.createNewFile(); // if file already exists will do nothing
             FileOutputStream currentLoggingFile = new FileOutputStream(storedFile, false);
-            String timestamp  =  new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+            String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
-            log("del giorno "+timestamp);
+            log("del giorno " + timestamp);
 
         } catch (Exception ex) {
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,19 +111,18 @@ public class LoggerManager {
         }
 
     }
-    
-    
-    public void openPath(String path){
+
+    public void openPath(String path) {
         File fileLog = new File(path);
-        
+
         Desktop desktop = Desktop.getDesktop();
-        
+
         //first check if Desktop is supported by Platform or not
         if (!Desktop.isDesktopSupported()) {
             System.out.println("Desktop is not supported");
             return;
         }
-        
+
         if (fileLog.exists()) {
             try {
                 desktop.open(fileLog);
@@ -131,65 +131,63 @@ public class LoggerManager {
             }
         }
     }
-    
+
     /**
      * This method stop the current logging, disabling al further logging until
      * a new command 'new log' will be entered. This method also prints into the
-     * log the elapsed time by the corresponding LoggingTag. 
+     * log the elapsed time by the corresponding LoggingTag.
      */
-    public void stopLogging() throws LogOffException, InvalidAttemptToLogException{
+    public void stopLogging() throws LogOffException, InvalidAttemptToLogException {
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
         Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
         long seconds = elaps.get(ChronoUnit.SECONDS);
         long h = elaps.toHoursPart();
         long m = elaps.toMinutesPart();
         long s = elaps.toSecondsPart();
-        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " "+h+"h "+
-                m+"m "+
-                s+"s ");
-        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | " + 
-                LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns +  " | " + 
-                LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns +  " | ");
+        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " " + h + "h "
+                + m + "m "
+                + s + "s ");
+        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
+                + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
         currentLogPath = null;
         this.startingLoggingTime = -1;
-        
+
     }
 
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         numberLine++;
         //System.out.println("into log EHYLA' SON DENTRO");
-        String timestamp  =  new SimpleDateFormat("HH:mm:ss").format(new Date());
-        if(notDumping){
+        String timestamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
+        if (notDumping) {
             cache.add(textToLog);
         }
         if (!logActive) {
             throw new LogOffException();
         }
-        
+
         if (currentLogPath == null) {
             throw new InvalidAttemptToLogException();
         }
-        try ( FileWriter fw = new FileWriter(currentLogPath,StandardCharsets.UTF_8, true);
-              BufferedWriter bw = new BufferedWriter(fw);
-              PrintWriter out = new PrintWriter(bw)
-             ) {
-            out.println(numberLine+") "+timestamp+" "+textToLog);
-            if(textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag())||textToLog.contains(LoggingTag.REJECTS.getTag())){
-                 systemTurns++;
-                 totalTurns++;
-            }
-            else if(textToLog.contains(LoggingTag.USER_TURNS.getTag())){
+        try (FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)) {
+            out.println(numberLine + ") " + timestamp + " " + textToLog);
+            if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
+                systemTurns++;
+                totalTurns++;
+            } else if (textToLog.contains(LoggingTag.USER_TURNS.getTag())) {
                 userTurns++;
                 totalTurns++;
-            }                      
-            
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    
-    public void dump() throws LogOffException, InvalidAttemptToLogException{
+
+    public void dump() throws LogOffException, InvalidAttemptToLogException {
         notDumping = false;
         newLog("dump");
         for (String logLine : cache) {
@@ -200,9 +198,22 @@ public class LoggerManager {
         cache.clear();
     }
 
+    public void clear_logs() {
+        File folder = new File(LoggerManager.LOG_FOLDER);
+        File[] files = folder.listFiles();
+
+        for (File file : files) {
+
+            if (file.isFile()) {
+                file.delete();
+            }
+        }
+
+    }
+
     public void setLogActive(boolean logActive) {
         this.logActive = logActive;
-        if(!this.logActive){
+        if (!this.logActive) {
             cache.clear();
         }
     }

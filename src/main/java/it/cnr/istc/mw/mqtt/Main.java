@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.AnsiConsole;
+import org.mortbay.util.Scanner;
 
 /**
  *
@@ -401,6 +402,18 @@ public class Main {
                         else if(line.equals("upload current log")){
                             GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getCurrentLogPath(), LoggerManager.getInstance().getLogName());
                         }
+                        else if(line.equals("clear logs")){
+                            System.out.println("Inserire DELETE per confermare la scelta");
+                            String line_ = reader.readLine();
+                            if(line_.equals("DELETE")){
+                                System.out.println("operazione completata");
+                                LoggerManager.getInstance().clear_logs();
+                            }
+                            else{
+                                System.out.println("operazione annullata");
+                            }
+                            
+                        }
                         else if (line.equals("help")) {
                             
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
@@ -485,6 +498,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tcaricherà su Google Drive il log corrente");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "10) " + ConsoleColors.ANSI_CYAN + "locate log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\taprirà la cartella dove si trovano i log");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "clear logs ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\teliminerà tutti i log nella cartella locale");
 
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
