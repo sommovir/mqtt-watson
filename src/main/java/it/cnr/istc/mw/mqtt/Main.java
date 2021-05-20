@@ -455,6 +455,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tviene attivata la modalità di test");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "test off");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tviene disattivata la modalità di test");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "18) " + ConsoleColors.ANSI_CYAN + "mute");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tmuta il client");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "19) " + ConsoleColors.ANSI_CYAN + "unmute");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tsmuta il client");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
