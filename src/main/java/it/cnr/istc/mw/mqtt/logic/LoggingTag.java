@@ -36,6 +36,7 @@ public enum LoggingTag {
     REC_BUTTON_PRESSED("REC BUTTON PRESSED BY USER"),
     WRONG_ANSWER("WRONG ANSWER"),
     NEGATIVE_ANS("NEGATIVE ANSWER"),
+    BYPASS("BYPASS"),
     POSITIVE_ANS("POSITIVE ANSWER");
 
     private LoggingTag(String tag) {
