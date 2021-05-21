@@ -362,10 +362,10 @@ public class Main {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
                             if (LoggerManager.getInstance().isLogging()) {
-                                System.out.println("Logging writing is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
+                                System.out.println("Logging writing on " + ConsoleColors.ANSI_YELLOW + LoggerManager.getInstance().getLogName() + ConsoleColors.ANSI_RESET + " is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
                             }
                             else {
-                              System.out.println("Logging writing is currently " + ConsoleColors.ANSI_GREEN + "OFF." + ConsoleColors.ANSI_RESET);  
+                              System.out.println("Logging writing is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);  
                             }
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {

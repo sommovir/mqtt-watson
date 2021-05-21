@@ -38,6 +38,7 @@ public enum LoggingTag {
     NEGATIVE_ANS("NEGATIVE ANSWER"),
     BYPASS("BYPASS"),
     POSITIVE_ANS("POSITIVE ANSWER"),
+    END_PRETEST("END PRETEST"),
     SPEAK("SPEAK"), //no need to be "helped"
     REPEAT("REPEAT");
 
