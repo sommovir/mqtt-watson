@@ -12,7 +12,7 @@ package it.cnr.istc.mw.mqtt.exceptions;
 public class InvalidAttemptToLogException extends Exception{
 
     public InvalidAttemptToLogException() {
-        super("non puoi più scrivere nel file log una volta stoppato. Consultare help log per maggiori informazioni");
+        super("non puoi più scrivere nel file log una volta stoppato. (per maggiori informazioni consulta help log)");
     }
 
     public InvalidAttemptToLogException(String message) {

@@ -12,7 +12,7 @@ package it.cnr.istc.mw.mqtt.exceptions;
 public class LogOffException extends Exception{
 
     public LogOffException() {
-        super("il modulo di logging è disattivato, digita log on per attivare");
+        super("il modulo di logging è disattivato, digita log on per attivare (per maggiori informazioni consulta help log)");
     }
 
     public LogOffException(String message) {

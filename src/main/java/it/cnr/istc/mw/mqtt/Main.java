@@ -368,7 +368,7 @@ public class Main {
                             }
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
-                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
                             } else {
                                 String free_text = line.substring(9, line.length());
                                 LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
@@ -394,7 +394,7 @@ public class Main {
                             LoggerManager.getInstance().openPath(LoggerManager.LOG_FOLDER);
                         } else if (line.equals("log reprompt") || line.equals("log r")) {
                             if (!LoggerManager.getInstance().isLogActive()) {
-                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
                             } else {
                                 try {
                                     LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
