@@ -80,7 +80,7 @@ public class Main {
                     for (String script : scripts) {
                         line = script;
                         if (line.equals("quit")) {
-                            
+
                             try {
                                 LoggerManager.getInstance().stopLogging();
                                 LoggerManager.getInstance().log("[Server] QUIT");
@@ -146,20 +146,31 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
                             WatsonManager.getInstance().setTestMode(false);
                         } else if (line.equals("log off")) {
-                            System.out.println("Vuoi eseguire un dump dei dati di log?");
-                            System.out.println("Digita y per eseguire");
-                            System.out.println("Digita n per continuare");
-                            String risposta = reader.readLine();
-                            if (risposta.equals("y")) {
-                                System.out.println("Dumping...");
-                                LoggerManager.getInstance().dump();
-                            } else if (risposta.equals("n")) {
-                                System.out.println("Clearing cache...");
+                            if (LoggerManager.getInstance().isPaused()) {
+                                System.out.println("Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
+                                String risposta = reader.readLine();
+                                if (risposta.equals("Balzdof")) {
+                                    System.out.println("Logging has been deactivated");
+                                    LoggerManager.getInstance().setLogActive(false);
+                                } else {
+                                    System.out.println("Mi spiace, non sei suddito abbastanza.");
+                                }
                             } else {
-                                System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
+                                System.out.println("Vuoi eseguire un dump dei dati di log?");
+                                System.out.println("Digita y per eseguire");
+                                System.out.println("Digita n per continuare");
+                                String risposta = reader.readLine();
+                                if (risposta.equals("y")) {
+                                    System.out.println("Dumping...");
+                                    LoggerManager.getInstance().dump();
+                                } else if (risposta.equals("n")) {
+                                    System.out.println("Clearing cache...");
+                                } else {
+                                    System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
+                                }
+                                System.out.println("Logging has been deactivated");
+                                LoggerManager.getInstance().setLogActive(false);
                             }
-                            System.out.println("Deactivating logging..");
-                            LoggerManager.getInstance().setLogActive(false);
                         } else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
                             if (LoggerManager.getInstance().isLogging()) {
@@ -208,6 +219,23 @@ public class Main {
                                 LoggerManager.getInstance().stopLogging();
                                 LoggerManager.getInstance().openPath(path);
                                 System.out.println("The current logging file has been closed, no further log will be accepted on such file");
+                            }
+                        } else if (line.equals("log end pretest")) {
+                            if (!LoggerManager.getInstance().isLogActive()) {
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
+                            } else if(!LoggerManager.getInstance().isAlreadyPaused()) {
+                                String path = LoggerManager.getInstance().getCurrentLogPath();
+                                LoggerManager.getInstance().pauseLogging();
+                                LoggerManager.getInstance().openPath(path);
+                                System.out.println("The pretest marker has been added, no further pretest will be accepted on such file");
+                            } else {
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile da eseguire di nuovo, pretest già eseguito" + ConsoleColors.ANSI_RESET);
+                            }
+                        } else if (line.equals("log resume")) {
+                            if (LoggerManager.getInstance().isLogActive() && LoggerManager.getInstance().isPaused()) {
+                                LoggerManager.getInstance().resume();
+                            } else {
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il logger non è stato correttamente messo in pausa" + ConsoleColors.ANSI_RESET);
                             }
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
@@ -357,15 +385,13 @@ public class Main {
                         } else if (line.equals("log?")) {
                             if (LoggerManager.getInstance().isLogActive()) {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
-                            }
-                            else {
+                            } else {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
                             if (LoggerManager.getInstance().isLogging()) {
                                 System.out.println("Logging writing on " + ConsoleColors.ANSI_YELLOW + LoggerManager.getInstance().getLogName() + ConsoleColors.ANSI_RESET + " is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
-                            }
-                            else {
-                              System.out.println("Logging writing is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);  
+                            } else {
+                                System.out.println("Logging writing is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
@@ -376,8 +402,13 @@ public class Main {
                                 System.out.println("Note has been added");
                             }
                         } else if (line.equals("log wrong") || line.equals("log w")) {
-                            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
-                            System.out.println("Wrong answer has been logged");
+                            try {
+                                LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
+                                System.out.println("Wrong answer has been logged");
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+
                         } else if (line.startsWith("t -#") && line.split(" ").length > 2) {
                             String[] split = line.split(" ");
                             int idi = Integer.parseInt(split[1].substring(2, split[1].length())) - 1;
@@ -398,8 +429,8 @@ public class Main {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
                             } else {
                                 try {
-                                    System.out.println("reprompt eseguito");
                                     LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
+                                    System.out.println("reprompt eseguito");
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
                                 }
@@ -508,6 +539,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\taprirà la cartella dove si trovano i log");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "clear logs ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\teliminerà tutti i log nella cartella locale");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "12) " + ConsoleColors.ANSI_CYAN + "log end pretest ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log resume ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
 
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);

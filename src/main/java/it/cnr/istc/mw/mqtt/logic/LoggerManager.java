@@ -49,6 +49,8 @@ public class LoggerManager {
     private int totalTurns = 0;
     private String logName;
     public static final String LOG_FOLDER = "./logs";
+    private boolean currentlyPaused = false;
+    private boolean alreadyPaused = false;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -138,6 +140,7 @@ public class LoggerManager {
      * log the elapsed time by the corresponding LoggingTag.
      */
     public void stopLogging() throws LogOffException, InvalidAttemptToLogException {
+        currentlyPaused = false;
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
         Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
         long seconds = elaps.get(ChronoUnit.SECONDS);
@@ -152,7 +155,11 @@ public class LoggerManager {
                 + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
         currentLogPath = null;
         this.startingLoggingTime = -1;
+        //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
+    }
 
+    public boolean isAlreadyPaused(){
+        return this.alreadyPaused;
     }
     
     public void pauseLogging() throws LogOffException, InvalidAttemptToLogException {
@@ -162,18 +169,44 @@ public class LoggerManager {
         long h = elaps.toHoursPart();
         long m = elaps.toMinutesPart();
         long s = elaps.toSecondsPart();
-        LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag()+"\n------------------------------------------------------\n \t\tP R E T E S T   E N D E D\n------------------------------------------------------");
+        LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tP R E T E S T   E N D E D\n------------------------------------------------------");
         LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " " + h + "h "
                 + m + "m "
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
                 + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+        this.currentlyPaused = true;
+        this.alreadyPaused = true;
         this.startingLoggingTime = new Date().getTime();
+        this.userTurns = 0;
+        this.systemTurns = 0;
+        this.totalTurns = 0;
+    }
 
+    public void resume() {
+        this.startingLoggingTime = new Date().getTime();
+        this.currentlyPaused = false;
+        try {
+            LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    private boolean isLoggable(String textLog) {
+        return textLog.contains(LoggingTag.NOTE.getUndecoratedTag()) || !currentlyPaused;
+    }
+
+    public boolean isPaused() {
+        return currentlyPaused;
     }
 
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
+        if (!isLoggable(textToLog)) {
+            //System.out.println("Loggin attempt detected, use command [log resume] to renable the logging module");
+            throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu
+        }
         numberLine++;
         //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -181,15 +214,15 @@ public class LoggerManager {
             cache.add(textToLog);
         }
         if (!logActive) {
+            //System.out.println("Throw LogOffException");
             throw new LogOffException();
         }
 
         if (currentLogPath == null) {
+            //System.out.println("Throw InvalidAttemptToLogException");
             throw new InvalidAttemptToLogException();
         }
-        try (FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)) {
+        try ( FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);  BufferedWriter bw = new BufferedWriter(fw);  PrintWriter out = new PrintWriter(bw)) {
             out.println(numberLine + ") " + timestamp + " " + textToLog);
             if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
                 systemTurns++;
@@ -230,10 +263,14 @@ public class LoggerManager {
     }
 
     public void setLogActive(boolean logActive) {
-        this.logActive = logActive;
-        if (!this.logActive) {
+        if (!logActive) {
+            try {
+                stopLogging();
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());            } 
             cache.clear();
         }
+        this.logActive = logActive;
     }
 
     public boolean isLogActive() {
