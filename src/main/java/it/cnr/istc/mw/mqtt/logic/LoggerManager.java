@@ -154,6 +154,24 @@ public class LoggerManager {
         this.startingLoggingTime = -1;
 
     }
+    
+    public void pauseLogging() throws LogOffException, InvalidAttemptToLogException {
+        long elapsedTime = new Date().getTime() - this.startingLoggingTime;
+        Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
+        long seconds = elaps.get(ChronoUnit.SECONDS);
+        long h = elaps.toHoursPart();
+        long m = elaps.toMinutesPart();
+        long s = elaps.toSecondsPart();
+        LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag()+"\n------------------------------------------------------\n \t\tP R E T E S T   E N D E D\n------------------------------------------------------");
+        LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " " + h + "h "
+                + m + "m "
+                + s + "s ");
+        LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
+                + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+        this.startingLoggingTime = new Date().getTime();
+
+    }
 
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         numberLine++;

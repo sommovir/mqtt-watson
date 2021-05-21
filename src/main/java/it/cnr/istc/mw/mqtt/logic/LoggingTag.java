@@ -38,7 +38,8 @@ public enum LoggingTag {
     NEGATIVE_ANS("NEGATIVE ANSWER"),
     BYPASS("BYPASS"),
     POSITIVE_ANS("POSITIVE ANSWER"),
-    REPEAT("REPEAT");
+    REPEAT("REPEAT"),
+    END_PRETEST("END PRETEST");
 
     private LoggingTag(String tag) {
         this.tag = tag;
