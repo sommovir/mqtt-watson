@@ -398,6 +398,7 @@ public class Main {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
                             } else {
                                 try {
+                                    System.out.println("reprompt eseguito");
                                     LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
