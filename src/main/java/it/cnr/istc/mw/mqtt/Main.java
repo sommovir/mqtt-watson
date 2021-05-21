@@ -557,6 +557,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente risponde in maniera negativa");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "27) " + ConsoleColors.ANSI_CYAN + "BYPASS");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando viene bypassato il sistema di risposta di watson per via di un sovraccarico di variabili di contesto");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "REPEAT");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente preme il pulsante sull'applicazione per far ripetere la risposta dell'assistente Watson.");
 
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
