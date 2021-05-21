@@ -80,8 +80,9 @@ public class Main {
                     for (String script : scripts) {
                         line = script;
                         if (line.equals("quit")) {
-                            LoggerManager.getInstance().stopLogging();
+                            
                             try {
+                                LoggerManager.getInstance().stopLogging();
                                 LoggerManager.getInstance().log("[Server] QUIT");
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());

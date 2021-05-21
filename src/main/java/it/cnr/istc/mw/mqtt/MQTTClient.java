@@ -144,6 +144,7 @@ public class MQTTClient implements MqttCallback {
             sampleClient.subscribe(Topics.LOG.getTopic());
             sampleClient.subscribe(Topics.USERNAME.getTopic());
             sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
+            sampleClient.subscribe(Topics.REPEAT.getTopic());
             sampleClient.subscribe("AllConnected");
 
             sampleClient.setCallback(this);
@@ -186,6 +187,7 @@ public class MQTTClient implements MqttCallback {
                 sampleClient.subscribe(Topics.LOG.getTopic());
                 sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
                 sampleClient.subscribe(Topics.USERNAME.getTopic() + "/" + clientId);
+                sampleClient.subscribe(Topics.REPEAT.getTopic() + "/" + clientId);
 
             }
 
@@ -304,11 +306,22 @@ public class MQTTClient implements MqttCallback {
             String id = topic.split("/")[1];
             idNameMap.put(id, message);
         }
-        if (topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals("SPEAK")) {
+        if (topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals(LoggingTag.SPEAK.getTag())) {
             System.out.println("button speak pressed");
             try {
                 //message = id:username
                 LoggerManager.getInstance().log(LoggingTag.REC_BUTTON_PRESSED.getTag() + " " + message);
+            } catch (LogOffException ex) {
+                System.out.println(ex.getMessage());
+            } catch (InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        if (topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals(LoggingTag.REPEAT.getTag())) {
+            System.out.println("button repeat pressed");
+            try {
+                //message = id:username
+                LoggerManager.getInstance().log(LoggingTag.REPEAT.getTag() + " L'utente ha riascoltato l'ultimo messaggio arrivato a lui");
             } catch (LogOffException ex) {
                 System.out.println(ex.getMessage());
             } catch (InvalidAttemptToLogException ex) {
