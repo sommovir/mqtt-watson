@@ -224,9 +224,7 @@ public class Main {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
                             } else if (!LoggerManager.getInstance().isAlreadyPaused()) {
-                                String path = LoggerManager.getInstance().getCurrentLogPath();
                                 LoggerManager.getInstance().pauseLogging();
-                                LoggerManager.getInstance().openPath(path);
                                 System.out.println("The pretest marker has been added, no further pretest will be accepted on such file");
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile da eseguire di nuovo, pretest già eseguito" + ConsoleColors.ANSI_RESET);
@@ -238,7 +236,7 @@ public class Main {
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il logger non è stato correttamente messo in pausa" + ConsoleColors.ANSI_RESET);
                             }
-                        } else if (line.equals("log ip")) {
+                        } else if (line.equals("ip") || line.equals("ipconfig") || line.equals("getip")) {
                             System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_GREEN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
@@ -514,6 +512,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tmuta il client");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "19) " + ConsoleColors.ANSI_CYAN + "unmute");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tsmuta il client");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "20 " + ConsoleColors.ANSI_CYAN + "ip / ipconfig / getip ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tmostra l'ip della macchina corrente");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
@@ -546,9 +546,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log resume ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log ip ");
-                            System.out.println(ConsoleColors.ANSI_WHITE + "\tmostra l'ip della macchina corrente");
-
+                            System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List and description of log tags:" + ConsoleColors.ANSI_RESET);
@@ -608,7 +606,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando viene bypassato il sistema di risposta di watson per via di un sovraccarico di variabili di contesto");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "REPEAT");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente preme il pulsante sull'applicazione per far ripetere la risposta dell'assistente Watson.");
-
+                            System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
                         }

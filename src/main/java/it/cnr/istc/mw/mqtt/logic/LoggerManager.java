@@ -192,7 +192,6 @@ public class LoggerManager {
     public void resume() {
         this.startingLoggingTime = new Date().getTime();
         this.currentlyPaused = false;
-        this.alreadyPaused = false;
         try {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
