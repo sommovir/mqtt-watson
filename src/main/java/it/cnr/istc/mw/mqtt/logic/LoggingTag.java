@@ -5,6 +5,11 @@
  */
 package it.cnr.istc.mw.mqtt.logic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  *
  * @author francesco
@@ -62,5 +67,17 @@ public enum LoggingTag {
      */
     public String getUndecoratedTag(){
         return tag;
+    }
+    
+    public static void printAlphabeticOrder(){
+        List<LoggingTag> asList = Arrays.asList(LoggingTag.values());
+        List<String> stringhini = new ArrayList<>(asList.size());
+        for (LoggingTag asli : asList) {
+            stringhini.add(asli.getTag());
+        }
+        Collections.sort(stringhini);
+        for (String tag : stringhini) {
+            System.out.println(tag);
+        }
     }
 }
