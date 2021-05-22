@@ -238,7 +238,16 @@ public class Main {
                             }
                         } else if (line.equals("ip") || line.equals("ipconfig") || line.equals("getip")) {
                             System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_GREEN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
-                        } else if (line.equals("test emotion")) {
+                        } else if(line.equals("watson reset") || line.equals("Watson reset")) {
+                            System.out.println("Inserire RESET per confermare la scelta");
+                            String line_ = reader.readLine();
+                            if (line_.equals("RESET")) {
+                                WatsonManager.getInstance().hardReset();
+                                System.out.println("operazione completata");
+                            } else {
+                                System.out.println("operazione annullata");
+                            }
+                        }else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
@@ -450,8 +459,8 @@ public class Main {
                             System.out.println("Inserire DELETE per confermare la scelta");
                             String line_ = reader.readLine();
                             if (line_.equals("DELETE")) {
-                                System.out.println("operazione completata");
                                 LoggerManager.getInstance().clear_logs();
+                                System.out.println("operazione completata");
                             } else {
                                 System.out.println("operazione annullata");
                             }
