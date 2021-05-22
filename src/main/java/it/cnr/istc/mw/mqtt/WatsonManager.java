@@ -33,6 +33,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,7 @@ public class WatsonManager {
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private boolean mute = false;
     private boolean testMode = false;
+    private static final String HARD_RESET_SECRET_KEY = "BOH";
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -383,6 +385,16 @@ public class WatsonManager {
             }
         }
         return false;
+    }
+
+    public void hardReset() {
+        Collection<String> userIds = sessionIdMap.values();
+        for (String userId : userIds) {
+            if (userIds.equals("110")) {
+                continue;
+            }
+            sendMessage(HARD_RESET_SECRET_KEY, userId);
+        }
     }
 
     public String sendMessage(String message, String userId) {
