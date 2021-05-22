@@ -243,6 +243,7 @@ public class Main {
                             String line_ = reader.readLine();
                             if (line_.equals("RESET")) {
                                 WatsonManager.getInstance().hardReset();
+                                LoggerManager.getInstance().log(LoggingTag.WATSON_HARD_RESET.getTag());
                                 System.out.println("operazione completata");
                             } else {
                                 System.out.println("operazione annullata");
