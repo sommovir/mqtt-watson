@@ -243,7 +243,9 @@ public class Main {
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
                             WatsonManager.getInstance().analyzeEmotionByTarget("I'm Luca. Today was a day that started badly and ended worse, plus my mother-in-law doesn't answer my phone", targets);
-                        } else if (line.equals("test sentiment")) {
+                        } else if (line.equals("log all tags")) {
+                            LoggingTag.printAlphabeticOrder();
+                        }else if (line.equals("test sentiment")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
