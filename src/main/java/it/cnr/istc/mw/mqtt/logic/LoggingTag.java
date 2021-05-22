@@ -40,7 +40,9 @@ public enum LoggingTag {
     POSITIVE_ANS("POSITIVE ANSWER"),
     REPEAT("REPEAT"),
     END_PRETEST("END PRETEST"),
-    SPEAK("SPEAK"); //no need to be "helped"
+    SPEAK("SPEAK"), //no need to be "helped"
+    NO_DELTA("NO DELTA"),
+    WATSON_HARD_RESET("WATSON HARD RESET");
 
     private LoggingTag(String tag) {
         this.tag = tag;
