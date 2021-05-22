@@ -33,7 +33,9 @@ import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +53,8 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
+    private float minThreshold = 0.7f;
+    private float minDifferenceThreshold = 0.2f;
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "BOH";
@@ -502,6 +506,16 @@ public class WatsonManager {
                 }
                 return risposta;
             }
+            
+            if (hasNoEntitis(0.3f, response.getOutput().getEntities()) && hasNoIntents(0.3f, response.getOutput().getIntents())) {
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
+                try {
+                    LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                return risposta;
+            }
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
                 try {
@@ -578,7 +592,19 @@ public class WatsonManager {
         }
         return true;
     }
-
+    
+    public boolean hasDifferentIntents(float treshold, List<RuntimeIntent> intents){
+       List<Double> floatini = new ArrayList<>(intents.size());
+        for (RuntimeIntent intent : intents) {
+            floatini.add(intent.confidence());
+        }
+        Collections.sort(floatini);
+        
+        for (Double double1 : floatini) {
+            System.out.println("floattini");
+        }
+        return false;
+    }
     public boolean hasNoEntitis(float treshold, List<RuntimeEntity> entities) {
         for (RuntimeEntity entity : entities) {
             if (entity.confidence() > treshold) {
