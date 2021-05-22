@@ -294,7 +294,7 @@ public class MQTTClient implements MqttCallback {
             }
         }
         if (topic.startsWith(Topics.USERNAME.getTopic())) {
-            System.out.println("username changed");
+            System.out.println(">>>> username changed <<<<<");
             try {
                 //message = id:username
                 LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag() + " " + message);

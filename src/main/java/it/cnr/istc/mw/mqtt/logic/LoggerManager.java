@@ -51,6 +51,7 @@ public class LoggerManager {
     public static final String LOG_FOLDER = "./logs";
     private boolean currentlyPaused = false;
     private boolean alreadyPaused = false;
+    private String lastFileName = null;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -98,6 +99,7 @@ public class LoggerManager {
             setLogName(logfile);
             this.startingLoggingTime = new Date().getTime();
             this.currentLogPath = LOG_FOLDER + "/" + logfile + "-" + startingLoggingTime + ".log";
+            this.lastFileName = this.currentLogPath;
             File storedFile = new File(currentLogPath);
             storedFile.getParentFile().mkdirs();
             System.out.println("path: " + storedFile.getAbsolutePath());
@@ -147,14 +149,17 @@ public class LoggerManager {
         long h = elaps.toHoursPart();
         long m = elaps.toMinutesPart();
         long s = elaps.toSecondsPart();
+        LoggerManager.getInstance().log("----------------------------------------------------------------");
         LoggerManager.getInstance().log(LoggingTag.ELAPSED_TIME.getTag() + " " + h + "h "
                 + m + "m "
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
                 + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+        LoggerManager.getInstance().log("----------------------------------------------------------------");
         currentLogPath = null;
         this.startingLoggingTime = -1;
+        this.alreadyPaused = false;
         //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
     }
 
@@ -187,6 +192,7 @@ public class LoggerManager {
     public void resume() {
         this.startingLoggingTime = new Date().getTime();
         this.currentlyPaused = false;
+        this.alreadyPaused = false;
         try {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
@@ -275,6 +281,14 @@ public class LoggerManager {
 
     public boolean isLogActive() {
         return logActive;
+    }
+
+    /**
+     * Restituisce il nome dell'ultimo file di log, completo di estensione 
+     * @return 
+     */
+    public String getLastFile() {
+        return this.lastFileName;
     }
 
 }

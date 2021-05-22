@@ -239,7 +239,7 @@ public class GoogleDriveManager {
     /**
      * Uploads a file using either resumable or direct media upload.
      */
-    public void uploadFile(String localFilePath, String driveName) throws IOException {
+    public void uploadFile(String localFile) throws IOException {
         String folderId = GoogleDriveManager.getInstance().isFolderExisting("LOGS");
 
         if (folderId == null) {
@@ -253,10 +253,11 @@ public class GoogleDriveManager {
         }
 
         File fileMetadata = new File();
-        fileMetadata.setName(driveName);
+        String driveFileName = localFile.split("/")[2];
+        fileMetadata.setName(driveFileName);
         fileMetadata.setParents(Collections.singletonList(folderId));
-        java.io.File filePath = new java.io.File(localFilePath);
-        FileContent mediaContent = new FileContent("text/plain", filePath);
+        java.io.File localFilePath = new java.io.File(localFile);
+        FileContent mediaContent = new FileContent("text/plain", localFilePath);
         File file = drive.files().create(fileMetadata, mediaContent)
                 .setFields("id, parents") //.setFields("id") se non si vuole mettere il file in qualche sottocartella
                 .execute();

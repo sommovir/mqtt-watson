@@ -442,7 +442,7 @@ public class Main {
                                 LoggerManager.getInstance().dump();
                             }
                         } else if (line.equals("upload current log")) {
-                            GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getCurrentLogPath(), LoggerManager.getInstance().getLogName());
+                            GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getLastFile());
                         } else if (line.equals("clear logs")) {
                             System.out.println("Inserire DELETE per confermare la scelta");
                             String line_ = reader.readLine();
