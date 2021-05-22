@@ -223,7 +223,7 @@ public class Main {
                         } else if (line.equals("log end pretest")) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
-                            } else if(!LoggerManager.getInstance().isAlreadyPaused()) {
+                            } else if (!LoggerManager.getInstance().isAlreadyPaused()) {
                                 String path = LoggerManager.getInstance().getCurrentLogPath();
                                 LoggerManager.getInstance().pauseLogging();
                                 LoggerManager.getInstance().openPath(path);
@@ -233,11 +233,13 @@ public class Main {
                             }
                         } else if (line.equals("log resume")) {
                             if (LoggerManager.getInstance().isLogActive() && LoggerManager.getInstance().isPaused()) {
-                                System.out.println("resume done");
+                                System.out.println("resume done, the official test is started");
                                 LoggerManager.getInstance().resume();
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il logger non è stato correttamente messo in pausa" + ConsoleColors.ANSI_RESET);
                             }
+                        } else if (line.equals("log ip")) {
+                            System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_GREEN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
@@ -544,6 +546,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log resume ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log ip ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tmostra l'ip della macchina corrente");
 
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
