@@ -57,7 +57,7 @@ public class WatsonManager {
     private float minDifferenceThreshold = 0.2f;
     private boolean mute = false;
     private boolean testMode = false;
-    private static final String HARD_RESET_SECRET_KEY = "BOH";
+    private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A"; 
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -396,7 +396,7 @@ public class WatsonManager {
         for (String userId : userIds) {
             if (userIds.equals("110")) {
                 continue;
-            }
+            } 
             sendMessage(HARD_RESET_SECRET_KEY, userId);
         }
     }
