@@ -608,6 +608,8 @@ public class WatsonManager {
                 risposta = risposta.replace("<NAME>", nameById);
             }
             try {
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " " + generateIntensLog(response.getOutput().getIntents()));
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_ENTITIES.getTag() + " " + generateEntitiesLog(response.getOutput().getEntities()));
                 LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag() + " " + risposta);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -620,6 +622,24 @@ public class WatsonManager {
         }
         // risposta = risposta.replace("televita", " .Televita");
 
+    }
+    
+    public String generateIntensLog(List<RuntimeIntent> list){
+        String result = "";
+        
+        for (RuntimeIntent runtimeIntent : list) {
+            result += "[#" + runtimeIntent.intent() + ", " + runtimeIntent.confidence() + "]";
+        }
+        return result;
+    }
+    
+    public String generateEntitiesLog(List<RuntimeEntity> list){
+        String result = "";
+        
+        for (RuntimeEntity runtimeEntity : list) {
+            result += "[#" + runtimeEntity.entity() + ", " + runtimeEntity.confidence() + "]";
+        }
+        return result;
     }
 
     public boolean hasNoIntents(float treshold, List<Double> intents) {
