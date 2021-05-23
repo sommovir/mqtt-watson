@@ -58,7 +58,7 @@ public class WatsonManager {
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private double minSingleDeltaThreshold = 0.7d;
-    private double minDeltaThreshold = 0.3d;
+    private double minDeltaThreshold = 0.2d;
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
@@ -504,7 +504,7 @@ public class WatsonManager {
             List<Double> entitiesConfList = toDobleList(response.getOutput().getEntities());
             List<Double> intentsConfList = toDobleList(response.getOutput().getIntents());
 
-            if (hasNoEntitis(0.2f,entitiesConfList ) && hasNoIntents(0.2f, intentsConfList)) {
+            if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList)) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
@@ -664,6 +664,9 @@ public class WatsonManager {
     }
 
     public boolean hasNoEntitis(float treshold, List<Double> entities) {
+        if(entities == null || entities.isEmpty() || entities.size() == 0){
+            return true;
+        }
         return (Collections.max(entities) < treshold);
     }
 
