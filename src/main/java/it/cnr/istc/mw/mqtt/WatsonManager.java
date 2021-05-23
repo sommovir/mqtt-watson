@@ -680,6 +680,9 @@ public class WatsonManager {
     }
 
     public boolean hasNoEntitis(float treshold, List<Double> entities) {
+        if(entities == null || entities.isEmpty()){
+            return true;
+        }
         return (Collections.max(entities) < treshold);
     }
 
