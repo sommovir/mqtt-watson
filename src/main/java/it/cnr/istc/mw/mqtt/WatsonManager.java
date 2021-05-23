@@ -57,12 +57,28 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
-    private double minSingleDeltaThreshold = 0.7d;
-    private double minDeltaThreshold = 0.2d;
+    private double minSingleDeltaThreshold = 0.5d; //alpha
+    private double minDeltaThreshold = 0.3d;       //beta
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
+
+    public double getMinSingleDeltaThreshold() {
+        return minSingleDeltaThreshold;
+    }
+
+    public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
+        this.minSingleDeltaThreshold = minSingleDeltaThreshold;
+    }
+
+    public double getMinDeltaThreshold() {
+        return minDeltaThreshold;
+    }
+
+    public void setMinDeltaThreshold(double minDeltaThreshold) {
+        this.minDeltaThreshold = minDeltaThreshold;
+    }
 
     //String session_id = "scemotto";
     //String url = "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/4e8f3f39-69bd-47cb-8f80-274eb7b26316/v2/assistants/3f2e01db-3b43-419b-a81e-dac841b9b373/sessions";
@@ -664,7 +680,7 @@ public class WatsonManager {
     }
 
     public boolean hasNoEntitis(float treshold, List<Double> entities) {
-        if(entities == null || entities.isEmpty() || entities.size() == 0){
+        if(entities == null || entities.isEmpty()){
             return true;
         }
         return (Collections.max(entities) < treshold);

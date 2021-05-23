@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 import org.mortbay.util.Scanner;
 
@@ -102,10 +103,10 @@ public class Main {
                                 }
                                 System.out.println(" -- THE FINAL ACT --");
                                 System.out.println("[Server] Quitting..");
-                                try{
+                                try {
                                     LoggerManager.getInstance().stopLogging();
                                     LoggerManager.getInstance().log("[Server] QUIT");
-                                }catch(Exception ex){
+                                } catch (Exception ex) {
                                     System.out.println(ex.getMessage());
                                 }
                                 t.interrupt();
@@ -242,7 +243,7 @@ public class Main {
                             }
                         } else if (line.equals("ip") || line.equals("ipconfig") || line.equals("getip")) {
                             System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_GREEN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
-                        } else if(line.equals("watson reset") || line.equals("Watson reset")) {
+                        } else if (line.equals("watson reset") || line.equals("Watson reset")) {
                             System.out.println("Inserire RESET per confermare la scelta");
                             String line_ = reader.readLine();
                             if (line_.equals("RESET")) {
@@ -252,14 +253,14 @@ public class Main {
                             } else {
                                 System.out.println("operazione annullata");
                             }
-                        }else if (line.equals("test emotion")) {
+                        } else if (line.equals("test emotion")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
                             WatsonManager.getInstance().analyzeEmotionByTarget("I'm Luca. Today was a day that started badly and ended worse, plus my mother-in-law doesn't answer my phone", targets);
                         } else if (line.equals("log all tags")) {
                             LoggingTag.printAlphabeticOrder();
-                        }else if (line.equals("test sentiment")) {
+                        } else if (line.equals("test sentiment")) {
                             System.out.println("testing sentiment API");
                             List<String> targets = new LinkedList<>();
                             targets.add("Luca");
@@ -410,6 +411,7 @@ public class Main {
                             } else {
                                 System.out.println("Logging writing is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
+                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET);
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
@@ -470,7 +472,36 @@ public class Main {
                                 System.out.println("operazione annullata");
                             }
 
-                        } else if (line.equals("help")) {
+                        } else if (line.equals("get alpha")) {
+                            System.out.println("Alpha: MinSingleDeltaTreshold = " + WatsonManager.getInstance().getMinSingleDeltaThreshold());
+                            
+                        } else if (line.equals("get beta")) {
+                            System.out.println("Beta: MinDeltaTreshold = " + WatsonManager.getInstance().getMinDeltaThreshold());
+                           
+                        }
+                        else if(line.startsWith("set alpha ")){
+                            String[] split = line.split(" ");
+                            if(split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")){
+                                double alpha = Double.parseDouble(split[2]);
+                                WatsonManager.getInstance().setMinSingleDeltaThreshold(alpha);
+                                System.out.println("alpha settata a: " + alpha);
+                            }
+                            else{
+                                System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set alpha" + ConsoleColors.ANSI_RESET);
+                            }
+                        }
+                        else if(line.startsWith("set beta ")){
+                            String[] split = line.split(" ");
+                            if(split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")){
+                                double beta = Double.parseDouble(split[2]);
+                                WatsonManager.getInstance().setMinDeltaThreshold(beta);
+                                System.out.println("beta settato a: " + beta);
+                            }
+                            else{
+                                System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set beta" + ConsoleColors.ANSI_RESET);
+                            }
+                        }
+                        else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
@@ -528,10 +559,18 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tmuta il client");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "19) " + ConsoleColors.ANSI_CYAN + "unmute");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tsmuta il client");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "20 " + ConsoleColors.ANSI_CYAN + "ip / ipconfig / getip ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "20) " + ConsoleColors.ANSI_CYAN + "ip / ipconfig / getip ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tmostra l'ip della macchina corrente");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "21 " + ConsoleColors.ANSI_CYAN + "watson reset ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "21) " + ConsoleColors.ANSI_CYAN + "watson reset ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tuna volta eseguito questo comando tutte le variabili di contesto nella chatbot saranno completamente resettate per tutti gli utenti connessi");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "22) " + ConsoleColors.ANSI_CYAN + "set alpha");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire un valore compreso tra 0 e 1");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "23) " + ConsoleColors.ANSI_CYAN + "get alpha");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di alpha");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "24) " + ConsoleColors.ANSI_CYAN + "set beta");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire un valore compreso tra 0 e 1");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "25) " + ConsoleColors.ANSI_CYAN + "get beta");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di beta");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
@@ -628,8 +667,16 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale durante il log finisce il pretest e viene messo in pausa");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "SPEAK");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando l’utente preme il bottone per dialogare con l’assistente Watson");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "WATSON HARD RESET");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "31) " + ConsoleColors.ANSI_CYAN + "WATSON HARD RESET");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando viene effettuato un reset  manuale di tutte le variabili di contesto per tutti gli utenti connessi");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "32) " + ConsoleColors.ANSI_CYAN + "CONFIDENCE INTENTS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista degli intenti trovati da Watson Assistant e il loro rispettivo grado di confidence");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "33) " + ConsoleColors.ANSI_CYAN + "CONFIDENCE ENTITIES");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista delle entities trovate da Watson Assistant e il loro rispettivo grado di confidence");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "34) " + ConsoleColors.ANSI_CYAN + "PRECISION INTENTS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tOffre due valori, il primo rappresenta la media di tutte le confidence degli intents selezionati per rispondere all'utenti, il secondo valore è come il primo ma che tiene conto anche di tutti i casi dove non si è riuscito a rispondere correttamente, usando il valore 0 per i <REJECTS> e il valori bassi trovati nei casi di <BYPASS> e <LOW DELTA>");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "35) " + ConsoleColors.ANSI_CYAN + "PRECISION ENTITIES");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la media di tutte le confidence delle entities ritrovate ( non solo i primi valori ma tutti)");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
