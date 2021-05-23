@@ -57,7 +57,7 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
-    private double minSingleDeltaThreshold = 0.5d; //alpha
+    private double minSingleDeltaThreshold = 0.6d; //alpha
     private double minDeltaThreshold = 0.3d;       //beta
     private boolean mute = false;
     private boolean testMode = false;
@@ -284,6 +284,11 @@ public class WatsonManager {
                         MQTTClient.getInstance().publish(topic, value);
                     }
                     if (command.equals("text")) {
+                        String nameById = MQTTClient.getInstance().getNameById(userId);
+                        if (nameById == null) {
+                            nameById = "";
+                        }
+                        value = value.replace("<NAME>", nameById);
                         text = value;
                     }
                 }
@@ -530,7 +535,7 @@ public class WatsonManager {
                 return risposta;
             }
 
-            
+
             if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
@@ -599,6 +604,8 @@ public class WatsonManager {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                return "Scusa non ho capito";
+
             }
             if (risposta.contains("<NAME>")) {
                 String nameById = MQTTClient.getInstance().getNameById(userId);
