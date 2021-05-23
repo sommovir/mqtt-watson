@@ -396,8 +396,9 @@ public class WatsonManager {
     }
 
     public void hardReset() {
-        Collection<String> userIds = sessionIdMap.values();
+        Collection<String> userIds = sessionIdMap.keySet();
         for (String userId : userIds) {
+            System.out.println("USER-ID -> > > > > "+userId);
             if (userIds.equals("110")) {
                 continue;
             }
@@ -500,8 +501,10 @@ public class WatsonManager {
 //            }
 //            
             String risposta = "Mi spiace non ho capito";
+            List<Double> entitiesConfList = toDobleList(response.getOutput().getEntities());
+            List<Double> intentsConfList = toDobleList(response.getOutput().getIntents());
 
-            if (hasNoEntitis(0.2f, toDobleList(response.getOutput().getEntities())) && hasNoIntents(0.2f, toDobleList(response.getOutput().getIntents()))) {
+            if (hasNoEntitis(0.2f,entitiesConfList ) && hasNoIntents(0.2f, intentsConfList)) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
@@ -511,7 +514,8 @@ public class WatsonManager {
                 return risposta;
             }
 
-            if (isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, toDobleList(response.getOutput().getIntents()))) {
+            
+            if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.NO_DELTA.getTag());
                 } catch (Exception e) {

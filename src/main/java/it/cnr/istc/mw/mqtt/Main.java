@@ -102,8 +102,12 @@ public class Main {
                                 }
                                 System.out.println(" -- THE FINAL ACT --");
                                 System.out.println("[Server] Quitting..");
-                                LoggerManager.getInstance().stopLogging();
-                                LoggerManager.getInstance().log("[Server] QUIT");
+                                try{
+                                    LoggerManager.getInstance().stopLogging();
+                                    LoggerManager.getInstance().log("[Server] QUIT");
+                                }catch(Exception ex){
+                                    System.out.println(ex.getMessage());
+                                }
                                 t.interrupt();
                                 System.exit(0);
                             } catch (Exception ex) {
