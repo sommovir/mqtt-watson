@@ -410,6 +410,7 @@ public class Main {
                             } else {
                                 System.out.println("Logging writing is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
+                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET);
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
