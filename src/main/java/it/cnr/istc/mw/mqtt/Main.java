@@ -494,7 +494,7 @@ public class Main {
                             String[] split = line.split(" ");
                             if(split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")){
                                 double beta = Double.parseDouble(split[2]);
-                                WatsonManager.getInstance().setMinSingleDeltaThreshold(beta);
+                                WatsonManager.getInstance().setMinDeltaThreshold(beta);
                                 System.out.println("beta settato a: " + beta);
                             }
                             else{
