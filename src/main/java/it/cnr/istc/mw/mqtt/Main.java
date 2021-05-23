@@ -634,6 +634,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista degli intenti trovati da Watson Assistant e il loro rispettivo grado di confidence");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "33) " + ConsoleColors.ANSI_CYAN + "CONFIDENCE ENTITIES");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista delle entities trovate da Watson Assistant e il loro rispettivo grado di confidence");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "34) " + ConsoleColors.ANSI_CYAN + "PRECISION INTENTS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tOffre due valori, il primo rappresenta la media di tutte le confidence degli intents selezionati per rispondere all'utenti, il secondo valore è come il primo ma che tiene conto anche di tutti i casi dove non si è riuscito a rispondere correttamente, usando il valore 0 per i <REJECTS> e il valori bassi trovati nei casi di <BYPASS> e <LOW DELTA>");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "35) " + ConsoleColors.ANSI_CYAN + "PRECISION ENTITIES");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la media di tutte le confidence delle entities ritrovate ( non solo i primi valori ma tutti)");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
