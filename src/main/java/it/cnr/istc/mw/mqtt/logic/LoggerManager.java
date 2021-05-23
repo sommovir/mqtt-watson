@@ -53,6 +53,12 @@ public class LoggerManager {
     private boolean currentlyPaused = false;
     private boolean alreadyPaused = false;
     private String lastFileName = null;
+    private double sumMediaIntents = 0;
+    private double sumMediaEntities = 0;
+    private double sumMediaFailedIntents = 0;
+    private double totalIntents = 0;
+    private double totalEntities = 0;
+    private double totalIntentsWithFails = 0;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -60,6 +66,23 @@ public class LoggerManager {
 
         }
         return _instance;
+    }
+    
+    public void newIntentDetected(double confidence){
+        totalIntents++;
+        totalIntentsWithFails++;
+        sumMediaIntents+=confidence;
+        sumMediaFailedIntents+=confidence;
+    }
+    
+    public void newEntitiesDetected(double confidence){
+        totalEntities++;
+        sumMediaEntities+=confidence;
+    }
+    
+    public void newFailedIntentDetected(double confidence){
+        totalIntentsWithFails++;
+        sumMediaFailedIntents+=confidence;
     }
 
     public String getLogName() {
@@ -83,11 +106,14 @@ public class LoggerManager {
     }
 
     public void newLog(String logfile) {
+        
 
         if (!logActive) {
             return;
         }
-
+        
+        
+        clearAvg();
         userTurns = 0;
         systemTurns = 0;
         totalTurns = 0;
@@ -158,16 +184,29 @@ public class LoggerManager {
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
-                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | \n"
+                + LoggingTag.PRECISION_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaIntents / LoggerManager.getInstance().totalIntents) + " | \n"
+                + LoggingTag.PRECISION_FAILED_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaFailedIntents / LoggerManager.getInstance().totalIntentsWithFails) + " | \n"
+                + LoggingTag.PRECISION_ENTITIES.getTag() + ": " + (LoggerManager.getInstance().sumMediaEntities / LoggerManager.getInstance().totalEntities));
         LoggerManager.getInstance().log("----------------------------------------------------------------");
         currentLogPath = null;
         this.startingLoggingTime = -1;
         this.alreadyPaused = false;
+        clearAvg();
         //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
     }
 
     public boolean isAlreadyPaused() {
         return this.alreadyPaused;
+    }
+    
+    public void clearAvg(){
+        sumMediaEntities = 0;
+        sumMediaFailedIntents = 0;
+        sumMediaIntents = 0;
+        totalEntities = 0;
+        totalIntents = 0;
+        totalIntentsWithFails = 0;
     }
 
     public void pauseLogging() throws LogOffException, InvalidAttemptToLogException {
@@ -183,13 +222,17 @@ public class LoggerManager {
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
-                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | \n"
+                + LoggingTag.PRECISION_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaIntents / LoggerManager.getInstance().totalIntents) + " | \n"
+                + LoggingTag.PRECISION_FAILED_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaFailedIntents / LoggerManager.getInstance().totalIntentsWithFails) + " | \n"
+                + LoggingTag.PRECISION_ENTITIES.getTag() + ": " + (LoggerManager.getInstance().sumMediaEntities / LoggerManager.getInstance().totalEntities));
         this.currentlyPaused = true;
         this.alreadyPaused = true;
         this.startingLoggingTime = new Date().getTime();
         this.userTurns = 0;
         this.systemTurns = 0;
         this.totalTurns = 0;
+        clearAvg();
     }
 
     public void resume() {

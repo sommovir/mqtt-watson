@@ -501,6 +501,7 @@ public class WatsonManager {
             }*/
             if (response.getOutput().getGeneric() == null || response.getOutput().getGeneric().isEmpty()) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(0);
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -524,6 +525,8 @@ public class WatsonManager {
 
             if (hasNoEntitis(0.2f,entitiesConfList ) && hasNoIntents(0.2f, intentsConfList)) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -535,6 +538,8 @@ public class WatsonManager {
             
             if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -545,6 +550,8 @@ public class WatsonManager {
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -597,6 +604,8 @@ public class WatsonManager {
             System.out.println("about to finishing the send watson method");
             if (risposta == null || risposta.isEmpty()) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -610,8 +619,12 @@ public class WatsonManager {
                 risposta = risposta.replace("<NAME>", nameById);
             }
             try {
+                LoggerManager.getInstance().newIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                 LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " " + generateIntensLog(response.getOutput().getIntents()));
                 LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_ENTITIES.getTag() + " " + generateEntitiesLog(response.getOutput().getEntities()));
+                //LoggerManager.getInstance().log(LoggingTag.PRECISION_ENTITIES.getTag() + " " + precisionEntitiesCalcolation(response.getOutput().getEntities()));
+                //LoggerManager.getInstance().log(LoggingTag.PRECISION_INTENTS.getTag() + " " + precisionIntentsCalcolation(response.getOutput().getIntents()));
                 LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag() + " " + risposta);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
