@@ -559,10 +559,18 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tmuta il client");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "19) " + ConsoleColors.ANSI_CYAN + "unmute");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tsmuta il client");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "20 " + ConsoleColors.ANSI_CYAN + "ip / ipconfig / getip ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "20) " + ConsoleColors.ANSI_CYAN + "ip / ipconfig / getip ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tmostra l'ip della macchina corrente");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "21 " + ConsoleColors.ANSI_CYAN + "watson reset ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "21) " + ConsoleColors.ANSI_CYAN + "watson reset ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tuna volta eseguito questo comando tutte le variabili di contesto nella chatbot saranno completamente resettate per tutti gli utenti connessi");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "22) " + ConsoleColors.ANSI_CYAN + "set alpha");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire un valore compreso tra 0 e 1");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "23) " + ConsoleColors.ANSI_CYAN + "get alpha");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di alpha");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "24) " + ConsoleColors.ANSI_CYAN + "set beta");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire un valore compreso tra 0 e 1");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "25) " + ConsoleColors.ANSI_CYAN + "get beta");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di beta");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
