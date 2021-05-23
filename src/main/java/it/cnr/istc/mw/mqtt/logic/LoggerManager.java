@@ -163,10 +163,10 @@ public class LoggerManager {
         //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
     }
 
-    public boolean isAlreadyPaused(){
+    public boolean isAlreadyPaused() {
         return this.alreadyPaused;
     }
-    
+
     public void pauseLogging() throws LogOffException, InvalidAttemptToLogException {
         long elapsedTime = new Date().getTime() - this.startingLoggingTime;
         Duration elaps = Duration.of(elapsedTime, ChronoUnit.MILLIS);
@@ -215,9 +215,7 @@ public class LoggerManager {
         numberLine++;
         //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
-        if (notDumping) {
-            cache.add(textToLog);
-        }
+
         if (!logActive) {
             //System.out.println("Throw LogOffException");
             throw new LogOffException();
@@ -228,7 +226,13 @@ public class LoggerManager {
             throw new InvalidAttemptToLogException();
         }
         try ( FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);  BufferedWriter bw = new BufferedWriter(fw);  PrintWriter out = new PrintWriter(bw)) {
-            out.println(numberLine + ") " + timestamp + " " + textToLog);
+            
+            if (notDumping) {
+                cache.add(numberLine + ") " + timestamp + " " + textToLog);
+                out.println(numberLine + ") " + timestamp + " " + textToLog);
+            }else{
+                out.println(textToLog);
+            }
             if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
                 systemTurns++;
                 totalTurns++;
@@ -272,7 +276,8 @@ public class LoggerManager {
             try {
                 stopLogging();
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());            } 
+                System.out.println(ex.getMessage());
+            }
             cache.clear();
         }
         this.logActive = logActive;
@@ -283,8 +288,9 @@ public class LoggerManager {
     }
 
     /**
-     * Restituisce il nome dell'ultimo file di log, completo di estensione 
-     * @return 
+     * Restituisce il nome dell'ultimo file di log, completo di estensione
+     *
+     * @return
      */
     public String getLastFile() {
         return this.lastFileName;
