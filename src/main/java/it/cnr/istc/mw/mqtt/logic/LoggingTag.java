@@ -46,7 +46,7 @@ public enum LoggingTag {
     REPEAT("REPEAT"),
     END_PRETEST("END PRETEST"),
     SPEAK("SPEAK"), //no need to be "helped"
-    NO_DELTA("NO DELTA"),
+    LOW_DELTA("LOW DELTA"),
     WATSON_HARD_RESET("WATSON HARD RESET");
 
     private LoggingTag(String tag) {

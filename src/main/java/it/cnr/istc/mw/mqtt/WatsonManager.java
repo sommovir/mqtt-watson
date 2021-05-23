@@ -517,7 +517,7 @@ public class WatsonManager {
             
             if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
                 try {
-                    LoggerManager.getInstance().log(LoggingTag.NO_DELTA.getTag());
+                    LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
