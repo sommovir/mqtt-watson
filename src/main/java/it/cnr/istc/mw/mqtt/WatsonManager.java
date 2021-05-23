@@ -558,7 +558,7 @@ public class WatsonManager {
             
             boolean appTextForced = isAppTextForced(context);
             
-            System.out.println("------------------------------- " + appTextForced + " -------------------------------");
+//            System.out.println("------------------------------- " + appTextForced + " -------------------------------");
             
             if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList) && !appTextForced) {
                 try {
