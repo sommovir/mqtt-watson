@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt;
 
 import com.google.common.collect.HashBiMap;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
+import com.ibm.cloud.sdk.core.service.model.GenericModel;
 import com.ibm.watson.assistant.v2.model.MessageInput;
 import com.ibm.watson.assistant.v2.model.MessageOptions;
 import com.ibm.watson.assistant.v2.model.MessageResponse;
@@ -33,6 +34,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,11 +57,11 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
-    private float minThreshold = 0.7f;
-    private float minDifferenceThreshold = 0.2f;
+    private double minSingleDeltaThreshold = 0.7d;
+    private double minDeltaThreshold = 0.3d;
     private boolean mute = false;
     private boolean testMode = false;
-    private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A"; 
+    private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     //String session_id = "scemotto";
@@ -396,7 +400,7 @@ public class WatsonManager {
         for (String userId : userIds) {
             if (userIds.equals("110")) {
                 continue;
-            } 
+            }
             sendMessage(HARD_RESET_SECRET_KEY, userId);
         }
     }
@@ -427,6 +431,7 @@ public class WatsonManager {
             System.out.println("[Watson] session id: " + session_id);
 
             MessageInputOptions option = new MessageInputOptions.Builder()
+                    .alternateIntents(Boolean.TRUE)
                     .returnContext(Boolean.TRUE)
                     .build();
 
@@ -448,11 +453,10 @@ public class WatsonManager {
             System.out.println("-----------------------------");
             System.out.println(ConsoleColors.ANSI_GREEN + "RESPONSE= " + ConsoleColors.ANSI_RESET + response);
 
-            String actualResponse = isAppTextPresent(context);
-            if (actualResponse != null) {
-                actualResponse = parseAppText(actualResponse, userId);
-            }
-
+//            String actualResponse = isAppTextPresent(context);
+//            if (actualResponse != null) {
+//                actualResponse = parseAppText(actualResponse, userId);
+//            }
             //  String facePresent = isFacePresent(context);
 //        if (actualResponse != null) {
 //            System.out.println("-----------------------------");
@@ -485,36 +489,36 @@ public class WatsonManager {
                 return errorMessages[randomNum];
             }
 
-            if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
-                try {
-                    LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "Mi spiace non ho capito" + ConsoleColors.ANSI_RESET);
-                return "mi spiace non ho capito";
-            }
-
+//            if (response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
+//                try {
+//                    LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
+//                } catch (Exception e) {
+//                    System.out.println(e.getMessage());
+//                }
+//                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "Mi spiace non ho capito" + ConsoleColors.ANSI_RESET);
+//                return "mi spiace non ho capito";
+//            }
+//            
             String risposta = "Mi spiace non ho capito";
 
-            if (hasNoEntitis(0.3f, response.getOutput().getEntities()) && hasNoIntents(0.3f, response.getOutput().getIntents())) {
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
+            if (hasNoEntitis(0.2f, toDobleList(response.getOutput().getEntities())) && hasNoIntents(0.2f, toDobleList(response.getOutput().getIntents()))) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
                 return risposta;
             }
-            
-            if (hasNoEntitis(0.3f, response.getOutput().getEntities()) && hasNoIntents(0.3f, response.getOutput().getIntents())) {
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
+
+            if (isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, toDobleList(response.getOutput().getIntents()))) {
                 try {
-                    LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
+                    LoggerManager.getInstance().log(LoggingTag.NO_DELTA.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                return risposta;
+                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "DELTA" + ConsoleColors.ANSI_RESET);
+                return "<AUTOLISTEN>Scusa potresti essere più preciso?";
             }
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
@@ -525,6 +529,20 @@ public class WatsonManager {
                 }
             }
 
+            String actualResponse = isAppTextPresent(context);
+            if (actualResponse != null) {
+                actualResponse = parseAppText(actualResponse, userId);
+            }
+
+//            if (hasNoEntitis(0.3f, response.getOutput().getEntities()) && hasNoIntents(0.3f, response.getOutput().getIntents())) {
+//                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
+//                try {
+//                    LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
+//                } catch (Exception e) {
+//                    System.out.println(e.getMessage());
+//                }
+//                return risposta;
+//            }
             if (isAffermative(response.getOutput().getEntities())) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.POSITIVE_ANS.getTag());
@@ -584,34 +602,65 @@ public class WatsonManager {
 
     }
 
-    public boolean hasNoIntents(float treshold, List<RuntimeIntent> intents) {
-        for (RuntimeIntent intent : intents) {
-            if (intent.confidence() > treshold) {
-                return false;
-            }
-        }
-        return true;
+    public boolean hasNoIntents(float treshold, List<Double> intents) {
+        return (Collections.max(intents) < treshold);
     }
-    
-    public boolean hasDifferentIntents(float treshold, List<RuntimeIntent> intents){
-       List<Double> floatini = new ArrayList<>(intents.size());
-        for (RuntimeIntent intent : intents) {
-            floatini.add(intent.confidence());
+
+    /**
+     *
+     * @param treshold soglia minima della differenza della confidence dei primi
+     * due intenti
+     * @param intents lista della confidence di tutti gli intenti presenti
+     * @return true se il delta tra la prima e la seconda confidence è minore di
+     * treshold false se il delta tra la prima e la seconda confidence è
+     * maggiore uguale di treshold
+     */
+    public boolean isLowDeltaExisting(double multiTreshold, double singleTreshold, List<Double> intents) {
+        if (intents.isEmpty()) {
+            return true;
         }
-        Collections.sort(floatini);
-        
-        for (Double double1 : floatini) {
-            System.out.println("floattini");
+
+        Collections.sort(intents, Collections.reverseOrder());
+        for (Double intent : intents) {
+            System.out.println("----------- " + intent + " -----------");
         }
+        if (intents.get(0) < singleTreshold) {
+            return true;
+        }
+
+        if (intents.size() == 1) {
+            return false;
+        }
+
+        if ((intents.get(0) - intents.get(1)) < multiTreshold) {
+            return true;
+        }
+
         return false;
     }
-    public boolean hasNoEntitis(float treshold, List<RuntimeEntity> entities) {
-        for (RuntimeEntity entity : entities) {
-            if (entity.confidence() > treshold) {
-                return false;
+
+    private <T extends GenericModel> List<Double> toDobleList(List<T> genericList) {
+        List<Double> floatini = new ArrayList<>(genericList.size());
+        for (GenericModel intent : genericList) {
+            try {
+                floatini.add((Double) intent.getClass().getMethod("confidence").invoke(intent));
+            } catch (NoSuchMethodException ex) {
+                Logger.getLogger(WatsonManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(WatsonManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(WatsonManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(WatsonManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvocationTargetException ex) {
+                Logger.getLogger(WatsonManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return true;
+        return floatini;
+    }
+
+    public boolean hasNoEntitis(float treshold, List<Double> entities) {
+        return (Collections.max(entities) < treshold);
     }
 
     public void quit() {
