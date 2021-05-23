@@ -64,6 +64,22 @@ public class WatsonManager {
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
+    public double getMinSingleDeltaThreshold() {
+        return minSingleDeltaThreshold;
+    }
+
+    public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
+        this.minSingleDeltaThreshold = minSingleDeltaThreshold;
+    }
+
+    public double getMinDeltaThreshold() {
+        return minDeltaThreshold;
+    }
+
+    public void setMinDeltaThreshold(double minDeltaThreshold) {
+        this.minDeltaThreshold = minDeltaThreshold;
+    }
+
     //String session_id = "scemotto";
     //String url = "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/4e8f3f39-69bd-47cb-8f80-274eb7b26316/v2/assistants/3f2e01db-3b43-419b-a81e-dac841b9b373/sessions";
     public static WatsonManager getInstance() {
@@ -517,7 +533,7 @@ public class WatsonManager {
             
             if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
                 try {
-                    LoggerManager.getInstance().log(LoggingTag.NO_DELTA.getTag());
+                    LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
