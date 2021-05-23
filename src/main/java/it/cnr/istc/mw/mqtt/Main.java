@@ -243,6 +243,7 @@ public class Main {
                             String line_ = reader.readLine();
                             if (line_.equals("RESET")) {
                                 WatsonManager.getInstance().hardReset();
+                                LoggerManager.getInstance().log(LoggingTag.WATSON_HARD_RESET.getTag());
                                 System.out.println("operazione completata");
                             } else {
                                 System.out.println("operazione annullata");
@@ -617,6 +618,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando viene bypassato il sistema di risposta di watson per via di un sovraccarico di variabili di contesto");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "REPEAT");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente preme il pulsante sull'applicazione per far ripetere la risposta dell'assistente Watson.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "29) " + ConsoleColors.ANSI_CYAN + "END PRETEST");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale durante il log finisce il pretest e viene messo in pausa");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "SPEAK");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando l’utente preme il bottone per dialogare con l’assistente Watson");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
