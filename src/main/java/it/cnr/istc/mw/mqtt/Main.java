@@ -675,8 +675,13 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista delle entities trovate da Watson Assistant e il loro rispettivo grado di confidence");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "34) " + ConsoleColors.ANSI_CYAN + "PRECISION INTENTS");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tOffre due valori, il primo rappresenta la media di tutte le confidence degli intents selezionati per rispondere all'utenti, il secondo valore è come il primo ma che tiene conto anche di tutti i casi dove non si è riuscito a rispondere correttamente, usando il valore 0 per i <REJECTS> e il valori bassi trovati nei casi di <BYPASS> e <LOW DELTA>");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "35) " + ConsoleColors.ANSI_CYAN + "PRECISION ENTITIES");
-                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la media di tutte le confidence delle entities ritrovate ( non solo i primi valori ma tutti)");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "35) " + ConsoleColors.ANSI_CYAN + "ALPHA");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tDefinisce la soglia minima dell’intent con il più alto valore di confidence per essere accettato dalla chatbot");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "36) " + ConsoleColors.ANSI_CYAN + "BETA");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tDefinisce la differenza minima tra gli intents a più alta confidence");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "37) " + ConsoleColors.ANSI_CYAN + "LOW DELTA");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica ogni qualvolta arrivano vari intents con un delta (differenza tra le rispettive confidence) tra di loro inferiore a una soglia decisa da parametro.");
+
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);

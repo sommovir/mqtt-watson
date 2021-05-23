@@ -46,7 +46,7 @@ public class BasicWatsonTest {
         //test di prova delle Assumption
         boolean connected  =MQTTClient.getInstance().isConnected();
 //        org.junit.jupiter.api.Assumptions.assumeTrue(connected, "Server non connesso");
-        Assumptions.assumeThat(connected).isTrue().withFailMessage("Server non connesso");
+        Assumptions.assumeThat(connected).withFailMessage("ciaaia").isTrue();
         assertTrue(MQTTClient.getInstance().getIP().startsWith("192"),"L'ip è strano");
         
     }

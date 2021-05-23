@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt.logic;
 import io.netty.buffer.ByteBufUtil;
 import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
 import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import java.io.BufferedReader;
@@ -52,6 +53,12 @@ public class LoggerManager {
     private boolean currentlyPaused = false;
     private boolean alreadyPaused = false;
     private String lastFileName = null;
+    private double sumMediaIntents = 0;
+    private double sumMediaEntities = 0;
+    private double sumMediaFailedIntents = 0;
+    private double totalIntents = 0;
+    private double totalEntities = 0;
+    private double totalIntentsWithFails = 0;
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -59,6 +66,23 @@ public class LoggerManager {
 
         }
         return _instance;
+    }
+    
+    public void newIntentDetected(double confidence){
+        totalIntents++;
+        totalIntentsWithFails++;
+        sumMediaIntents+=confidence;
+        sumMediaFailedIntents+=confidence;
+    }
+    
+    public void newEntitiesDetected(double confidence){
+        totalEntities++;
+        sumMediaEntities+=confidence;
+    }
+    
+    public void newFailedIntentDetected(double confidence){
+        totalIntentsWithFails++;
+        sumMediaFailedIntents+=confidence;
     }
 
     public String getLogName() {
@@ -82,11 +106,14 @@ public class LoggerManager {
     }
 
     public void newLog(String logfile) {
+        
 
         if (!logActive) {
             return;
         }
-
+        
+        
+        clearAvg();
         userTurns = 0;
         systemTurns = 0;
         totalTurns = 0;
@@ -108,6 +135,8 @@ public class LoggerManager {
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
             log("del giorno " + timestamp);
+            LoggerManager.getInstance().logAlphaBeta();
+
 
         } catch (Exception ex) {
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,16 +184,29 @@ public class LoggerManager {
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
-                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | \n"
+                + LoggingTag.PRECISION_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaIntents / LoggerManager.getInstance().totalIntents) + " | \n"
+                + LoggingTag.PRECISION_FAILED_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaFailedIntents / LoggerManager.getInstance().totalIntentsWithFails) + " | \n"
+                + LoggingTag.PRECISION_ENTITIES.getTag() + ": " + (LoggerManager.getInstance().sumMediaEntities / LoggerManager.getInstance().totalEntities));
         LoggerManager.getInstance().log("----------------------------------------------------------------");
         currentLogPath = null;
         this.startingLoggingTime = -1;
         this.alreadyPaused = false;
+        clearAvg();
         //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
     }
 
     public boolean isAlreadyPaused() {
         return this.alreadyPaused;
+    }
+    
+    public void clearAvg(){
+        sumMediaEntities = 0;
+        sumMediaFailedIntents = 0;
+        sumMediaIntents = 0;
+        totalEntities = 0;
+        totalIntents = 0;
+        totalIntentsWithFails = 0;
     }
 
     public void pauseLogging() throws LogOffException, InvalidAttemptToLogException {
@@ -180,13 +222,17 @@ public class LoggerManager {
                 + s + "s ");
         LoggerManager.getInstance().log(" | " + LoggingTag.TOTAL_USER_TURNS.getUndecoratedTag() + ": " + userTurns + " | "
                 + LoggingTag.TOTAL_SYSTEM_TURNS.getUndecoratedTag() + ": " + systemTurns + " | "
-                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | ");
+                + LoggingTag.TOTAL_TURNS.getUndecoratedTag() + ": " + totalTurns + " | \n"
+                + LoggingTag.PRECISION_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaIntents / LoggerManager.getInstance().totalIntents) + " | \n"
+                + LoggingTag.PRECISION_FAILED_INTENTS.getTag() + ": " + (LoggerManager.getInstance().sumMediaFailedIntents / LoggerManager.getInstance().totalIntentsWithFails) + " | \n"
+                + LoggingTag.PRECISION_ENTITIES.getTag() + ": " + (LoggerManager.getInstance().sumMediaEntities / LoggerManager.getInstance().totalEntities));
         this.currentlyPaused = true;
         this.alreadyPaused = true;
         this.startingLoggingTime = new Date().getTime();
         this.userTurns = 0;
         this.systemTurns = 0;
         this.totalTurns = 0;
+        clearAvg();
     }
 
     public void resume() {
@@ -194,6 +240,7 @@ public class LoggerManager {
         this.currentlyPaused = false;
         try {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
+            LoggerManager.getInstance().logAlphaBeta();
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
         }
@@ -247,6 +294,14 @@ public class LoggerManager {
 
     }
 
+    public void logAlphaBeta(){
+        try {
+            LoggerManager.getInstance().log(LoggingTag.ALPHA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinSingleDeltaThreshold()+"\t"+LoggingTag.BETA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinDeltaThreshold());
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
+        } 
+    }
+    
     public void dump() throws LogOffException, InvalidAttemptToLogException {
         notDumping = false;
         newLog("dump");

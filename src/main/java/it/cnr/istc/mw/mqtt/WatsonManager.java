@@ -65,11 +65,12 @@ public class WatsonManager {
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
-        return minSingleDeltaThreshold;
+        return minSingleDeltaThreshold; 
     }
 
     public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
         this.minSingleDeltaThreshold = minSingleDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     public double getMinDeltaThreshold() {
@@ -78,6 +79,7 @@ public class WatsonManager {
 
     public void setMinDeltaThreshold(double minDeltaThreshold) {
         this.minDeltaThreshold = minDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     //String session_id = "scemotto";
@@ -175,7 +177,7 @@ public class WatsonManager {
                 if (mcs.userDefined().containsKey("apptext")) {
                     if (mcs.userDefined().get("apptext") instanceof String) {
                         // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
-                        return (String) mcs.userDefined().get("apptext");
+                        return ((String) mcs.userDefined().get("apptext")).replace("<FORCE>", "");
                     } else {
                         return null;
                     }
@@ -185,6 +187,34 @@ public class WatsonManager {
 
         }
         return null;
+    }
+    
+        private boolean isAppTextForced(MessageContext context) {
+        Map<String, MessageContextSkill> skills = context.skills();
+        for (String key : skills.keySet()) {
+            System.out.println("SKILL: " + key);
+            if (key.equals("main skill")) {
+                MessageContextSkill mcs = skills.get(key);
+                if (mcs == null) {
+                    return false;
+                }
+                if (mcs.userDefined() == null) {
+                    System.out.println("[watson] no user defined.");
+                    return false;
+                }
+                if (mcs.userDefined().containsKey("apptext")) {
+                    if (mcs.userDefined().get("apptext") instanceof String) {
+                        // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
+                        return ((String) mcs.userDefined().get("apptext")).contains("<FORCE>");
+                    } else {
+                        return false;
+                    }
+                }
+
+            }
+
+        }
+        return false;
     }
 
     private String isFacePresent(MessageContext context) {
@@ -504,6 +534,7 @@ public class WatsonManager {
             }*/
             if (response.getOutput().getGeneric() == null || response.getOutput().getGeneric().isEmpty()) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(0);
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -524,9 +555,15 @@ public class WatsonManager {
             String risposta = "Mi spiace non ho capito";
             List<Double> entitiesConfList = toDobleList(response.getOutput().getEntities());
             List<Double> intentsConfList = toDobleList(response.getOutput().getIntents());
-
-            if (hasNoEntitis(0.2f,entitiesConfList ) && hasNoIntents(0.2f, intentsConfList)) {
+            
+            boolean appTextForced = isAppTextForced(context);
+            
+            System.out.println("------------------------------- " + appTextForced + " -------------------------------");
+            
+            if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList) && !appTextForced) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -535,9 +572,12 @@ public class WatsonManager {
                 return risposta;
             }
 
-
-            if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
+            
+            if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) || 
+                    response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -548,6 +588,8 @@ public class WatsonManager {
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -600,6 +642,8 @@ public class WatsonManager {
             System.out.println("about to finishing the send watson method");
             if (risposta == null || risposta.isEmpty()) {
                 try {
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -607,6 +651,7 @@ public class WatsonManager {
                 return "Scusa non ho capito";
 
             }
+            System.out.println("\n\n\n--------------------------" + risposta + "--------------------------\n\n\n");
             if (risposta.contains("<NAME>")) {
                 String nameById = MQTTClient.getInstance().getNameById(userId);
                 if (nameById == null) {
@@ -615,6 +660,12 @@ public class WatsonManager {
                 risposta = risposta.replace("<NAME>", nameById);
             }
             try {
+                LoggerManager.getInstance().newIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
+                LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " " + generateIntensLog(response.getOutput().getIntents()));
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_ENTITIES.getTag() + " " + generateEntitiesLog(response.getOutput().getEntities()));
+                //LoggerManager.getInstance().log(LoggingTag.PRECISION_ENTITIES.getTag() + " " + precisionEntitiesCalcolation(response.getOutput().getEntities()));
+                //LoggerManager.getInstance().log(LoggingTag.PRECISION_INTENTS.getTag() + " " + precisionIntentsCalcolation(response.getOutput().getIntents()));
                 LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag() + " " + risposta);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -627,6 +678,24 @@ public class WatsonManager {
         }
         // risposta = risposta.replace("televita", " .Televita");
 
+    }
+    
+    public String generateIntensLog(List<RuntimeIntent> list){
+        String result = "";
+        
+        for (RuntimeIntent runtimeIntent : list) {
+            result += "[#" + runtimeIntent.intent() + ", " + runtimeIntent.confidence() + "]";
+        }
+        return result;
+    }
+    
+    public String generateEntitiesLog(List<RuntimeEntity> list){
+        String result = "";
+        
+        for (RuntimeEntity runtimeEntity : list) {
+            result += "[#" + runtimeEntity.entity() + ", " + runtimeEntity.confidence() + "]";
+        }
+        return result;
     }
 
     public boolean hasNoIntents(float treshold, List<Double> intents) {
