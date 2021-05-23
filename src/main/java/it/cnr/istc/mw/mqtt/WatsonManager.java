@@ -175,7 +175,7 @@ public class WatsonManager {
                 if (mcs.userDefined().containsKey("apptext")) {
                     if (mcs.userDefined().get("apptext") instanceof String) {
                         // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
-                        return (String) mcs.userDefined().get("apptext");
+                        return ((String) mcs.userDefined().get("apptext")).replace("<FORCE>", "");
                     } else {
                         return null;
                     }
@@ -185,6 +185,34 @@ public class WatsonManager {
 
         }
         return null;
+    }
+    
+        private boolean isAppTextForced(MessageContext context) {
+        Map<String, MessageContextSkill> skills = context.skills();
+        for (String key : skills.keySet()) {
+            System.out.println("SKILL: " + key);
+            if (key.equals("main skill")) {
+                MessageContextSkill mcs = skills.get(key);
+                if (mcs == null) {
+                    return false;
+                }
+                if (mcs.userDefined() == null) {
+                    System.out.println("[watson] no user defined.");
+                    return false;
+                }
+                if (mcs.userDefined().containsKey("apptext")) {
+                    if (mcs.userDefined().get("apptext") instanceof String) {
+                        // System.out.println("[Server][CRITICAL ERROR] bad format in app text !! --------------------------------------------- NEED REVIEW");
+                        return ((String) mcs.userDefined().get("apptext")).contains("<FORCE>");
+                    } else {
+                        return false;
+                    }
+                }
+
+            }
+
+        }
+        return false;
     }
 
     private String isFacePresent(MessageContext context) {
@@ -519,8 +547,12 @@ public class WatsonManager {
             String risposta = "Mi spiace non ho capito";
             List<Double> entitiesConfList = toDobleList(response.getOutput().getEntities());
             List<Double> intentsConfList = toDobleList(response.getOutput().getIntents());
-
-            if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList)) {
+            
+            boolean appTextForced = isAppTextForced(context);
+            
+            System.out.println("------------------------------- " + appTextForced + " -------------------------------");
+            
+            if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList) && !appTextForced) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
@@ -531,7 +563,8 @@ public class WatsonManager {
             }
 
             
-            if (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) {
+            if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) || 
+                    response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
                 } catch (Exception e) {
@@ -600,6 +633,7 @@ public class WatsonManager {
                     System.out.println(e.getMessage());
                 }
             }
+            System.out.println("\n\n\n--------------------------" + risposta + "--------------------------\n\n\n");
             if (risposta.contains("<NAME>")) {
                 String nameById = MQTTClient.getInstance().getNameById(userId);
                 if (nameById == null) {
