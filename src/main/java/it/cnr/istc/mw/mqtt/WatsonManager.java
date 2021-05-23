@@ -70,6 +70,7 @@ public class WatsonManager {
 
     public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
         this.minSingleDeltaThreshold = minSingleDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     public double getMinDeltaThreshold() {
@@ -78,6 +79,7 @@ public class WatsonManager {
 
     public void setMinDeltaThreshold(double minDeltaThreshold) {
         this.minDeltaThreshold = minDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     //String session_id = "scemotto";
@@ -642,6 +644,8 @@ public class WatsonManager {
                 risposta = risposta.replace("<NAME>", nameById);
             }
             try {
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " " + generateIntensLog(response.getOutput().getIntents()));
+                LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_ENTITIES.getTag() + " " + generateEntitiesLog(response.getOutput().getEntities()));
                 LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag() + " " + risposta);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -654,6 +658,24 @@ public class WatsonManager {
         }
         // risposta = risposta.replace("televita", " .Televita");
 
+    }
+    
+    public String generateIntensLog(List<RuntimeIntent> list){
+        String result = "";
+        
+        for (RuntimeIntent runtimeIntent : list) {
+            result += "[#" + runtimeIntent.intent() + ", " + runtimeIntent.confidence() + "]";
+        }
+        return result;
+    }
+    
+    public String generateEntitiesLog(List<RuntimeEntity> list){
+        String result = "";
+        
+        for (RuntimeEntity runtimeEntity : list) {
+            result += "[#" + runtimeEntity.entity() + ", " + runtimeEntity.confidence() + "]";
+        }
+        return result;
     }
 
     public boolean hasNoIntents(float treshold, List<Double> intents) {

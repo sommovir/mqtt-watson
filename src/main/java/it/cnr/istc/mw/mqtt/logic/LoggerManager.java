@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt.logic;
 import io.netty.buffer.ByteBufUtil;
 import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
 import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import java.io.BufferedReader;
@@ -108,6 +109,8 @@ public class LoggerManager {
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
             log("del giorno " + timestamp);
+            LoggerManager.getInstance().logAlphaBeta();
+
 
         } catch (Exception ex) {
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,6 +197,7 @@ public class LoggerManager {
         this.currentlyPaused = false;
         try {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
+            LoggerManager.getInstance().logAlphaBeta();
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
         }
@@ -247,6 +251,14 @@ public class LoggerManager {
 
     }
 
+    public void logAlphaBeta(){
+        try {
+            LoggerManager.getInstance().log(LoggingTag.ALPHA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinSingleDeltaThreshold()+"\t"+LoggingTag.BETA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinDeltaThreshold());
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
+        } 
+    }
+    
     public void dump() throws LogOffException, InvalidAttemptToLogException {
         notDumping = false;
         newLog("dump");
