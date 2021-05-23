@@ -65,7 +65,7 @@ public class WatsonManager {
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
-        return minSingleDeltaThreshold;
+        return minSingleDeltaThreshold; 
     }
 
     public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
