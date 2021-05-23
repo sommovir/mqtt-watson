@@ -70,6 +70,7 @@ public class WatsonManager {
 
     public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
         this.minSingleDeltaThreshold = minSingleDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     public double getMinDeltaThreshold() {
@@ -78,6 +79,7 @@ public class WatsonManager {
 
     public void setMinDeltaThreshold(double minDeltaThreshold) {
         this.minDeltaThreshold = minDeltaThreshold;
+        LoggerManager.getInstance().logAlphaBeta();
     }
 
     //String session_id = "scemotto";
