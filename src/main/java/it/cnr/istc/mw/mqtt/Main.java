@@ -628,8 +628,12 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale durante il log finisce il pretest e viene messo in pausa");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "SPEAK");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando l’utente preme il bottone per dialogare con l’assistente Watson");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "WATSON HARD RESET");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "31) " + ConsoleColors.ANSI_CYAN + "WATSON HARD RESET");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica quando viene effettuato un reset  manuale di tutte le variabili di contesto per tutti gli utenti connessi");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "32) " + ConsoleColors.ANSI_CYAN + "CONFIDENCE INTENTS");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista degli intenti trovati da Watson Assistant e il loro rispettivo grado di confidence");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "33) " + ConsoleColors.ANSI_CYAN + "CONFIDENCE ENTITIES");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRappresenta la lista delle entities trovate da Watson Assistant e il loro rispettivo grado di confidence");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
                             System.out.println(ConsoleColors.ANSI_RED + "[Server] Errore, comando sconosciuto. (digita help per conoscere i comandi in uso)" + ConsoleColors.ANSI_RESET);
