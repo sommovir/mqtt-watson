@@ -454,6 +454,17 @@ public class Main {
                                     System.out.println(e.getMessage());
                                 }
                             }
+                        } else if (line.equals("log ws") || line.equals("log wall-speak")) {
+                            if (!LoggerManager.getInstance().isLogActive()) {
+                                System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
+                            } else {
+                                try {
+                                    LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                                    System.out.println("Wall Speak eseguito");
+                                } catch (Exception e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
                         } else if (line.equals("log dump") || line.equals("log d")) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF" + ConsoleColors.ANSI_RESET);
@@ -609,6 +620,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log resume ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak ");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
@@ -687,6 +700,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tDefinisce la differenza minima tra gli intents a più alta confidence");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "37) " + ConsoleColors.ANSI_CYAN + "LOW DELTA");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica ogni qualvolta arrivano vari intents con un delta (differenza tra le rispettive confidence) tra di loro inferiore a una soglia decisa da parametro.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "38) " + ConsoleColors.ANSI_CYAN + "WALL SPEAK");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente parla con l'assistente senza premere il tasto.");
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
