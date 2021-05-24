@@ -34,6 +34,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.LowDeltaResult;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +66,7 @@ public class WatsonManager {
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
-        return minSingleDeltaThreshold; 
+        return minSingleDeltaThreshold;
     }
 
     public void setMinSingleDeltaThreshold(double minSingleDeltaThreshold) {
@@ -188,8 +189,8 @@ public class WatsonManager {
         }
         return null;
     }
-    
-        private boolean isAppTextForced(MessageContext context) {
+
+    private boolean isAppTextForced(MessageContext context) {
         Map<String, MessageContextSkill> skills = context.skills();
         for (String key : skills.keySet()) {
             System.out.println("SKILL: " + key);
@@ -449,7 +450,7 @@ public class WatsonManager {
     public void hardReset() {
         Collection<String> userIds = sessionIdMap.keySet();
         for (String userId : userIds) {
-            System.out.println("USER-ID -> > > > > "+userId);
+            System.out.println("USER-ID -> > > > > " + userId);
             if (userIds.equals("110")) {
                 continue;
             }
@@ -555,15 +556,14 @@ public class WatsonManager {
             String risposta = "Mi spiace non ho capito";
             List<Double> entitiesConfList = toDobleList(response.getOutput().getEntities());
             List<Double> intentsConfList = toDobleList(response.getOutput().getIntents());
-            
+
             boolean appTextForced = isAppTextForced(context);
-            
+
 //            System.out.println("------------------------------- " + appTextForced + " -------------------------------");
-            
             if (hasNoEntitis(0.2f, entitiesConfList) && hasNoIntents(0.2f, intentsConfList) && !appTextForced) {
                 try {
-                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
-                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -572,24 +572,36 @@ public class WatsonManager {
                 return risposta;
             }
 
-            
-            if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList)) || 
-                    response.getOutput().getGeneric().get(0).responseType().equals("suggestion")) {
+            LowDeltaResult lowDeltaExisting = isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList);
+            boolean watsonSuggestion = response.getOutput().getGeneric().get(0).responseType().equals("suggestion");
+            if (watsonSuggestion && !lowDeltaExisting.isLowDelta()) {
+                lowDeltaExisting = LowDeltaResult.WATSON_SUGGESTION;
+            }
+            if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && lowDeltaExisting.isLowDelta()) || watsonSuggestion) {
                 try {
-                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
-                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
-                    LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag());
+                    LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " -low delta- " + generateIntensLog(response.getOutput().getIntents()));
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
+                    LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag() + "[" + lowDeltaExisting + "] " + lowDeltaExisting.getCause());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "DELTA" + ConsoleColors.ANSI_RESET);
+                switch (lowDeltaExisting) {
+                    case LOW_MAX:
+                        return "<AUTOLISTEN>Scusa potresti essere più preciso?";
+                    case INDECISION:
+                        return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene";
+                    case WATSON_SUGGESTION:
+                        return "<AUTOLISTEN>Perdonami <NAME>, mi potresti chiedere la stessa cosa in forma più semplice ?";
+                }
                 return "<AUTOLISTEN>Scusa potresti essere più preciso?";
             }
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
                 try {
-                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
-                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -642,8 +654,8 @@ public class WatsonManager {
             System.out.println("about to finishing the send watson method");
             if (risposta == null || risposta.isEmpty()) {
                 try {
-                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
-                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
+                    LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
+                    LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -660,8 +672,8 @@ public class WatsonManager {
                 risposta = risposta.replace("<NAME>", nameById);
             }
             try {
-                LoggerManager.getInstance().newIntentDetected(intentsConfList == null || intentsConfList.isEmpty()? 0 : intentsConfList.get(0));
-                LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty()? 0 : entitiesConfList.get(0));
+                LoggerManager.getInstance().newIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
+                LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                 LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " " + generateIntensLog(response.getOutput().getIntents()));
                 LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_ENTITIES.getTag() + " " + generateEntitiesLog(response.getOutput().getEntities()));
                 //LoggerManager.getInstance().log(LoggingTag.PRECISION_ENTITIES.getTag() + " " + precisionEntitiesCalcolation(response.getOutput().getEntities()));
@@ -679,19 +691,19 @@ public class WatsonManager {
         // risposta = risposta.replace("televita", " .Televita");
 
     }
-    
-    public String generateIntensLog(List<RuntimeIntent> list){
+
+    public String generateIntensLog(List<RuntimeIntent> list) {
         String result = "";
-        
+
         for (RuntimeIntent runtimeIntent : list) {
             result += "[#" + runtimeIntent.intent() + ", " + runtimeIntent.confidence() + "]";
         }
         return result;
     }
-    
-    public String generateEntitiesLog(List<RuntimeEntity> list){
+
+    public String generateEntitiesLog(List<RuntimeEntity> list) {
         String result = "";
-        
+
         for (RuntimeEntity runtimeEntity : list) {
             result += "[#" + runtimeEntity.entity() + ", " + runtimeEntity.confidence() + "]";
         }
@@ -711,9 +723,9 @@ public class WatsonManager {
      * treshold false se il delta tra la prima e la seconda confidence è
      * maggiore uguale di treshold
      */
-    public boolean isLowDeltaExisting(double multiTreshold, double singleTreshold, List<Double> intents) {
+    public LowDeltaResult isLowDeltaExisting(double multiTreshold, double singleTreshold, List<Double> intents) {
         if (intents.isEmpty()) {
-            return true;
+            return LowDeltaResult.ZERO_PRECISION;
         }
 
         Collections.sort(intents, Collections.reverseOrder());
@@ -721,18 +733,18 @@ public class WatsonManager {
             System.out.println("----------- " + intent + " -----------");
         }
         if (intents.get(0) < singleTreshold) {
-            return true;
+            return LowDeltaResult.LOW_MAX;
         }
 
         if (intents.size() == 1) {
-            return false;
+            return LowDeltaResult.HIGH_DELTA;
         }
 
         if ((intents.get(0) - intents.get(1)) < multiTreshold) {
-            return true;
+            return LowDeltaResult.INDECISION;
         }
 
-        return false;
+        return LowDeltaResult.HIGH_DELTA;
     }
 
     private <T extends GenericModel> List<Double> toDobleList(List<T> genericList) {
@@ -756,7 +768,7 @@ public class WatsonManager {
     }
 
     public boolean hasNoEntitis(float treshold, List<Double> entities) {
-        if(entities == null || entities.isEmpty()){
+        if (entities == null || entities.isEmpty()) {
             return true;
         }
         return (Collections.max(entities) < treshold);
