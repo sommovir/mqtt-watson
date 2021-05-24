@@ -54,7 +54,8 @@ public enum LoggingTag {
     PRECISION_FAILED_INTENTS ("PRECISION FAILED INTENTS"),
     PRECISION_ENTITIES ("PRECISION ENTITIES"),
     ALPHA("ALPHA"),
-    BETA("BETA");
+    BETA("BETA"),
+    WALL_SPEAK("WALL SPEAK");
 
     private LoggingTag(String tag) {
         this.tag = tag;
