@@ -58,7 +58,7 @@ public class WatsonManager {
     String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
-    private double minSingleDeltaThreshold = 0.5d; //alpha
+    private double minSingleDeltaThreshold = 0.6d; //alpha
     private double minDeltaThreshold = 0.2d;       //beta
     private boolean mute = false;
     private boolean testMode = false;
