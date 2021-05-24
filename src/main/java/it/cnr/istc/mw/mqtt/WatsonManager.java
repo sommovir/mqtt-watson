@@ -63,6 +63,7 @@ public class WatsonManager {
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
+    private MessageContext context = null;
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
@@ -447,6 +448,31 @@ public class WatsonManager {
         return false;
     }
 
+    public void printContext() {
+        if (this.context != null) {
+            Map<String, MessageContextSkill> skills = this.context.skills();
+            if (skills.containsKey("main skill")) {
+                Map<String, Object> ourBelovedContextMap = skills.get("main skill").userDefined();
+                System.out.println(ConsoleColors.BLUE_BRIGHT+"****************************  C O N T E X T *******************************"+ConsoleColors.ANSI_RESET);
+                for (String key : ourBelovedContextMap.keySet()) {
+                    Object value = ourBelovedContextMap.get(key);
+                    if (key.equals("apptext")) {
+                        System.out.println(ConsoleColors.ANSI_CYAN + key + ": " + (value == null ? ConsoleColors.RED_BRIGHT + "apptext not defined" + ConsoleColors.ANSI_RESET : ConsoleColors.ANSI_GREEN + "apptext is present" + ConsoleColors.ANSI_RESET));
+                        continue;
+                    }
+                    System.out.println(ConsoleColors.ANSI_CYAN + key + ": " + (value == null ? ConsoleColors.RED_BRIGHT + value + ConsoleColors.ANSI_RESET : ConsoleColors.ANSI_GREEN + value + ConsoleColors.ANSI_RESET));
+                }
+                System.out.println(ConsoleColors.BLUE_BRIGHT+"***************************************************************************"+ConsoleColors.ANSI_RESET);
+
+            }else{
+                System.out.println(ConsoleColors.RED_BRIGHT+"no main skill.. go find yourself"+ConsoleColors.ANSI_RESET);
+            }
+        }else{
+            System.out.println(ConsoleColors.RED_BRIGHT+"there is no context at the moment"+ConsoleColors.ANSI_RESET);
+        }
+
+    }
+
     public void hardReset() {
         Collection<String> userIds = sessionIdMap.keySet();
         for (String userId : userIds) {
@@ -499,7 +525,7 @@ public class WatsonManager {
 
             MessageResponse response = assistant.message(options).execute().getResult();
 
-            MessageContext context = response.getContext();
+            context = response.getContext();
 
             System.out.println(ConsoleColors.ANSI_GREEN + "CONTEXT= " + ConsoleColors.ANSI_RESET + context);
             System.out.println("-----------------------------");

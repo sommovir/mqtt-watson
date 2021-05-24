@@ -150,6 +150,8 @@ public class Main {
                         } else if (line.equals("test off")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
                             WatsonManager.getInstance().setTestMode(false);
+                        } else if (line.equals("print context")) {
+                            WatsonManager.getInstance().printContext();
                         } else if (line.equals("log off")) {
                             if (LoggerManager.getInstance().isPaused()) {
                                 System.out.println("Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
