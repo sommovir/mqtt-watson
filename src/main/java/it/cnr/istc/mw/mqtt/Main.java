@@ -405,6 +405,7 @@ public class Main {
                         } else if (line.equals("log?")) {
                             if (LoggerManager.getInstance().isLogActive()) {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_GREEN + "ON." + ConsoleColors.ANSI_RESET);
+                                System.out.println("Log name: " + ConsoleColors.ANSI_YELLOW + LoggerManager.getInstance().getLogName());
                             } else {
                                 System.out.println("Logger is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
