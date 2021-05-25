@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
@@ -493,38 +494,57 @@ public class Main {
 
                         } else if (line.equals("get alpha")) {
                             System.out.println("Alpha: MinSingleDeltaTreshold = " + WatsonManager.getInstance().getMinSingleDeltaThreshold());
-                            
+
                         } else if (line.equals("get beta")) {
                             System.out.println("Beta: MinDeltaTreshold = " + WatsonManager.getInstance().getMinDeltaThreshold());
-                           
-                        }
-                        else if(line.startsWith("set alpha ")){
+
+                        } else if (line.startsWith("set alpha ")) {
                             String[] split = line.split(" ");
-                            if(split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")){
+                            if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
                                 double alpha = Double.parseDouble(split[2]);
                                 WatsonManager.getInstance().setMinSingleDeltaThreshold(alpha);
                                 System.out.println("alpha settata a: " + alpha);
-                            }
-                            else{
+                            } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set alpha" + ConsoleColors.ANSI_RESET);
                             }
-                        }
-                        else if(line.startsWith("set beta ")){
+                        } else if (line.startsWith("set beta ")) {
                             String[] split = line.split(" ");
-                            if(split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")){
+                            if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
                                 double beta = Double.parseDouble(split[2]);
                                 WatsonManager.getInstance().setMinDeltaThreshold(beta);
                                 System.out.println("beta settato a: " + beta);
-                            }
-                            else{
+                            } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set beta" + ConsoleColors.ANSI_RESET);
                             }
-                        }
-                        else if(line.equals("alpha beta default") || line.equals("ab default")){
+                        } else if (line.equals("alpha beta default") || line.equals("ab default")) {
                             WatsonManager.getInstance().setMinSingleDeltaThreshold(0.2);
                             WatsonManager.getInstance().setMinDeltaThreshold(0.6);
-                        }
-                        else if (line.equals("help")) {
+                        } else if (line.equals("log gui")) {
+                            try {
+                                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                                    if ("Nimbus".equals(info.getName())) {
+                                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                                        break;
+                                    }
+                                }
+                            } catch (ClassNotFoundException ex) {
+                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                            } catch (InstantiationException ex) {
+                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                            } catch (IllegalAccessException ex) {
+                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                            }
+                            //</editor-fold>
+
+                            /* Create and display the form */
+                            java.awt.EventQueue.invokeLater(new Runnable() {
+                                public void run() {
+                                    new LogSupportFrame().setVisible(true);
+                                }
+                            });
+                        } else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
