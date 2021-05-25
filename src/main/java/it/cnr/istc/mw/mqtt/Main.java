@@ -238,7 +238,7 @@ public class Main {
                             }
                         } else if (line.equals("log resume")) {
                             if (LoggerManager.getInstance().isLogActive() && LoggerManager.getInstance().isPaused()) {
-                                System.out.println("resume done, the official test is started");
+                                System.out.println(ConsoleColors.ANSI_GREEN + "RESUME DONE, THE OFFICIAL TEST IS STARTED" + ConsoleColors.ANSI_RESET);
                                 LoggerManager.getInstance().resume();
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il logger non è stato correttamente messo in pausa" + ConsoleColors.ANSI_RESET);
