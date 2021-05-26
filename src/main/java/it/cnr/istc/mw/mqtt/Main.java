@@ -53,7 +53,7 @@ public class Main {
                         System.out.println(encryptedString);
                         System.out.println(decryptedString);
                         System.out.println(ConsoleColors.ANSI_RED + "[Server]" + ConsoleColors.ANSI_GREEN + "Welcome to Appia Server " + version + ConsoleColors.ANSI_RESET);
-                        System.out.println(ConsoleColors.ANSI_GREEN + "[Server IP] " + ConsoleColors.ANSI_PURPLE + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
+                        System.out.println(ConsoleColors.ANSI_GREEN + "[Server IP] " + ConsoleColors.CYAN_BRIGHT + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         server.start();
                     } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -245,7 +245,7 @@ public class Main {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il logger non è stato correttamente messo in pausa" + ConsoleColors.ANSI_RESET);
                             }
                         } else if (line.equals("ip") || line.equals("ipconfig") || line.equals("getip")) {
-                            System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_GREEN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
+                            System.out.println("The machine's current IP is: " + ConsoleColors.ANSI_CYAN + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("watson reset") || line.equals("Watson reset")) {
                             System.out.println("Inserire RESET per confermare la scelta");
                             String line_ = reader.readLine();
@@ -420,7 +420,7 @@ public class Main {
                             } else {
                                 System.out.println("Test mode is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
-                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET);
+                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nGamma: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMaxDeadlocks()+ ConsoleColors.ANSI_RESET);
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
