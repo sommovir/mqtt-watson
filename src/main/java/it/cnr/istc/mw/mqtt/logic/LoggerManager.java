@@ -67,22 +67,22 @@ public class LoggerManager {
         }
         return _instance;
     }
-    
-    public void newIntentDetected(double confidence){
+
+    public void newIntentDetected(double confidence) {
         totalIntents++;
         totalIntentsWithFails++;
-        sumMediaIntents+=confidence;
-        sumMediaFailedIntents+=confidence;
+        sumMediaIntents += confidence;
+        sumMediaFailedIntents += confidence;
     }
-    
-    public void newEntitiesDetected(double confidence){
+
+    public void newEntitiesDetected(double confidence) {
         totalEntities++;
-        sumMediaEntities+=confidence;
+        sumMediaEntities += confidence;
     }
-    
-    public void newFailedIntentDetected(double confidence){
+
+    public void newFailedIntentDetected(double confidence) {
         totalIntentsWithFails++;
-        sumMediaFailedIntents+=confidence;
+        sumMediaFailedIntents += confidence;
     }
 
     public String getLogName() {
@@ -106,13 +106,11 @@ public class LoggerManager {
     }
 
     public void newLog(String logfile) {
-        
 
         if (!logActive) {
             return;
         }
-        
-        
+
         clearAvg();
         userTurns = 0;
         systemTurns = 0;
@@ -135,8 +133,7 @@ public class LoggerManager {
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
             log("del giorno " + timestamp);
-            LoggerManager.getInstance().logAlphaBeta();
-
+            LoggerManager.getInstance().logConfigs();
 
         } catch (Exception ex) {
             Logger.getLogger(LoggerManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,8 +196,8 @@ public class LoggerManager {
     public boolean isAlreadyPaused() {
         return this.alreadyPaused;
     }
-    
-    public void clearAvg(){
+
+    public void clearAvg() {
         sumMediaEntities = 0;
         sumMediaFailedIntents = 0;
         sumMediaIntents = 0;
@@ -240,7 +237,7 @@ public class LoggerManager {
         this.currentlyPaused = false;
         try {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
-            LoggerManager.getInstance().logAlphaBeta();
+            LoggerManager.getInstance().logConfigs();
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
         }
@@ -272,12 +269,12 @@ public class LoggerManager {
             //System.out.println("Throw InvalidAttemptToLogException");
             throw new InvalidAttemptToLogException();
         }
-        try ( FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);  BufferedWriter bw = new BufferedWriter(fw);  PrintWriter out = new PrintWriter(bw)) {
-            
+        try (FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
+
             if (notDumping) {
                 cache.add(numberLine + ") " + timestamp + " " + textToLog);
                 out.println(numberLine + ") " + timestamp + " " + textToLog);
-            }else{
+            } else {
                 out.println(textToLog);
             }
             if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
@@ -294,14 +291,16 @@ public class LoggerManager {
 
     }
 
-    public void logAlphaBeta(){
+    public void logConfigs() {
         try {
-            LoggerManager.getInstance().log(LoggingTag.ALPHA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinSingleDeltaThreshold()+"\t"+LoggingTag.BETA.getUndecoratedTag()+": "+WatsonManager.getInstance().getMinDeltaThreshold());
+            LoggerManager.getInstance().log(LoggingTag.ALPHA.getUndecoratedTag() + ": " + WatsonManager.getInstance().getMinSingleDeltaThreshold()
+                    + "       " + LoggingTag.BETA.getUndecoratedTag() + ": " + WatsonManager.getInstance().getMinDeltaThreshold()
+                    + "       " + LoggingTag.GAMMA.getUndecoratedTag() + ": " + WatsonManager.getInstance().getMaxDeadlocks());
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
-        } 
+        }
     }
-    
+
     public void dump() throws LogOffException, InvalidAttemptToLogException {
         notDumping = false;
         newLog("dump");

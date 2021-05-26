@@ -508,6 +508,7 @@ public class Main {
                             if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
                                 double alpha = Double.parseDouble(split[2]);
                                 WatsonManager.getInstance().setMinSingleDeltaThreshold(alpha);
+                                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + alpha);
                                 System.out.println("alpha settata a: " + alpha);
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set alpha" + ConsoleColors.ANSI_RESET);
@@ -517,14 +518,19 @@ public class Main {
                             if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
                                 double beta = Double.parseDouble(split[2]);
                                 WatsonManager.getInstance().setMinDeltaThreshold(beta);
+                                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + beta);
                                 System.out.println("beta settato a: " + beta);
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set beta" + ConsoleColors.ANSI_RESET);
                             }
                         } else if (line.equals("reset config")) {
                             WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
+                            LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
                             WatsonManager.getInstance().setMinDeltaThreshold(0.2);
+                            LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
                             WatsonManager.getInstance().setMaxDeadlocks(1);
+                            LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
+                            System.out.println(ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("log gui")) {
                                     
                             try{
@@ -541,12 +547,13 @@ public class Main {
                                     new LogSupportFrame().setVisible(true);
                                 }
                             });
-                        } else if (line.equals("set gamma")) {
+                        } else if (line.startsWith("set gamma ")) {
                             String[] split = line.split(" ");
-                            if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
+                            if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-9]?")) {
                                 int gamma = Integer.parseInt(split[2]);
                                 WatsonManager.getInstance().setMaxDeadlocks(gamma);
-                                System.out.println("beta settato a: " + gamma);
+                                System.out.println("gamma settato a: " + gamma);
+                                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + gamma);
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set gamma" + ConsoleColors.ANSI_RESET);
                             }
