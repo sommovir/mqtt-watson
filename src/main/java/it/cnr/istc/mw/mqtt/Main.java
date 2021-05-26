@@ -544,7 +544,23 @@ public class Main {
                                     new LogSupportFrame().setVisible(true);
                                 }
                             });
-                        } else if (line.equals("help")) {
+                        }
+                        else if(line.equals("set gamma")){
+                            String[] split = line.split(" ");
+                            if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
+                                int gamma = Integer.parseInt(split[2]);
+                                WatsonManager.getInstance().setMaxDeadlocks(gamma);
+                                System.out.println("beta settato a: " + gamma);
+                            } else {
+                                System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set gamma" + ConsoleColors.ANSI_RESET);
+                            }
+                            
+                        }
+                        else if (line.equals("get gamma")) {
+                            System.out.println("Gamma: MaxDeadlocks = " + WatsonManager.getInstance().getMaxDeadlocks());
+
+                        }
+                        else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
@@ -616,6 +632,10 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di beta");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "26) " + ConsoleColors.ANSI_CYAN + "alpha beta default/ab default");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tporta a valore di default alpha e beta");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "27) " + ConsoleColors.ANSI_CYAN + "set gamma");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire n volte che un oytput può essere ripetuto");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "get gamma");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di gamma");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
@@ -638,19 +658,19 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tDa usare in caso di problemi con il nomefile.log, crea un nuovo filenome.log con tutte le azioni effettuate");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "9) " + ConsoleColors.ANSI_CYAN + "stop log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tchiuderà il file nomefile.log con il tempo e il totale delle azioni eseguite dall'applicazione e dall'utente");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "9) " + ConsoleColors.ANSI_CYAN + "upload current log ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "10) " + ConsoleColors.ANSI_CYAN + "upload current log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tcaricherà su Google Drive il log corrente");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "10) " + ConsoleColors.ANSI_CYAN + "locate log ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "locate log ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\taprirà la cartella dove si trovano i log");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "11) " + ConsoleColors.ANSI_CYAN + "clear logs ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "12) " + ConsoleColors.ANSI_CYAN + "clear logs ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\teliminerà tutti i log nella cartella locale");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "12) " + ConsoleColors.ANSI_CYAN + "log end pretest ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log end pretest ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "13) " + ConsoleColors.ANSI_CYAN + "log resume ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log resume ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak ");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log gui");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "log gui");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tAvvia la gui per l'annotazione dei log tramite un'altra finestra");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log tag")) {
@@ -732,6 +752,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica ogni qualvolta arrivano vari intents con un delta (differenza tra le rispettive confidence) tra di loro inferiore a una soglia decisa da parametro.");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "38) " + ConsoleColors.ANSI_CYAN + "WALL SPEAK");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente parla con l'assistente senza premere il tasto.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "38) " + ConsoleColors.ANSI_CYAN + "GAMMA");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il numero massimo di deadlocks nei nodi di Watson, superato questo valore il server attuerà un hard reset.");
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {

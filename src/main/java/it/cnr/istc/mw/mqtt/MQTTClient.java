@@ -283,7 +283,7 @@ public class MQTTClient implements MqttCallback {
                     }
                     if(MQTTServer.getResetTurns(id) == WatsonManager.getInstance().getMaxDeadlocks()){
                         WatsonManager.getInstance().automaticHardReset(id);
-                        System.out.println("HARD RESET AUTOMATICO AAAAA");
+                        System.out.println(ConsoleColors.ANSI_YELLOW + "EFFETTUATO HARD RESET AUTOMATICO" + ConsoleColors.ANSI_RESET);
                         try {
                             LoggerManager.getInstance().log(LoggingTag.WATSON_HARD_RESET.getTag() + "AUTOMATIC!");
                         } catch (LogOffException | InvalidAttemptToLogException ex) {

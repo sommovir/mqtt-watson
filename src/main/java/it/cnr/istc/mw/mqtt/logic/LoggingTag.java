@@ -55,7 +55,8 @@ public enum LoggingTag {
     PRECISION_ENTITIES ("PRECISION ENTITIES"),
     ALPHA("ALPHA"),
     BETA("BETA"),
-    WALL_SPEAK("WALL SPEAK");
+    WALL_SPEAK("WALL SPEAK"),
+    GAMMA("GAMMA");
 
     private LoggingTag(String tag) {
         this.tag = tag;
