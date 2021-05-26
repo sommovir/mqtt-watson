@@ -486,6 +486,7 @@ public class Main {
                             }
                         } else if (line.equals("upload current log")) {
                             GoogleDriveManager.getInstance().uploadFile(LoggerManager.getInstance().getLastFile());
+                            System.out.println(ConsoleColors.ANSI_GREEN + "Upload eseguito " + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("clear logs")) {
                             System.out.println("Inserire DELETE per confermare la scelta");
                             String line_ = reader.readLine();
@@ -520,9 +521,10 @@ public class Main {
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set beta" + ConsoleColors.ANSI_RESET);
                             }
-                        } else if (line.equals("alpha beta default") || line.equals("ab default")) {
-                            WatsonManager.getInstance().setMinSingleDeltaThreshold(0.2);
-                            WatsonManager.getInstance().setMinDeltaThreshold(0.6);
+                        } else if (line.equals("reset config")) {
+                            WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
+                            WatsonManager.getInstance().setMinDeltaThreshold(0.2);
+                            WatsonManager.getInstance().setMaxDeadlocks(1);
                         } else if (line.equals("log gui")) {
                                     
                             try{
@@ -622,8 +624,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire un valore compreso tra 0 e 1");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "25) " + ConsoleColors.ANSI_CYAN + "get beta");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di beta");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "26) " + ConsoleColors.ANSI_CYAN + "alpha beta default/ab default");
-                            System.out.println(ConsoleColors.ANSI_WHITE + "\tporta a valore di default alpha e beta");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "26) " + ConsoleColors.ANSI_CYAN + "reset config");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tporta a valore di default alpha, beta e gamma");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "27) " + ConsoleColors.ANSI_CYAN + "set gamma");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire n volte che un oytput può essere ripetuto");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "get gamma");
