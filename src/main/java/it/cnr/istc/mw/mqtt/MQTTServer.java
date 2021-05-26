@@ -49,6 +49,10 @@ public class MQTTServer {
         return resetMap.get(userId);
     }
     
+    public static int clearResetTurns(String userId){
+        return resetMap.put(userId,0);
+    }
+    
     public static void increaseResetTurns(String userId){
         resetMap.put(userId,resetMap.get(userId)+1);
     }

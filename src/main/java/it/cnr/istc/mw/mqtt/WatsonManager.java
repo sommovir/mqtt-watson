@@ -495,6 +495,7 @@ public class WatsonManager {
     public void automaticHardReset(String userId){
         System.out.println("USER-ID -> > > > > " + userId);
             if (!userId.equals("110")) {
+                MQTTServer.clearResetTurns(userId);
                 sendMessage(HARD_RESET_SECRET_KEY, userId);
             }
     }
