@@ -24,6 +24,7 @@ public class LogSupportFrame extends javax.swing.JFrame {
      */
     public LogSupportFrame() {
         initComponents();
+        this.setTitle("Log Support v0.1");
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
     }

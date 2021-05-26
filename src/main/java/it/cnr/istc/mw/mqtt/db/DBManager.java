@@ -32,7 +32,7 @@ public class DBManager {
 
     private DBManager() {
         super();
-        
+
 // configures settings from hibernate.cfg.xml 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
@@ -49,10 +49,10 @@ public class DBManager {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        
+
         Person p1 = new Person("Luca", "Coraci");
         Person p2 = new Person("Luana", "Mercuri");
-        
+
         session.persist(p1);
         session.persist(p2);
 
@@ -66,4 +66,4 @@ public class DBManager {
         session.close();
     }
 
-}
+    }
