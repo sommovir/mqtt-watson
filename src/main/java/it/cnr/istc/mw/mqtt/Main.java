@@ -424,7 +424,7 @@ public class Main {
                             } else {
                                 System.out.println("Test mode is currently " + ConsoleColors.ANSI_RED + "OFF." + ConsoleColors.ANSI_RESET);
                             }
-                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nGamma: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMaxDeadlocks()+ ConsoleColors.ANSI_RESET);
+                            System.out.println("Alpha: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinSingleDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nBeta: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMinDeltaThreshold() + ConsoleColors.ANSI_RESET + "\nGamma: " + ConsoleColors.ANSI_YELLOW + WatsonManager.getInstance().getMaxDeadlocks() + ConsoleColors.ANSI_RESET);
                         } else if (line.startsWith("log note ") && !line.replace("log note ", "").isEmpty()) {
                             if (!LoggerManager.getInstance().isLogActive()) {
                                 System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
@@ -532,13 +532,13 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
                             System.out.println(ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("log gui")) {
-                                    
-                            try{
-                                 UIManager.setLookAndFeel( new FlatDarkLaf() );
-                            }catch(Exception ex){
+
+                            try {
+                                UIManager.setLookAndFeel(new FlatDarkLaf());
+                            } catch (Exception ex) {
                                 System.out.println("Errore, tema FlatLightLaf non trovato");
                             }
-                                
+
                             //</editor-fold>
 
                             /* Create and display the form */
@@ -560,6 +560,11 @@ public class Main {
 
                         } else if (line.equals("get gamma")) {
                             System.out.println("Gamma: MaxDeadlocks = " + WatsonManager.getInstance().getMaxDeadlocks());
+
+                        } else if (line.startsWith("log ws ") && !line.replace("log ws ", "").isEmpty()) {
+                            String free_text = line.substring(7, line.length());
+                            LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + free_text);
+                            System.out.println("Note has been added");
 
                         } else if (line.equals("help")) {
 
@@ -669,8 +674,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\ttermina la fase di pretest, azzerando il time elapsed, i system/user/total turns, inserendo un divisore nel log e mettendo in pausa il log");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "14) " + ConsoleColors.ANSI_CYAN + "log resume ");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\triprende il funzionamento del log dopo la fine del pretest");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak ");
-                            System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak / log ws [text]");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto, per appuntare una nota scrivere log ws [nota da aggiungere]");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "log gui");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tAvvia la gui per l'annotazione dei log tramite un'altra finestra");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
