@@ -5,6 +5,8 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
@@ -23,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
@@ -39,6 +42,7 @@ public class Main {
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
+        FlatDarkLaf.installLafInfo();
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -522,22 +526,13 @@ public class Main {
                             WatsonManager.getInstance().setMinDeltaThreshold(0.2);
                             WatsonManager.getInstance().setMaxDeadlocks(1);
                         } else if (line.equals("log gui")) {
-                            try {
-                                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                                    if ("Nimbus".equals(info.getName())) {
-                                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                                        break;
-                                    }
-                                }
-                            } catch (ClassNotFoundException ex) {
-                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                            } catch (InstantiationException ex) {
-                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                            } catch (IllegalAccessException ex) {
-                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-                            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                                java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                                    
+                            try{
+                                 UIManager.setLookAndFeel( new FlatDarkLaf() );
+                            }catch(Exception ex){
+                                System.out.println("Errore, tema FlatLightLaf non trovato");
                             }
+                                
                             //</editor-fold>
 
                             /* Create and display the form */
@@ -546,8 +541,7 @@ public class Main {
                                     new LogSupportFrame().setVisible(true);
                                 }
                             });
-                        }
-                        else if(line.equals("set gamma")){
+                        } else if (line.equals("set gamma")) {
                             String[] split = line.split(" ");
                             if (split.length == 3 && split[2].length() > 0 && split[2].matches("[0-1](.[0-9]*)?")) {
                                 int gamma = Integer.parseInt(split[2]);
@@ -556,13 +550,11 @@ public class Main {
                             } else {
                                 System.out.println(ConsoleColors.ANSI_RED + "controllare sintasssi comando set gamma" + ConsoleColors.ANSI_RESET);
                             }
-                            
-                        }
-                        else if (line.equals("get gamma")) {
+
+                        } else if (line.equals("get gamma")) {
                             System.out.println("Gamma: MaxDeadlocks = " + WatsonManager.getInstance().getMaxDeadlocks());
 
-                        }
-                        else if (line.equals("help")) {
+                        } else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
