@@ -60,10 +60,12 @@ public class WatsonManager {
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private double minSingleDeltaThreshold = 0.6d; //alpha
     private double minDeltaThreshold = 0.2d;       //beta
+    private int maxDeadlocks = 2; //gamma
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
     private MessageContext context = null;
+    private String lastResponse;
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
@@ -82,6 +84,14 @@ public class WatsonManager {
     public void setMinDeltaThreshold(double minDeltaThreshold) {
         this.minDeltaThreshold = minDeltaThreshold;
         LoggerManager.getInstance().logAlphaBeta();
+    }
+
+    public int getMaxDeadlocks() {
+        return maxDeadlocks;
+    }
+
+    public void setMaxDeadlocks(int maxDeadlocks) {
+        this.maxDeadlocks = maxDeadlocks;
     }
 
     //String session_id = "scemotto";
@@ -484,6 +494,13 @@ public class WatsonManager {
         }
     }
 
+    public void automaticHardReset(String userId){
+        System.out.println("USER-ID -> > > > > " + userId);
+            if (!userId.equals("110")) {
+                sendMessage(HARD_RESET_SECRET_KEY, userId);
+            }
+    }
+    
     public String sendMessage(String message, String userId) {
         try {
             System.out.println("[Watson] sending message to AI.. ");
