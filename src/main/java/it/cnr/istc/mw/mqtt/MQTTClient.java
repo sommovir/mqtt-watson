@@ -289,6 +289,7 @@ public class MQTTClient implements MqttCallback {
                         } catch (LogOffException | InvalidAttemptToLogException ex) {
                             System.out.println(ex.getMessage()); 
                         } 
+                    }
                     System.out.println("[server] EXITING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
                     System.out.println("[server] going to publish the answer: " + risposta);
                     publish(MQTTServer.idTopicMap.get(t), risposta);
@@ -347,7 +348,7 @@ public class MQTTClient implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken imdt){
-
+        
     }
 
 }
