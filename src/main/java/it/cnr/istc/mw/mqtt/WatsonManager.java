@@ -60,7 +60,7 @@ public class WatsonManager {
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private double minSingleDeltaThreshold = 0.6d; //alpha
     private double minDeltaThreshold = 0.2d;       //beta
-    private int maxDeadlocks = 2; //gamma
+    private int maxDeadlocks = 1; //gamma
     private boolean mute = false;
     private boolean testMode = false;
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
