@@ -42,7 +42,21 @@ public class MQTTServer {
     public static Map<String, String> idTopicMap = new HashMap<>();
     private boolean lock = false;
     private boolean serverEntered = false;
-
+    private static Map<String, Integer> resetMap = new  HashMap<>();
+    
+    
+    public static int getResetTurns(String userId){
+        return resetMap.get(userId);
+    }
+    
+    public static void increaseResetTurns(String userId){
+        resetMap.put(userId,resetMap.get(userId)+1);
+    }
+    
+    public static void restartResetTurns(String userId){
+        resetMap.put(userId,0);
+    }
+    
     public void stop() {
         mqtt_broker.stopServer();
     }
@@ -124,6 +138,7 @@ public class MQTTServer {
                                 return;
                             }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
+                            resetMap.put(icm.getClientID(),0);
                             System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
                             String tlog = Topics.LOG.getTopic() + "/" + icm.getClientID();
