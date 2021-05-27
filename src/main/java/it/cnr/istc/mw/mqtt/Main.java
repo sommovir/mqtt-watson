@@ -431,6 +431,7 @@ public class Main {
                             } else {
                                 String free_text = line.substring(9, line.length());
                                 LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + free_text);
+                                System.out.println("Note: " + ConsoleColors.ANSI_GREEN_BACKGROUND + "\"" + free_text + "\"");
                                 System.out.println("Note has been added");
                             }
                         } else if (line.equals("log wrong") || line.equals("log w")) {
