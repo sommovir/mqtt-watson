@@ -276,23 +276,24 @@ public class MQTTClient implements MqttCallback {
                     }
                     System.out.println("[server] ENTERING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
                     String risposta = WatsonManager.getInstance().sendMessage(message, id);
-                    if(risposta.equals(rispostaPrecedente)){
+                    if (risposta.equals(rispostaPrecedente)) {
                         MQTTServer.increaseResetTurns(id);
                     } else {
                         MQTTServer.restartResetTurns(id);
                     }
-                    if(MQTTServer.getResetTurns(id) == WatsonManager.getInstance().getMaxDeadlocks()){
+                    if (MQTTServer.getResetTurns(id) == WatsonManager.getInstance().getMaxDeadlocks()) {
                         WatsonManager.getInstance().automaticHardReset(id);
                         System.out.println(ConsoleColors.ANSI_YELLOW + "EFFETTUATO HARD RESET AUTOMATICO" + ConsoleColors.ANSI_RESET);
                         try {
                             LoggerManager.getInstance().log(LoggingTag.WATSON_HARD_RESET.getTag() + "AUTOMATIC!");
                         } catch (LogOffException | InvalidAttemptToLogException ex) {
-                            System.out.println(ex.getMessage()); 
-                        } 
+                            System.out.println(ex.getMessage());
+                        }
+                    } else {
+                        System.out.println("[server] EXITING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
+                        System.out.println("[server] going to publish the answer: " + risposta);
+                        publish(MQTTServer.idTopicMap.get(t), risposta);
                     }
-                    System.out.println("[server] EXITING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
-                    System.out.println("[server] going to publish the answer: " + risposta);
-                    publish(MQTTServer.idTopicMap.get(t), risposta);
                     HistoryBook.getInstance().addHistoryElement(message, risposta);
                     rispostaPrecedente = risposta;
                 }
@@ -347,8 +348,8 @@ public class MQTTClient implements MqttCallback {
     }
 
     @Override
-    public void deliveryComplete(IMqttDeliveryToken imdt){
-        
+    public void deliveryComplete(IMqttDeliveryToken imdt) {
+
     }
 
 }

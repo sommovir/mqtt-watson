@@ -32,6 +32,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
+import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.LowDeltaResult;
@@ -461,7 +462,7 @@ public class WatsonManager {
             Map<String, MessageContextSkill> skills = this.context.skills();
             if (skills.containsKey("main skill")) {
                 Map<String, Object> ourBelovedContextMap = skills.get("main skill").userDefined();
-                System.out.println(ConsoleColors.BLUE_BRIGHT+"****************************  C O N T E X T *******************************"+ConsoleColors.ANSI_RESET);
+                System.out.println(ConsoleColors.BLUE_BRIGHT + "****************************  C O N T E X T *******************************" + ConsoleColors.ANSI_RESET);
                 for (String key : ourBelovedContextMap.keySet()) {
                     Object value = ourBelovedContextMap.get(key);
                     if (key.equals("apptext")) {
@@ -470,13 +471,13 @@ public class WatsonManager {
                     }
                     System.out.println(ConsoleColors.ANSI_CYAN + key + ": " + (value == null ? ConsoleColors.RED_BRIGHT + value + ConsoleColors.ANSI_RESET : ConsoleColors.ANSI_GREEN + value + ConsoleColors.ANSI_RESET));
                 }
-                System.out.println(ConsoleColors.BLUE_BRIGHT+"***************************************************************************"+ConsoleColors.ANSI_RESET);
+                System.out.println(ConsoleColors.BLUE_BRIGHT + "***************************************************************************" + ConsoleColors.ANSI_RESET);
 
-            }else{
-                System.out.println(ConsoleColors.RED_BRIGHT+"no main skill.. go find yourself"+ConsoleColors.ANSI_RESET);
+            } else {
+                System.out.println(ConsoleColors.RED_BRIGHT + "no main skill.. go find yourself" + ConsoleColors.ANSI_RESET);
             }
-        }else{
-            System.out.println(ConsoleColors.RED_BRIGHT+"there is no context at the moment"+ConsoleColors.ANSI_RESET);
+        } else {
+            System.out.println(ConsoleColors.RED_BRIGHT + "there is no context at the moment" + ConsoleColors.ANSI_RESET);
         }
 
     }
@@ -492,14 +493,17 @@ public class WatsonManager {
         }
     }
 
-    public void automaticHardReset(String userId){
+    public void automaticHardReset(String userId) {
         System.out.println("USER-ID -> > > > > " + userId);
-            if (!userId.equals("110")) {
-                MQTTServer.clearResetTurns(userId);
-                sendMessage(HARD_RESET_SECRET_KEY, userId);
-            }
+        if (!userId.equals("110")) {
+            MQTTServer.clearResetTurns(userId);
+            String risposta_reset = sendMessage(HARD_RESET_SECRET_KEY, userId);
+            String tid = Topics.CHAT.getTopic() + "/" + userId;
+            MQTTClient.getInstance().publish(MQTTServer.idTopicMap.get(tid), risposta_reset);
+            HistoryBook.getInstance().addHistoryElement(LoggingTag.WATSON_HARD_RESET.getTag(), risposta_reset);
+        }
     }
-    
+
     public String sendMessage(String message, String userId) {
         try {
             System.out.println("[Watson] sending message to AI.. ");
@@ -540,6 +544,20 @@ public class WatsonManager {
                     .build();
 
             MessageResponse response = assistant.message(options).execute().getResult();
+            
+            if(message.equals(HARD_RESET_SECRET_KEY)){
+                System.out.println(ConsoleColors.RED_BRIGHT+ "--------------------------------------" + ConsoleColors.ANSI_RESET);
+                System.out.println(ConsoleColors.YELLOW_BRIGHT+ "A U T O     H A R D    R E S E T " + ConsoleColors.ANSI_RESET);
+                System.out.println(ConsoleColors.RED_BRIGHT+ "--------------------------------------" + ConsoleColors.ANSI_RESET);
+                String hard_reset_answer = "Scusa mi ero distratta, ora ci sono!";
+                try{
+                    hard_reset_answer = response.getOutput().getGeneric().get(0).text();
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                    hard_reset_answer = "Coff Coff, eccomi scusa";
+                }
+                return hard_reset_answer;
+            }
 
             context = response.getContext();
 
