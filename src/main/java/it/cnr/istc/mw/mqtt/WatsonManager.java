@@ -549,14 +549,14 @@ public class WatsonManager {
                 System.out.println(ConsoleColors.RED_BRIGHT+ "--------------------------------------" + ConsoleColors.ANSI_RESET);
                 System.out.println(ConsoleColors.YELLOW_BRIGHT+ "A U T O     H A R D    R E S E T " + ConsoleColors.ANSI_RESET);
                 System.out.println(ConsoleColors.RED_BRIGHT+ "--------------------------------------" + ConsoleColors.ANSI_RESET);
-                String hard_reset_answer = "Scusa mi ero distratta, ora ci sono!";
-                try{
-                    hard_reset_answer = response.getOutput().getGeneric().get(0).text();
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                    hard_reset_answer = "Coff Coff, eccomi scusa";
-                }
-                return hard_reset_answer;
+//                String hard_reset_answer = "Scusa mi ero distratta, ora ci sono!";
+//                try{
+//                    hard_reset_answer = response.getOutput().getGeneric().get(0).text();
+//                }catch(Exception ex){
+//                    ex.printStackTrace();
+//                    hard_reset_answer = "Coff Coff, eccomi scusa";
+//                }
+//                return hard_reset_answer;
             }
 
             context = response.getContext();
