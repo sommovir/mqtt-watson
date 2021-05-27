@@ -56,7 +56,8 @@ public enum LoggingTag {
     ALPHA("ALPHA"),
     BETA("BETA"),
     WALL_SPEAK("WALL SPEAK"),
-    GAMMA("GAMMA");
+    GAMMA("GAMMA"),
+    EXTRA_INPUT("EXTRA_INPUT");
 
     private LoggingTag(String tag) {
         this.tag = tag;

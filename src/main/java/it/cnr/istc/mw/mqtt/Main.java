@@ -566,7 +566,18 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + free_text);
                             System.out.println("Note has been added");
 
-                        } else if (line.equals("help")) {
+                        }else if(line.equals("log extra")){
+                            LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
+                            System.out.println("extra has been added");
+                        }
+                        else if (line.startsWith("log extra ") && !line.replace("log extra ", "").isEmpty()) {
+                            String free_text = line.substring(10, line.length());
+                            LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + free_text);
+                            System.out.println("Extra has been added");
+
+                        }
+                        
+                        else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
@@ -678,6 +689,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto, per appuntare una nota scrivere log ws [nota da aggiungere]");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "log gui");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tAvvia la gui per l'annotazione dei log tramite un'altra finestra");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "log extra / log extra [note]");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tl'utente chiede dele cosa extra rispetto alla frase stabilita, possibile aggiungere cosa extra log extra [extra]");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log tag")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P    L O G    T A G-----------------------------" + ConsoleColors.ANSI_RESET);
