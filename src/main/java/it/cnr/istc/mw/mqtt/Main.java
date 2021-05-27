@@ -575,7 +575,7 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + free_text);
                             System.out.println("Extra has been added");
 
-                        }
+                        }else if(line.equals("log iw")){}
                         
                         else if (line.equals("help")) {
 
