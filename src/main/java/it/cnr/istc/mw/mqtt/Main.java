@@ -771,7 +771,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica ogni qualvolta arrivano vari intents con un delta (differenza tra le rispettive confidence) tra di loro inferiore a una soglia decisa da parametro.");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "38) " + ConsoleColors.ANSI_CYAN + "WALL SPEAK");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica l'evento nel quale l'utente parla con l'assistente senza premere il tasto.");
-                            System.out.println(ConsoleColors.ANSI_YELLOW + "38) " + ConsoleColors.ANSI_CYAN + "GAMMA");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "39) " + ConsoleColors.ANSI_CYAN + "GAMMA");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il numero massimo di deadlocks nei nodi di Watson, superato questo valore il server attuerà un hard reset.");
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
