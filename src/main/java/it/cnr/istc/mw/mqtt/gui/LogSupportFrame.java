@@ -84,12 +84,20 @@ public class LogSupportFrame extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 51, 0));
         jButton2.setText("<WRONG>");
-        jButton2.setEnabled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 153, 0));
         jButton3.setText("<REPROMPT>");
-        jButton3.setEnabled(false);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -170,6 +178,37 @@ public class LogSupportFrame extends javax.swing.JFrame {
         newNote();
     }//GEN-LAST:event_jButton_NoteActionPerformed
 
+    private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            newNote();
+        }
+    }//GEN-LAST:event_jTextField_NoteKeyPressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
+            System.out.println("Repromt eseguito");
+        } catch (LogOffException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidAttemptToLogException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
+            System.out.println("Wrong answer tag logged");
+        } catch (LogOffException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidAttemptToLogException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void newNote() {
         String text = this.jTextField_Note.getText();
         jLabel_Error.setText("");
@@ -188,13 +227,6 @@ public class LogSupportFrame extends javax.swing.JFrame {
             System.out.println("Note has been added");
         }
     }
-
-    private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
-        // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            newNote();
-        }
-    }//GEN-LAST:event_jTextField_NoteKeyPressed
 
     /**
      * @param args the command line arguments
