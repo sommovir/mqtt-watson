@@ -7,10 +7,12 @@ package it.cnr.istc.mw.mqtt.gui;
 
 import it.cnr.istc.mw.mqtt.ConsoleColors;
 import it.cnr.istc.mw.mqtt.Main;
+import it.cnr.istc.mw.mqtt.exceptions.GuiPrintableException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -33,6 +35,21 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.setAlwaysOnTop(true);
         this.addWindowListener(this);
 
+    }
+
+    public void printError(String message) {
+        this.jLabel_Error.setForeground(Color.red);
+        this.jLabel_Error.setText(message);
+    }
+
+    public void printWarning(String message) {
+        this.jLabel_Error.setForeground(Color.yellow);
+        this.jLabel_Error.setText(message);
+    }
+
+    public void printInfo(String message) {
+        this.jLabel_Error.setForeground(Color.cyan);
+        this.jLabel_Error.setText(message);
     }
 
     /**
@@ -340,6 +357,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             System.out.println("Repromt eseguito");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
+            if (ex instanceof GuiPrintableException) {
+                printError(((GuiPrintableException) ex).getGuiErrorMessage());
+            }
+
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -350,6 +371,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             System.out.println("Wrong answer tag logged");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
+            if (ex instanceof GuiPrintableException) {
+                printError(((GuiPrintableException) ex).getGuiErrorMessage());
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -365,15 +389,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         String text = this.jTextField_Note.getText();
         jLabel_Error.setText("");
         if (text.isEmpty()) {
-            this.jLabel_Error.setText("Non puoi mandare note vuote");
+            printError("Non puoi mandare note vuote");
         }
         if (!LoggerManager.getInstance().isLogActive()) {
+            printError("Impossibile eseguire quando il log è OFF");
             System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
         } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                this.jLabel_Error.setText(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
             }
             this.jTextField_Note.setText("");
             System.out.println("Note has been added");

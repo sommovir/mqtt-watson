@@ -9,7 +9,7 @@ package it.cnr.istc.mw.mqtt.exceptions;
  *
  * @author Alessio
  */
-public class InvalidAttemptToLogException extends Exception{
+public class InvalidAttemptToLogException extends Exception implements GuiPrintableException{
 
     public InvalidAttemptToLogException() {
         super("non puoi più scrivere nel file log una volta stoppato. (per maggiori informazioni consulta help log)");
@@ -17,6 +17,11 @@ public class InvalidAttemptToLogException extends Exception{
 
     public InvalidAttemptToLogException(String message) {
         super(message);
+    }
+
+    @Override
+    public String getGuiErrorMessage() {
+        return "qualcuno del @JDT scriva qualcosa";
     }
 
     
