@@ -6,7 +6,9 @@
 package it.cnr.istc.mw.mqtt;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.IntelliJTheme;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
@@ -41,8 +43,8 @@ public class Main {
     static MQTTServer server = new MQTTServer();
     public static final String version = "1.1.1";
     private static LogSupportFrame logSupportFrame = null;
-    
-    public static void suppressLogSupportGUI(){
+
+    public static void suppressLogSupportGUI() {
         logSupportFrame.setVisible(false);
         logSupportFrame.dispose();
         logSupportFrame = null;
@@ -51,6 +53,8 @@ public class Main {
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
         FlatDarkLaf.installLafInfo();
+        FlatLightLaf.installLafInfo();
+        FlatIntelliJLaf.installLafInfo();
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -556,8 +560,30 @@ public class Main {
                                     if (logSupportFrame == null) {
                                         logSupportFrame = new LogSupportFrame();
                                         logSupportFrame.setVisible(true);
-                                    }else{
-                                        System.out.println(ConsoleColors.RED_BRIGHT+ "Errore. Log Support Gui è già attiva" + ConsoleColors.ANSI_RESET);
+                                    } else {
+                                        System.out.println(ConsoleColors.RED_BRIGHT + "Errore. Log Support Gui è già attiva" + ConsoleColors.ANSI_RESET);
+                                    }
+
+                                }
+                            });
+                        } else if (line.equals("log gui -white")) {
+
+                            try {
+                                UIManager.setLookAndFeel(new FlatIntelliJLaf());
+                            } catch (Exception ex) {
+                                System.out.println("Errore, tema FlatLightLaf non trovato");
+                            }
+
+                            //</editor-fold>
+
+                            /* Create and display the form */
+                            java.awt.EventQueue.invokeLater(new Runnable() {
+                                public void run() {
+                                    if (logSupportFrame == null) {
+                                        logSupportFrame = new LogSupportFrame();
+                                        logSupportFrame.setVisible(true);
+                                    } else {
+                                        System.out.println(ConsoleColors.RED_BRIGHT + "Errore. Log Support Gui è già attiva" + ConsoleColors.ANSI_RESET);
                                     }
 
                                 }
@@ -701,7 +727,7 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_YELLOW + "15) " + ConsoleColors.ANSI_CYAN + "log ws / log wall-speak / log ws [text]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tLogga quando l'utente parla con l'assistente senza premere il tasto, per appuntare una nota scrivere log ws [nota da aggiungere]");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "16) " + ConsoleColors.ANSI_CYAN + "log gui");
-                            System.out.println(ConsoleColors.ANSI_WHITE + "\tAvvia la gui per l'annotazione dei log tramite un'altra finestra");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tAvvia la gui per l'annotazione dei log tramite un'altra finestra. Con l'opzione "+ConsoleColors.ANSI_YELLOW +"-white"+ConsoleColors.ANSI_WHITE+" si può avere il thema chiaro");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "17) " + ConsoleColors.ANSI_CYAN + "log extra / log extra [note]");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tl'utente chiede dele cosa extra rispetto alla frase stabilita, possibile aggiungere cosa extra log extra [extra]");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
