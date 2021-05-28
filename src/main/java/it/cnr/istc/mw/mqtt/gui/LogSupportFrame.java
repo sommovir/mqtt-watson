@@ -6,11 +6,14 @@
 package it.cnr.istc.mw.mqtt.gui;
 
 import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.Main;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Alessio
  */
-public class LogSupportFrame extends javax.swing.JFrame {
+public class LogSupportFrame extends javax.swing.JFrame implements WindowListener {
 
     /**
      * Creates new form LogSupportFrame
@@ -28,6 +31,8 @@ public class LogSupportFrame extends javax.swing.JFrame {
         this.setTitle("Log Support v0.1");
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
+        this.addWindowListener(this);
+
     }
 
     /**
@@ -49,7 +54,7 @@ public class LogSupportFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jLabel1.setText("Nota:");
 
@@ -180,7 +185,7 @@ public class LogSupportFrame extends javax.swing.JFrame {
 
     private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             newNote();
         }
     }//GEN-LAST:event_jTextField_NoteKeyPressed
@@ -190,10 +195,8 @@ public class LogSupportFrame extends javax.swing.JFrame {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
             System.out.println("Repromt eseguito");
-        } catch (LogOffException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidAttemptToLogException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -202,10 +205,8 @@ public class LogSupportFrame extends javax.swing.JFrame {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
             System.out.println("Wrong answer tag logged");
-        } catch (LogOffException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidAttemptToLogException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -239,7 +240,7 @@ public class LogSupportFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                System.out.println("---- lf -> "+info.getName());
+                System.out.println("---- lf -> " + info.getName());
                 if ("Flat Laf Dark".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -275,4 +276,40 @@ public class LogSupportFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField_Note;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        Main.suppressLogSupportGUI();
+        System.out.println(ConsoleColors.ANSI_YELLOW + "[LOG][SupportGui] " + ConsoleColors.RED_BRIGHT + "CLOSED" + ConsoleColors.ANSI_RESET);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
 }

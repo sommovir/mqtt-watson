@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,6 +40,13 @@ public class Main {
 
     static MQTTServer server = new MQTTServer();
     public static final String version = "1.1.1";
+    private static LogSupportFrame logSupportFrame = null;
+    
+    public static void suppressLogSupportGUI(){
+        logSupportFrame.setVisible(false);
+        logSupportFrame.dispose();
+        logSupportFrame = null;
+    }
 
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
@@ -545,7 +553,13 @@ public class Main {
                             /* Create and display the form */
                             java.awt.EventQueue.invokeLater(new Runnable() {
                                 public void run() {
-                                    new LogSupportFrame().setVisible(true);
+                                    if (logSupportFrame == null) {
+                                        logSupportFrame = new LogSupportFrame();
+                                        logSupportFrame.setVisible(true);
+                                    }else{
+                                        System.out.println(ConsoleColors.RED_BRIGHT+ "Errore. Log Support Gui è già attiva" + ConsoleColors.ANSI_RESET);
+                                    }
+
                                 }
                             });
                         } else if (line.startsWith("set gamma ")) {
@@ -567,18 +581,16 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + free_text);
                             System.out.println("Note has been added");
 
-                        }else if(line.equals("log extra")){
+                        } else if (line.equals("log extra")) {
                             LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
                             System.out.println("extra has been added");
-                        }
-                        else if (line.startsWith("log extra ") && !line.replace("log extra ", "").isEmpty()) {
+                        } else if (line.startsWith("log extra ") && !line.replace("log extra ", "").isEmpty()) {
                             String free_text = line.substring(10, line.length());
                             LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + free_text);
                             System.out.println("Extra has been added");
 
-                        }else if(line.equals("log iw")){}
-                        
-                        else if (line.equals("help")) {
+                        } else if (line.equals("log iw")) {
+                        } else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
