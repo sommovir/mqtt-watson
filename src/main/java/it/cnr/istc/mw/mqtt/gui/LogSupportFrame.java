@@ -10,6 +10,7 @@ import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,6 +56,11 @@ public class LogSupportFrame extends javax.swing.JFrame {
         jTextField_Note.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField_NoteActionPerformed(evt);
+            }
+        });
+        jTextField_Note.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_NoteKeyPressed(evt);
             }
         });
 
@@ -161,11 +167,14 @@ public class LogSupportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField_NoteActionPerformed
 
     private void jButton_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NoteActionPerformed
+        newNote();
+    }//GEN-LAST:event_jButton_NoteActionPerformed
+
+    private void newNote() {
         String text = this.jTextField_Note.getText();
         jLabel_Error.setText("");
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             this.jLabel_Error.setText("Non puoi mandare note vuote");
-            return;
         }
         if (!LoggerManager.getInstance().isLogActive()) {
             System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
@@ -178,7 +187,14 @@ public class LogSupportFrame extends javax.swing.JFrame {
             this.jTextField_Note.setText("");
             System.out.println("Note has been added");
         }
-    }//GEN-LAST:event_jButton_NoteActionPerformed
+    }
+
+    private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            newNote();
+        }
+    }//GEN-LAST:event_jTextField_NoteKeyPressed
 
     /**
      * @param args the command line arguments
