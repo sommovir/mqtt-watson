@@ -11,4 +11,8 @@ package it.cnr.istc.mw.mqtt.logic.events;
  */
 public interface MQTTEventListener {
     
+    public void userConnected(String id);
+    
+    public void userDisconnected(String id);
+    
 }

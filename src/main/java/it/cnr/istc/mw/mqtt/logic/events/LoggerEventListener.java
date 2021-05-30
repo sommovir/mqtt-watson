@@ -38,4 +38,10 @@ public interface LoggerEventListener {
      */
     public void logStop();
     
+    
+    /**
+     * notify when the Logger Admin, invoke the resume. 
+     */
+    public void resume();
+    
 }
