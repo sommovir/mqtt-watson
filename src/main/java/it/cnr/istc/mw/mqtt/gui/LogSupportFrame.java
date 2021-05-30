@@ -67,7 +67,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jTextField_Note = new javax.swing.JTextField();
         jButton_Note = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jButton_WallSpeak = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jTextField_WallSpeak = new javax.swing.JTextField();
@@ -112,10 +112,14 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shortcuts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(204, 204, 0));
-        jButton1.setText("<WALL SPEAK>");
-        jButton1.setEnabled(false);
+        jButton_WallSpeak.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_WallSpeak.setForeground(new java.awt.Color(204, 204, 0));
+        jButton_WallSpeak.setText("<WALL SPEAK>");
+        jButton_WallSpeak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_WallSpeakActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 51, 0));
@@ -176,7 +180,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_WallSpeak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +201,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(jButton_WallSpeak)
                     .addComponent(jTextField_WallSpeak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -385,6 +389,33 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_log_end_pretestActionPerformed
 
+    private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
+        // TODO add your handling code here:
+        if(!jTextField_WallSpeak.getText().isEmpty()){
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
+                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                jTextField_WallSpeak.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        else{
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                System.out.println("Wallspeak tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_WallSpeakActionPerformed
+
     private void newNote() {
         String text = this.jTextField_Note.getText();
         jLabel_Error.setText("");
@@ -444,7 +475,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -452,6 +482,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_Note;
     private javax.swing.JButton jButton_ResetABG;
+    private javax.swing.JButton jButton_WallSpeak;
     private javax.swing.JButton jButton_log_end_pretest;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
