@@ -38,18 +38,43 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }
 
     public void printError(String message) {
-        this.jLabel_Error.setForeground(Color.red);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.red);
+        this.jLabel_FeedBack.setText(message);
     }
 
     public void printWarning(String message) {
-        this.jLabel_Error.setForeground(Color.yellow);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.yellow);
+        this.jLabel_FeedBack.setText(message);
     }
 
     public void printInfo(String message) {
-        this.jLabel_Error.setForeground(Color.cyan);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.cyan);
+        this.jLabel_FeedBack.setText(message);
+    }
+    
+    private void newNote() {
+        String text = this.jTextField_Note.getText();
+        jLabel_FeedBack.setText("");
+
+        if (!LoggerManager.getInstance().isLogActive()) {
+            printError("Impossibile eseguire quando il log è OFF");
+            System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
+        } else {
+            try {
+                if (text.isEmpty()) {
+                    printError("Non puoi mandare note vuote");
+                } else{
+                    LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
+                    printInfo("New note tag logged");                    
+                }
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+            this.jTextField_Note.setText("");
+            System.out.println("Note has been added");
+        }
     }
 
     /**
@@ -67,7 +92,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jTextField_Note = new javax.swing.JTextField();
         jButton_Note = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jButton_WallSpeak = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jTextField_WallSpeak = new javax.swing.JTextField();
@@ -86,7 +111,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel4 = new javax.swing.JLabel();
         jSpinner3 = new javax.swing.JSpinner();
         jButton_ResetABG = new javax.swing.JButton();
-        jLabel_Error = new javax.swing.JLabel();
+        jLabel_FeedBack = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -112,10 +137,14 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shortcuts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(204, 204, 0));
-        jButton1.setText("<WALL SPEAK>");
-        jButton1.setEnabled(false);
+        jButton_WallSpeak.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_WallSpeak.setForeground(new java.awt.Color(204, 204, 0));
+        jButton_WallSpeak.setText("<WALL SPEAK>");
+        jButton_WallSpeak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_WallSpeakActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 51, 0));
@@ -176,7 +205,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_WallSpeak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +226,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(jButton_WallSpeak)
                     .addComponent(jTextField_WallSpeak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -287,8 +316,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel_Error.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel_Error.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel_FeedBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel_FeedBack.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -301,7 +330,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel_Error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -312,7 +341,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_Error, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -354,7 +383,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
-            System.out.println("Repromt eseguito");
+            System.out.println("Repromt tag logged");
+            printInfo("Repromt eseguito");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
             if (ex instanceof GuiPrintableException) {
@@ -369,6 +399,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
             System.out.println("Wrong answer tag logged");
+            printInfo("Wrong answer logged");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
             if (ex instanceof GuiPrintableException) {
@@ -385,27 +416,35 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton_log_end_pretestActionPerformed
 
-    private void newNote() {
-        String text = this.jTextField_Note.getText();
-        jLabel_Error.setText("");
-        if (text.isEmpty()) {
-            printError("Non puoi mandare note vuote");
-        }
-        if (!LoggerManager.getInstance().isLogActive()) {
-            printError("Impossibile eseguire quando il log è OFF");
-            System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
-        } else {
+    private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
+        // TODO add your handling code here:
+        if(!jTextField_WallSpeak.getText().isEmpty()){
             try {
-                LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
+                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                printInfo("Wallspeak tag logged + note");
+                jTextField_WallSpeak.setText(null);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
             }
-            this.jTextField_Note.setText("");
-            System.out.println("Note has been added");
         }
-    }
+        else{
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                System.out.println("Wallspeak tag logged");
+                printInfo("Wallspeak tag logged");                
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_WallSpeakActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -444,7 +483,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -452,12 +490,13 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_Note;
     private javax.swing.JButton jButton_ResetABG;
+    private javax.swing.JButton jButton_WallSpeak;
     private javax.swing.JButton jButton_log_end_pretest;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel_Error;
+    private javax.swing.JLabel jLabel_FeedBack;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
