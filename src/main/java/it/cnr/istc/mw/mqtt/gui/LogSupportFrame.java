@@ -51,6 +51,31 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.jLabel_FeedBack.setForeground(Color.cyan);
         this.jLabel_FeedBack.setText(message);
     }
+    
+    private void newNote() {
+        String text = this.jTextField_Note.getText();
+        jLabel_FeedBack.setText("");
+
+        if (!LoggerManager.getInstance().isLogActive()) {
+            printError("Impossibile eseguire quando il log è OFF");
+            System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
+        } else {
+            try {
+                if (text.isEmpty()) {
+                    printError("Non puoi mandare note vuote");
+                } else{
+                    LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
+                    printInfo("New note tag logged");                    
+                }
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+            this.jTextField_Note.setText("");
+            System.out.println("Note has been added");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -420,27 +445,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jButton_WallSpeakActionPerformed
 
-    private void newNote() {
-        String text = this.jTextField_Note.getText();
-        jLabel_FeedBack.setText("");
-        if (text.isEmpty()) {
-            printError("Non puoi mandare note vuote");
-        }
-        if (!LoggerManager.getInstance().isLogActive()) {
-            printError("Impossibile eseguire quando il log è OFF");
-            System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
-        } else {
-            try {
-                LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
-            } catch (LogOffException | InvalidAttemptToLogException ex) {
-                if (ex instanceof GuiPrintableException) {
-                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                }
-            }
-            this.jTextField_Note.setText("");
-            System.out.println("Note has been added");
-        }
-    }
 
     /**
      * @param args the command line arguments
