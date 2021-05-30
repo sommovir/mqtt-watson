@@ -276,7 +276,12 @@ public class MQTTClient implements MqttCallback {
                     }
                     System.out.println("[server] ENTERING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
                     String risposta = WatsonManager.getInstance().sendMessage(message, id);
-                    if (risposta.equals(rispostaPrecedente)) {
+                    boolean badLuck = false;
+                    if(risposta.endsWith(WatsonManager.BAD_LUCK)){
+                        badLuck = true;
+                        risposta=risposta.replace(WatsonManager.BAD_LUCK, "");
+                    }
+                    if (risposta.equals(rispostaPrecedente) && badLuck) {
                         MQTTServer.increaseResetTurns(id);
                     } else {
                         MQTTServer.restartResetTurns(id);

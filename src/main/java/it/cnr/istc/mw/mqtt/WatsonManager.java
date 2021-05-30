@@ -67,6 +67,7 @@ public class WatsonManager {
     private static final String HARD_RESET_SECRET_KEY = "A5--AAA!-A";
     private MessageContext context = null;
     private String lastResponse;
+    public static final String BAD_LUCK = "_q_";
     //LUCA ASSISTANT ID 3f2e01db-3b43-419b-a81e-dac841b9b373
 
     public double getMinSingleDeltaThreshold() {
@@ -629,7 +630,7 @@ public class WatsonManager {
                     System.out.println(e.getMessage());
                 }
                 System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
-                return risposta;
+                return risposta+BAD_LUCK;
             }
 
             LowDeltaResult lowDeltaExisting = isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList);
@@ -649,13 +650,13 @@ public class WatsonManager {
                 System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "DELTA" + ConsoleColors.ANSI_RESET);
                 switch (lowDeltaExisting) {
                     case LOW_MAX:
-                        return "<AUTOLISTEN>Scusa potresti essere più preciso?";
+                        return "<AUTOLISTEN>Scusa potresti essere più preciso?"+BAD_LUCK;
                     case INDECISION:
-                        return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene";
+                        return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene"+BAD_LUCK;
                     case WATSON_SUGGESTION:
-                        return "<AUTOLISTEN>Perdonami <NAME>, mi potresti chiedere la stessa cosa in forma più semplice ?";
+                        return "<AUTOLISTEN>Perdonami <NAME>, mi potresti chiedere la stessa cosa in forma più semplice ?"+BAD_LUCK;
                 }
-                return "<AUTOLISTEN>Scusa potresti essere più preciso?";
+                return "<AUTOLISTEN>Scusa potresti essere più preciso?"+BAD_LUCK;
             }
 
             if (response.getOutput().getGeneric().get(0).text() != null && response.getOutput().getGeneric().get(0).text().toLowerCase().contains("non ho capito")) {
@@ -720,7 +721,7 @@ public class WatsonManager {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                return "Scusa non ho capito";
+                return "Scusa non ho capito"+BAD_LUCK;
 
             }
             System.out.println("\n\n\n--------------------------" + risposta + "--------------------------\n\n\n");

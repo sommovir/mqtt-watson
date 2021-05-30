@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.awt.event.WindowListener;
@@ -55,6 +56,7 @@ public class Main {
         FlatDarkLaf.installLafInfo();
         FlatLightLaf.installLafInfo();
         FlatIntelliJLaf.installLafInfo();
+        System.out.println(LogTitles.SERVER.getTitle()+"ciaoioioioio");
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
