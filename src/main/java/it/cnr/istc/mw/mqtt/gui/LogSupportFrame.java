@@ -38,18 +38,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }
 
     public void printError(String message) {
-        this.jLabel_Error.setForeground(Color.red);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.red);
+        this.jLabel_FeedBack.setText(message);
     }
 
     public void printWarning(String message) {
-        this.jLabel_Error.setForeground(Color.yellow);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.yellow);
+        this.jLabel_FeedBack.setText(message);
     }
 
     public void printInfo(String message) {
-        this.jLabel_Error.setForeground(Color.cyan);
-        this.jLabel_Error.setText(message);
+        this.jLabel_FeedBack.setForeground(Color.cyan);
+        this.jLabel_FeedBack.setText(message);
     }
 
     /**
@@ -86,7 +86,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel4 = new javax.swing.JLabel();
         jSpinner3 = new javax.swing.JSpinner();
         jButton_ResetABG = new javax.swing.JButton();
-        jLabel_Error = new javax.swing.JLabel();
+        jLabel_FeedBack = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -291,8 +291,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel_Error.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel_Error.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel_FeedBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel_FeedBack.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,7 +305,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel_Error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -316,7 +316,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_Error, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -358,7 +358,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
-            System.out.println("Repromt eseguito");
+            System.out.println("Repromt tag logged");
+            printInfo("Repromt eseguito");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
             if (ex instanceof GuiPrintableException) {
@@ -373,6 +374,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
             System.out.println("Wrong answer tag logged");
+            printInfo("Wrong answer logged");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             System.out.println(ex.getMessage());
             if (ex instanceof GuiPrintableException) {
@@ -395,6 +397,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
                 System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                printInfo("Wallspeak tag logged + note");
                 jTextField_WallSpeak.setText(null);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(ex.getMessage());
@@ -407,6 +410,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
                 System.out.println("Wallspeak tag logged");
+                printInfo("Wallspeak tag logged");                
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
@@ -418,7 +422,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
     private void newNote() {
         String text = this.jTextField_Note.getText();
-        jLabel_Error.setText("");
+        jLabel_FeedBack.setText("");
         if (text.isEmpty()) {
             printError("Non puoi mandare note vuote");
         }
@@ -488,7 +492,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel_Error;
+    private javax.swing.JLabel jLabel_FeedBack;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
