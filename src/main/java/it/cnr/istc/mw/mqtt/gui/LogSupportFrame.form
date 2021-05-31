@@ -167,7 +167,7 @@
                               </Group>
                               <Component id="jTextField_WallSpeak" max="32767" attributes="0"/>
                               <Component id="jTextField_Extra" max="32767" attributes="0"/>
-                              <Component id="jTextField_Extra1" max="32767" attributes="0"/>
+                              <Component id="jTextField_WorngInput" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -189,7 +189,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jButton5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField_Extra1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField_WorngInput" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="20" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -257,8 +257,10 @@
                       <Color blue="0" green="cc" red="66" type="rgb"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="&lt;EXTRA&gt;"/>
-                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField_Extra">
                 </Component>
@@ -277,7 +279,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField_Extra1">
+                <Component class="javax.swing.JTextField" name="jTextField_WorngInput">
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton_log_end_pretest">
                   <Properties>
@@ -372,7 +374,7 @@
                     <Property name="text" type="java.lang.String" value="Alpha"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="jSpinner1">
+                <Component class="javax.swing.JSpinner" name="jSpinnerAlpha">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="6.0" maximum="6.0" minimum="0.0" numberType="java.lang.Float" stepSize="1.0" type="number"/>
@@ -385,7 +387,7 @@
                     <Property name="text" type="java.lang.String" value="Beta"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="jSpinner2">
+                <Component class="javax.swing.JSpinner" name="jSpinnerBeta">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
@@ -393,7 +395,7 @@
                     <Property name="text" type="java.lang.String" value="Gamma"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="jSpinner3">
+                <Component class="javax.swing.JSpinner" name="jSpinnerGamma">
                 </Component>
               </SubComponents>
             </Container>

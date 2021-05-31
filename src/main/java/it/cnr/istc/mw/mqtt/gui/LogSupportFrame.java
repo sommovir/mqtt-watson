@@ -19,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -29,12 +30,19 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     /**
      * Creates new form LogSupportFrame
      */
-    public LogSupportFrame() {
+    public LogSupportFrame() {//Cambia il nome dei Jspinner
         initComponents();
         this.setTitle("Log Support v0.1");
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
         this.addWindowListener(this);
+        SpinnerNumberModel modelAlpha = new SpinnerNumberModel(0.6d, 0d, 1d, 0.1d);
+        this.jSpinnerAlpha.setModel(modelAlpha);//Prebdi valori da modelAlpha
+        SpinnerNumberModel modelBeta = new SpinnerNumberModel(0.2d, 0d, 1d, 0.1d);
+        this.jSpinnerBeta.setModel(modelBeta);//Prebdi valori da modelAlpha
+        SpinnerNumberModel modelGamma = new SpinnerNumberModel(0, 0, 10, 1);
+        this.jSpinnerGamma.setModel(modelGamma);//Prebdi valori da modelAlpha
+        
 
     }
 
@@ -100,17 +108,17 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton4 = new javax.swing.JButton();
         jTextField_Extra = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
-        jTextField_Extra1 = new javax.swing.JTextField();
+        jTextField_WorngInput = new javax.swing.JTextField();
         jButton_log_end_pretest = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jSpinnerAlpha = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
+        jSpinnerBeta = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner3 = new javax.swing.JSpinner();
+        jSpinnerGamma = new javax.swing.JSpinner();
         jButton_ResetABG = new javax.swing.JButton();
         jButton_ApplyABG = new javax.swing.JButton();
         jLabel_FeedBack = new javax.swing.JLabel();
@@ -169,7 +177,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton4.setForeground(new java.awt.Color(102, 204, 0));
         jButton4.setText("<EXTRA>");
-        jButton4.setEnabled(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton5.setForeground(new java.awt.Color(0, 153, 255));
@@ -220,7 +232,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addGap(0, 7, Short.MAX_VALUE))
                     .addComponent(jTextField_WallSpeak)
                     .addComponent(jTextField_Extra)
-                    .addComponent(jTextField_Extra1))
+                    .addComponent(jTextField_WorngInput))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -237,7 +249,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton5)
-                    .addComponent(jTextField_Extra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_WorngInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -283,18 +295,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel2.setText("Alpha");
         jPanel5.add(jLabel2);
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(6.0f), Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(1.0f)));
-        jPanel5.add(jSpinner1);
+        jSpinnerAlpha.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(6.0f), Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(1.0f)));
+        jPanel5.add(jSpinnerAlpha);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Beta");
         jPanel5.add(jLabel3);
-        jPanel5.add(jSpinner2);
+        jPanel5.add(jSpinnerBeta);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Gamma");
         jPanel5.add(jLabel4);
-        jPanel5.add(jSpinner3);
+        jPanel5.add(jSpinnerGamma);
 
         jButton_ResetABG.setText("Reset to Default");
         jButton_ResetABG.addActionListener(new java.awt.event.ActionListener() {
@@ -481,6 +493,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
     private void jButton_ApplyABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ApplyABGActionPerformed
         // TODO add your handling code here:
+        //Check di chi cambia
        /* String x = jSpinner1.getValue().toString();
         WatsonManager.getInstance().setMinSingleDeltaThreshold(Float.parseFloat(x));
         System.out.println("Alpha : " + x);
@@ -491,6 +504,34 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(z));
         System.out.println("Gamma : " + z);*/
     }//GEN-LAST:event_jButton_ApplyABGActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(!jTextField_Extra.getText().isEmpty()){
+            try {
+                LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + jTextField_Extra.getText());
+                System.out.println("Wallspeak tag logged + ( " + jTextField_Extra.getText() + " )");
+                printInfo("Extra tag logged + note");
+                jTextField_Extra.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        else{
+            try {
+                LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
+                System.out.println("Extra Input tag logged");
+                printInfo("Extra input tag logged");                
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     /**
@@ -550,13 +591,13 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
+    private javax.swing.JSpinner jSpinnerAlpha;
+    private javax.swing.JSpinner jSpinnerBeta;
+    private javax.swing.JSpinner jSpinnerGamma;
     private javax.swing.JTextField jTextField_Extra;
-    private javax.swing.JTextField jTextField_Extra1;
     private javax.swing.JTextField jTextField_Note;
     private javax.swing.JTextField jTextField_WallSpeak;
+    private javax.swing.JTextField jTextField_WorngInput;
     // End of variables declaration//GEN-END:variables
 
     @Override
