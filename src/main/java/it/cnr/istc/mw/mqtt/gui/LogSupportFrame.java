@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt.gui;
 
 import it.cnr.istc.mw.mqtt.ConsoleColors;
 import it.cnr.istc.mw.mqtt.Main;
+import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.GuiPrintableException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
@@ -111,6 +112,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel4 = new javax.swing.JLabel();
         jSpinner3 = new javax.swing.JSpinner();
         jButton_ResetABG = new javax.swing.JButton();
+        jButton_ApplyABG = new javax.swing.JButton();
         jLabel_FeedBack = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -280,6 +282,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Alpha");
         jPanel5.add(jLabel2);
+
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(6.0f), Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(1.0f)));
         jPanel5.add(jSpinner1);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -293,7 +297,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jPanel5.add(jSpinner3);
 
         jButton_ResetABG.setText("Reset to Default");
-        jButton_ResetABG.setEnabled(false);
+        jButton_ResetABG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ResetABGActionPerformed(evt);
+            }
+        });
+
+        jButton_ApplyABG.setText("Apply");
+        jButton_ApplyABG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ApplyABGActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -302,6 +317,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton_ApplyABG, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton_ResetABG, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
@@ -311,9 +327,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton_ApplyABG)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton_ResetABG)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel_FeedBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -445,6 +463,35 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jButton_WallSpeakActionPerformed
 
+    private void jButton_ResetABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResetABGActionPerformed
+        try {
+            // TODO add your handling code here:
+            //Senza Panel
+            WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
+            LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
+            WatsonManager.getInstance().setMinDeltaThreshold(0.2);
+            LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
+            WatsonManager.getInstance().setMaxDeadlocks(1);
+            LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
+            printWarning("Valori settati default");
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_ResetABGActionPerformed
+
+    private void jButton_ApplyABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ApplyABGActionPerformed
+        // TODO add your handling code here:
+       /* String x = jSpinner1.getValue().toString();
+        WatsonManager.getInstance().setMinSingleDeltaThreshold(Float.parseFloat(x));
+        System.out.println("Alpha : " + x);
+        String y = jSpinner2.getValue().toString();
+        WatsonManager.getInstance().setMinDeltaThreshold(Float.parseFloat(x));
+        System.out.println("Beta : " + y);
+        String z = jSpinner3.getValue().toString();
+        WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(z));
+        System.out.println("Gamma : " + z);*/
+    }//GEN-LAST:event_jButton_ApplyABGActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -488,6 +535,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton_ApplyABG;
     private javax.swing.JButton jButton_Note;
     private javax.swing.JButton jButton_ResetABG;
     private javax.swing.JButton jButton_WallSpeak;
