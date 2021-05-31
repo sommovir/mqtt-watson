@@ -18,6 +18,7 @@ import io.netty.buffer.ByteBufUtil;
 import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.IOException;
@@ -92,12 +93,12 @@ public class MQTTServer {
                     @Override
                     public void onDisconnect(InterceptDisconnectMessage idm) {
                         if (idm.getClientID().equals("Server")) {
-                            System.out.println("[mqtt] disconnect ignoring s.d.");
+                            System.out.println(LogTitles.SERVER.getTitle()+"[mqtt] disconnect ignoring s.d.");
                             return;
                         }
                         synchronized (this) {
                             ON_LINE.removeIf(info -> info.getId().equals(idm.getClientID()));
-                            System.out.println("DISCONNECT");
+                            System.out.println(LogTitles.SERVER.getTitle()+"DISCONNECT");
                             MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), idm.getClientID());
                         }
                     }
@@ -110,7 +111,7 @@ public class MQTTServer {
 //                                return;
 //                            }
                             ON_LINE.removeIf(info -> info.getId().equals(iclm.getClientID()));
-                            System.out.println("LOST");
+                            System.out.println(LogTitles.SERVER.getTitle()+"LOST");
                             String tid = Topics.CHAT.getTopic() + "/" + iclm.getClientID();
                             idTopicMap.remove(tid, Topics.RESPONSES.getTopic() + "/" + iclm.getClientID());
                             //     MQTTClient.getInstance().unsubscribe(tid);
@@ -119,10 +120,8 @@ public class MQTTServer {
                             
                             try {
                                 LoggerManager.getInstance().log(LoggingTag.USER_DISCONNECTED.getTag() + " " + iclm.getClientID());
-                            } catch (LogOffException ex) {
-                                System.out.println(ex.getMessage());
-                            } catch (InvalidAttemptToLogException ex) {
-                                System.out.println(ex.getMessage());
+                            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                             }
                             
                         }
@@ -143,7 +142,7 @@ public class MQTTServer {
                             }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
                             resetMap.put(icm.getClientID(),0);
-                            System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
+                            System.out.println(LogTitles.SERVER.getTitle()+"[info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
                             String tlog = Topics.LOG.getTopic() + "/" + icm.getClientID();
                             idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
@@ -157,10 +156,8 @@ public class MQTTServer {
                                 MQTTClient.getInstance().subscribe(Topics.BUTTON_PRESSED.getTopic()+ "/" + icm.getClientID());
                                 try {
                                     LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
-                                } catch (LogOffException ex) {
-                                    System.out.println(ex.getMessage());
-                                } catch (InvalidAttemptToLogException ex) {
-                                    System.out.println(ex.getMessage());
+                                } catch (LogOffException | InvalidAttemptToLogException ex) {
+                                    System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                                 }
                             }
                             
@@ -171,7 +168,7 @@ public class MQTTServer {
                     @Override
                     public void onPublish(InterceptPublishMessage msg) {
                         final String decodedPayload = new String(ByteBufUtil.getBytes(msg.getPayload()), UTF_8);
-                        System.out.println("Received on topic: " + msg.getTopicName() + " content: " + decodedPayload);
+                        System.out.println(LogTitles.SERVER.getTitle()+"Received on topic: " + msg.getTopicName() + " content: " + decodedPayload);
                         String topic = msg.getTopicName();
 
                     }
@@ -180,7 +177,7 @@ public class MQTTServer {
         MQTTClient.getInstance().setIp_server("127.0.0.1");
         MQTTClient.getInstance().connect();
 
-        System.out.println("[Server]started..");
+        System.out.println(LogTitles.SERVER.getTitle()+"started..");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             //app.stop();

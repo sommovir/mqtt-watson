@@ -33,6 +33,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
 import it.cnr.istc.mw.mqtt.logic.Emotion;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.LowDeltaResult;
@@ -154,7 +155,7 @@ public class WatsonManager {
 
         this.sessionIdMap.put(userId, session.getSessionId());
         this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
-        System.out.println("[Watson] session [" + session.getSessionId() + "] has been refreshed");
+        System.out.println(LogTitles.SERVER.getTitle()+"[Watson] session [" + session.getSessionId() + "] has been refreshed");
     }
 
     private WatsonManager() {
@@ -183,7 +184,7 @@ public class WatsonManager {
                     return null;
                 }
                 if (mcs.userDefined() == null) {
-                    System.out.println("[watson] no user defined.");
+                    System.out.println(LogTitles.SERVER.getTitle()+"[watson] no user defined.");
                     return null;
                 }
                 if (mcs.userDefined().containsKey("apptext")) {
@@ -243,7 +244,7 @@ public class WatsonManager {
                 }
                 if (mcs.userDefined().containsKey("face")) {
                     if (mcs.userDefined().get("face") instanceof String) {
-                        System.out.println("[Server][CRITICAL ERROR] bad format in face !! --------------------------------------------- NEED REVIEW");
+                        System.out.println(LogTitles.SERVER.getTitle()+"[CRITICAL ERROR] bad format in face !! --------------------------------------------- NEED REVIEW");
                         return (String) mcs.userDefined().get("face");
                     } else {
                         return null;
@@ -273,7 +274,7 @@ public class WatsonManager {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.FACE.getTag() + " " + value);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
                     }
                     if (command.equals("table")) {
@@ -290,7 +291,7 @@ public class WatsonManager {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.TABLE.getTag() + " " + value);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
 
                     }
@@ -300,7 +301,7 @@ public class WatsonManager {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.LINK.getTag() + " " + value);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
                     }
                     if (command.equals("youtube")) {
@@ -309,7 +310,7 @@ public class WatsonManager {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.VIDEO.getTag() + " " + value);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
                     }
                     if (command.equals("img")) {
@@ -318,7 +319,7 @@ public class WatsonManager {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.IMG.getTag() + " " + value);
                         } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                            System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
                     }
                     if (command.equals("listen")) {
@@ -475,10 +476,10 @@ public class WatsonManager {
                 System.out.println(ConsoleColors.BLUE_BRIGHT + "***************************************************************************" + ConsoleColors.ANSI_RESET);
 
             } else {
-                System.out.println(ConsoleColors.RED_BRIGHT + "no main skill.. go find yourself" + ConsoleColors.ANSI_RESET);
+                System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.RED_BRIGHT + "no main skill.. go find yourself" + ConsoleColors.ANSI_RESET);
             }
         } else {
-            System.out.println(ConsoleColors.RED_BRIGHT + "there is no context at the moment" + ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.RED_BRIGHT + "there is no context at the moment" + ConsoleColors.ANSI_RESET);
         }
 
     }
@@ -486,7 +487,7 @@ public class WatsonManager {
     public void hardReset() {
         Collection<String> userIds = sessionIdMap.keySet();
         for (String userId : userIds) {
-            System.out.println("USER-ID -> > > > > " + userId);
+            System.out.println(LogTitles.SERVER.getTitle()+"USER-ID -> > > > > " + userId);
             if (userIds.equals("110")) {
                 continue;
             }
@@ -495,7 +496,7 @@ public class WatsonManager {
     }
 
     public void automaticHardReset(String userId) {
-        System.out.println("USER-ID -> > > > > " + userId);
+        System.out.println(LogTitles.SERVER.getTitle()+"USER-ID -> > > > > " + userId);
         if (!userId.equals("110")) {
             MQTTServer.clearResetTurns(userId);
             String risposta_reset = sendMessage(HARD_RESET_SECRET_KEY, userId);
@@ -507,28 +508,28 @@ public class WatsonManager {
 
     public String sendMessage(String message, String userId) {
         try {
-            System.out.println("[Watson] sending message to AI.. ");
-            System.out.println("[Watson] user id:  " + userId);
-            System.out.println("[Watson] message:  " + message);
+            System.out.println(LogTitles.SERVER.getTitle()+"[Watson] sending message to AI.. ");
+            System.out.println(LogTitles.SERVER.getTitle()+"[Watson] user id:  " + userId);
+            System.out.println(LogTitles.SERVER.getTitle()+"[Watson] message:  " + message);
             if (!this.sessionIdMap.containsKey(userId)) {
                 CreateSessionOptions createSessionOptions = new CreateSessionOptions.Builder(assistant_id).build();
                 SessionResponse session = assistant.createSession(createSessionOptions).execute().getResult();
                 this.sessionIdMap.put(userId, session.getSessionId());
                 this.expireTimeMap.put(session.getSessionId(), new Date().getTime());
                 if (isSessionExpired(this.sessionIdMap.get(userId))) {
-                    System.out.println("[Watson] Session EXPIRED");
+                    System.out.println(LogTitles.SERVER.getTitle()+"[Watson] Session EXPIRED");
                     refreshSessionId(userId);
                 }
 
             } else {
                 if (isSessionExpired(this.sessionIdMap.get(userId))) {
-                    System.out.println("[Watson] Session EXPIRED");
+                    System.out.println(LogTitles.SERVER.getTitle()+"[Watson] Session EXPIRED");
                     refreshSessionId(userId);
                 }
             }
             String session_id = this.sessionIdMap.get(userId);
 
-            System.out.println("[Watson] session id: " + session_id);
+            System.out.println(LogTitles.SERVER.getTitle()+"[Watson] session id: " + session_id);
 
             MessageInputOptions option = new MessageInputOptions.Builder()
                     .alternateIntents(Boolean.TRUE)
@@ -599,7 +600,7 @@ public class WatsonManager {
                     LoggerManager.getInstance().newFailedIntentDetected(0);
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
                 return errorMessages[randomNum];
             }
@@ -627,9 +628,9 @@ public class WatsonManager {
                     LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag() + LoggingTag.BYPASS.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
+                System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "bypass" + ConsoleColors.ANSI_RESET);
                 return risposta+BAD_LUCK;
             }
 
@@ -645,7 +646,7 @@ public class WatsonManager {
                     LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.LOW_DELTA.getTag() + "[" + lowDeltaExisting + "] " + lowDeltaExisting.getCause());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
                 System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson]: " + ConsoleColors.PURPLE_BRIGHT + "DELTA" + ConsoleColors.ANSI_RESET);
                 switch (lowDeltaExisting) {
@@ -665,7 +666,7 @@ public class WatsonManager {
                     LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.REJECTS.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
             }
 
@@ -687,7 +688,7 @@ public class WatsonManager {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.POSITIVE_ANS.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
             }
 
@@ -695,31 +696,31 @@ public class WatsonManager {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.NEGATIVE_ANS.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
             }
 
             risposta = response.getOutput().getGeneric().get(0).text();
-            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] input: " + ConsoleColors.PURPLE_BRIGHT + message + ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.GREEN_BRIGHT + "[Watson] input: " + ConsoleColors.PURPLE_BRIGHT + message + ConsoleColors.ANSI_RESET);
             if (actualResponse != null) {
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_YELLOW + actualResponse + ConsoleColors.ANSI_RESET);
+                System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_YELLOW + actualResponse + ConsoleColors.ANSI_RESET);
 
             } else {
-                System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_RED + "not found" + ConsoleColors.ANSI_RESET);
+                System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.GREEN_BRIGHT + "[Watson] app response: " + ConsoleColors.ANSI_RED + "not found" + ConsoleColors.ANSI_RESET);
             }
-            System.out.println(ConsoleColors.GREEN_BRIGHT + "[Watson] chat response: " + ConsoleColors.ANSI_CYAN + risposta + ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.GREEN_BRIGHT + "[Watson] chat response: " + ConsoleColors.ANSI_CYAN + risposta + ConsoleColors.ANSI_RESET);
             if (actualResponse != null) {
                 risposta = actualResponse;
             }
             // risposta = risposta.replace("è", "e'");
-            System.out.println("about to finishing the send watson method");
+            System.out.println(LogTitles.SERVER.getTitle()+"about to finishing the send watson method");
             if (risposta == null || risposta.isEmpty()) {
                 try {
                     LoggerManager.getInstance().newFailedIntentDetected(intentsConfList == null || intentsConfList.isEmpty() ? 0 : intentsConfList.get(0));
                     LoggerManager.getInstance().newEntitiesDetected(entitiesConfList == null || entitiesConfList.isEmpty() ? 0 : entitiesConfList.get(0));
                     LoggerManager.getInstance().log(LoggingTag.NOANSWER.getTag());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                 }
                 return "Scusa non ho capito"+BAD_LUCK;
 
@@ -741,12 +742,12 @@ public class WatsonManager {
                 //LoggerManager.getInstance().log(LoggingTag.PRECISION_INTENTS.getTag() + " " + precisionIntentsCalcolation(response.getOutput().getIntents()));
                 LoggerManager.getInstance().log(LoggingTag.SYSTEM_TURNS.getTag() + " " + risposta);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
             }
 
             return risposta;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
             return "errore";
         }
         // risposta = risposta.replace("televita", " .Televita");

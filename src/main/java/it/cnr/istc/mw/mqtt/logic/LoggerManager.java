@@ -127,7 +127,7 @@ public class LoggerManager {
             this.lastFileName = this.currentLogPath;
             File storedFile = new File(currentLogPath);
             storedFile.getParentFile().mkdirs();
-            System.out.println("path: " + storedFile.getAbsolutePath());
+            System.out.println(LogTitles.LOGGER.getTitle()+"path: " + storedFile.getAbsolutePath());
             storedFile.createNewFile(); // if file already exists will do nothing
             FileOutputStream currentLoggingFile = new FileOutputStream(storedFile, false);
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
@@ -149,7 +149,7 @@ public class LoggerManager {
 
         //first check if Desktop is supported by Platform or not
         if (!Desktop.isDesktopSupported()) {
-            System.out.println("Desktop is not supported");
+            System.out.println(LogTitles.LOGGER.getTitle()+"Desktop is not supported");
             return;
         }
 
@@ -190,7 +190,6 @@ public class LoggerManager {
         this.startingLoggingTime = -1;
         this.alreadyPaused = false;
         clearAvg();
-        //System.out.println("GASHAHYAHAHAHAHAHAJSHSKJHSJHJKHSKJSH");
     }
 
     public boolean isAlreadyPaused() {
@@ -239,7 +238,7 @@ public class LoggerManager {
             LoggerManager.getInstance().log(LoggingTag.END_PRETEST.getTag() + "\n------------------------------------------------------\n \t\tR E A L  T E S T   S T A R T E D\n------------------------------------------------------");
             LoggerManager.getInstance().logConfigs();
         } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
         }
     }
 
@@ -253,20 +252,16 @@ public class LoggerManager {
 
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         if (!isLoggable(textToLog)) {
-            //System.out.println("Loggin attempt detected, use command [log resume] to renable the logging module");
             throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu
         }
         numberLine++;
-        //System.out.println("into log EHYLA' SON DENTRO");
         String timestamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
 
         if (!logActive) {
-            //System.out.println("Throw LogOffException");
             throw new LogOffException();
         }
 
         if (currentLogPath == null) {
-            //System.out.println("Throw InvalidAttemptToLogException");
             throw new InvalidAttemptToLogException();
         }
         try (FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true); BufferedWriter bw = new BufferedWriter(fw); PrintWriter out = new PrintWriter(bw)) {
@@ -297,7 +292,7 @@ public class LoggerManager {
                     + "       " + LoggingTag.BETA.getUndecoratedTag() + ": " + WatsonManager.getInstance().getMinDeltaThreshold()
                     + "       " + LoggingTag.GAMMA.getUndecoratedTag() + ": " + WatsonManager.getInstance().getMaxDeadlocks());
         } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
         }
     }
 
@@ -330,7 +325,7 @@ public class LoggerManager {
             try {
                 stopLogging();
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
             }
             cache.clear();
         }

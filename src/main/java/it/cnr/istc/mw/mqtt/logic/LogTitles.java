@@ -15,7 +15,8 @@ public enum LogTitles {
     
     SERVER("Server",ConsoleColors.ANSI_ORANGE),
     LOGGER("Logger",ConsoleColors.ANSI_GREEN),
-    GUI("GUI",ConsoleColors.BLUE_BRIGHT);
+    GUI("GUI",ConsoleColors.BLUE_BRIGHT),
+    DATABASE("DataBase",ConsoleColors.IVORY);
 
     private LogTitles(String title, String color) {
         this.color = color;
@@ -26,6 +27,10 @@ public enum LogTitles {
     
     public String getTitle(){
         return(color+"["+title+"] "+ConsoleColors.ANSI_RESET);
+    }
+    
+    public String getDecoloredTitle(){
+        return("["+title+"] ");
     }
     
 }
