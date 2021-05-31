@@ -58,7 +58,8 @@ public enum LoggingTag {
     WALL_SPEAK("WALL SPEAK"),
     GAMMA("GAMMA"),
     EXTRA_INPUT("EXTRA_INPUT"),
-    WRONG_INPUT("WRONG_INPUT");
+    WRONG_INPUT("WRONG_INPUT"),
+    LOGGER_ADMIN("LOGGER ADMIN");
 
     private LoggingTag(String tag) {
         this.tag = tag;
