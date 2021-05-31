@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.HistoryElement;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.awt.event.WindowListener;
@@ -55,6 +56,7 @@ public class Main {
         FlatDarkLaf.installLafInfo();
         FlatLightLaf.installLafInfo();
         FlatIntelliJLaf.installLafInfo();
+        System.out.println(LogTitles.SERVER.getTitle()+"ciaoioioioio");
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -615,8 +617,17 @@ public class Main {
                             LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + free_text);
                             System.out.println("Extra has been added");
 
-                        } else if (line.equals("log iw")) {
-                        } else if (line.equals("help")) {
+                        } else if (line.equals("log wrong input")) {
+                            LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
+                            System.out.println("Note has been added");
+                            
+                        }
+                        else if((line.startsWith("log wrong input ") && !line.replace("log wrong input ", "").isEmpty())){
+                            String free_text = line.substring(16, line.length());
+                            LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + free_text);
+                            System.out.println("Note has been added");
+                        }
+                            else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
