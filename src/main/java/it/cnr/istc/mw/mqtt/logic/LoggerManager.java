@@ -110,7 +110,7 @@ public class LoggerManager {
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(System.in));
         
-        System.out.print(LogTitles.SERVER.getTitle() + "Inserire il nome del responsabile del log: ");
+        System.out.println(LogTitles.LOGGER.getTitle() + "Inserire il nome del responsabile del log: ");
         try {
             adminName = reader.readLine();
         } catch (IOException ex) {
@@ -125,6 +125,7 @@ public class LoggerManager {
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
             }
+            System.out.println(LogTitles.LOGGER.getTitle()+"Responsabile del log registrato a nome di: "+adminName);
             return true;
         }
     }
