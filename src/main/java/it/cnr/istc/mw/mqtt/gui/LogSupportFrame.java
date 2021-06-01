@@ -318,6 +318,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         });
 
         jButton_ApplyABG.setText("Apply");
+        jButton_ApplyABG.setToolTipText("Applica i cambiamenti sui valori : Alpha - Beta - Gamma");
         jButton_ApplyABG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_ApplyABGActionPerformed(evt);

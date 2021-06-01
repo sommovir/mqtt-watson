@@ -407,6 +407,7 @@
             <Component class="javax.swing.JButton" name="jButton_ApplyABG">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Apply"/>
+                <Property name="toolTipText" type="java.lang.String" value="Applica i cambiamenti sui valori : Alpha - Beta - Gamma"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_ApplyABGActionPerformed"/>
