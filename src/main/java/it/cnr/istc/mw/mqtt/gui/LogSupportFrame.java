@@ -42,7 +42,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.jSpinnerAlpha.setModel(modelAlpha);//Prebdi valori da modelAlpha
         SpinnerNumberModel modelBeta = new SpinnerNumberModel(0.2d, 0d, 1d, 0.1d);
         this.jSpinnerBeta.setModel(modelBeta);//Prebdi valori da modelAlpha
-        SpinnerNumberModel modelGamma = new SpinnerNumberModel(0, 0, 10, 1);
+        SpinnerNumberModel modelGamma = new SpinnerNumberModel(1, 0, 10, 1);
         this.jSpinnerGamma.setModel(modelGamma);//Prebdi valori da modelAlpha
 
     }
