@@ -105,10 +105,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jTextField_WallSpeak = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        jButton_ExtraInput = new javax.swing.JButton();
         jTextField_Extra = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jTextField_WorngInput = new javax.swing.JTextField();
+        jButton_WrongInput = new javax.swing.JButton();
+        jTextField_WrongInput = new javax.swing.JTextField();
         jButton_log_end_pretest = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -174,22 +174,21 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(102, 204, 0));
-        jButton4.setText("<EXTRA>");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton_ExtraInput.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_ExtraInput.setForeground(new java.awt.Color(102, 204, 0));
+        jButton_ExtraInput.setText("<EXTRA>");
+        jButton_ExtraInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton_ExtraInputActionPerformed(evt);
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 153, 255));
-        jButton5.setText("<WRONG INPUT>");
-        jButton5.setEnabled(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jButton_WrongInput.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_WrongInput.setForeground(new java.awt.Color(0, 153, 255));
+        jButton_WrongInput.setText("<WRONG INPUT>");
+        jButton_WrongInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButton_WrongInputActionPerformed(evt);
             }
         });
 
@@ -218,9 +217,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_WrongInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_WallSpeak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton_ExtraInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -232,7 +231,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addGap(0, 7, Short.MAX_VALUE))
                     .addComponent(jTextField_WallSpeak)
                     .addComponent(jTextField_Extra)
-                    .addComponent(jTextField_WorngInput))
+                    .addComponent(jTextField_WrongInput))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -244,12 +243,12 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     .addComponent(jTextField_WallSpeak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
+                    .addComponent(jButton_ExtraInput)
                     .addComponent(jTextField_Extra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jTextField_WorngInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton_WrongInput)
+                    .addComponent(jTextField_WrongInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -438,9 +437,34 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButton_WrongInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongInputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+        if(!jTextField_WrongInput.getText().isEmpty()){
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
+                System.out.println("Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
+                printInfo("Wrong input tag logged + note");
+                jTextField_WrongInput.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        else{
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
+                System.out.println("Wrong input tag logged");
+                printInfo("Wrong input tag logged");                
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_WrongInputActionPerformed
 
     private void jButton_log_end_pretestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_log_end_pretestActionPerformed
         // TODO add your handling code here:
@@ -505,7 +529,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         System.out.println("Gamma : " + z);*/
     }//GEN-LAST:event_jButton_ApplyABGActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton_ExtraInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExtraInputActionPerformed
         if(!jTextField_Extra.getText().isEmpty()){
             try {
                 LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + jTextField_Extra.getText());
@@ -531,7 +555,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 }
             }
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton_ExtraInputActionPerformed
 
 
     /**
@@ -573,13 +597,13 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_ApplyABG;
+    private javax.swing.JButton jButton_ExtraInput;
     private javax.swing.JButton jButton_Note;
     private javax.swing.JButton jButton_ResetABG;
     private javax.swing.JButton jButton_WallSpeak;
+    private javax.swing.JButton jButton_WrongInput;
     private javax.swing.JButton jButton_log_end_pretest;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -597,7 +621,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JTextField jTextField_Extra;
     private javax.swing.JTextField jTextField_Note;
     private javax.swing.JTextField jTextField_WallSpeak;
-    private javax.swing.JTextField jTextField_WorngInput;
+    private javax.swing.JTextField jTextField_WrongInput;
     // End of variables declaration//GEN-END:variables
 
     @Override
