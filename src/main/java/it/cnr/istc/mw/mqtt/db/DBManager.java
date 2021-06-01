@@ -5,6 +5,10 @@
  */
 package it.cnr.istc.mw.mqtt.db;
 
+import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
+import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,17 +36,72 @@ public class DBManager {
 
     private DBManager() {
         super();
-
-// configures settings from hibernate.cfg.xml 
+        initConnection();
+    }
+    
+    private void initConnection(){
+        // configures settings from hibernate.cfg.xml 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
+            System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db "+ConsoleColors.PURPLE_BRIGHT+"[watsondb]"+ ConsoleColors.YELLOW_BRIGHT +" is already created .." + ConsoleColors.ANSI_RESET);
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+            System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_GREEN + " YES" + ConsoleColors.ANSI_RESET);
 //             SessionFactory sessionFactory = new Configuration()
 //    .configure("/org/nitish/caller/hibernate.cfg.xml").buildSessionFactory();
         } catch (Exception e) {
             // handle the exception
-            e.printStackTrace();
+            System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_RED + " NO" + ConsoleColors.ANSI_RESET);
+            
         }
+    }
+
+    public void install() throws DBAlreadyInstalledException, DBNotExistingException {
+        System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_GREEN + " installing database .." + ConsoleColors.ANSI_RESET);
+//        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db "+ConsoleColors.PURPLE_BRIGHT+"[watsondb]"+ ConsoleColors.YELLOW_BRIGHT +" is already created .." + ConsoleColors.ANSI_RESET);
+
+        if (sessionFactory == null) {
+//            System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_RED + " NO" + ConsoleColors.ANSI_RESET);
+            throw new DBNotExistingException();
+        }
+        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db is already existing .." + ConsoleColors.ANSI_RESET);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<Laboratory> allLaboratories = session.createQuery("from Laboratory", Laboratory.class).list();
+
+        session.getTransaction().commit();
+        session.close();
+
+        if (allLaboratories.size() == 1) {
+            System.out.println(ConsoleColors.ANSI_RED + " YES" + ConsoleColors.ANSI_RESET);
+            throw new DBAlreadyInstalledException();
+        }
+        System.out.println(ConsoleColors.ANSI_GREEN + " NO" + ConsoleColors.ANSI_RESET);
+        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " populating table "+ConsoleColors.CYAN_BOLD+"[Laboratory]"+ConsoleColors.YELLOW_BRIGHT +" .. " + ConsoleColors.ANSI_RESET);
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+        Laboratory labCucina = new Laboratory();
+        labCucina.setName("Laboratorio di Cucina");
+
+        session.persist(labCucina);
+
+        session.getTransaction().commit();
+        session.close();
+        System.out.println(ConsoleColors.ANSI_GREEN + "DONE" + ConsoleColors.ANSI_RESET);
+
+    }
+
+    public List<Laboratory> getAllLaboratories() {
+        System.out.println(LogTitles.DATABASE.getTitle() + "fetching data.. [select * from laboratory]");
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        List<Laboratory> result = session.createQuery("from Laboratory", Laboratory.class).list();
+
+        session.getTransaction().commit();
+        session.close();
+
+        return result;
     }
 
     public void test() {
@@ -59,11 +118,11 @@ public class DBManager {
         List<Person> result = session.createQuery("from Person", Person.class).list();
 
         result.forEach(person -> {
-            System.out.println("Persona: "+person.getName()+" "+person.getSurname());  
+            System.out.println("Persona: " + person.getName() + " " + person.getSurname());
         });
 
         session.getTransaction().commit();
         session.close();
     }
 
-    }
+}
