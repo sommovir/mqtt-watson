@@ -9,7 +9,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import it.cnr.istc.mw.mqtt.logic.generals.DefaultPaths;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -38,12 +41,12 @@ public class QRManager {
 
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
     }
-    
-    public void printQR(String barcodeText) throws Exception{
+
+    public void printQR(String barcodeText, String filename) throws Exception {
         BufferedImage generateQRCodeImage = this.generateQRCodeImage(barcodeText);
-//        generateQRCodeImage
-        
-        
+        File outputfile = new File(DefaultPaths.QR.getPath()+filename+".jpg");
+        ImageIO.write(generateQRCodeImage, "jpg", outputfile);
+
     }
 
 }
