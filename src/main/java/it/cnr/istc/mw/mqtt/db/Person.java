@@ -6,10 +6,13 @@
 package it.cnr.istc.mw.mqtt.db;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -25,6 +28,8 @@ public class Person implements Serializable {
     private long id;
     private String name;
     private String surname;
+    @OneToMany
+    private List<Laboratory> labAccess = new LinkedList<>();
 
     public Person() {
     }
@@ -37,7 +42,14 @@ public class Person implements Serializable {
     public long getId() {
         return id;
     }
-    
+
+    public List<Laboratory> getLabAccess() {
+        return labAccess;
+    }
+
+    public void addLaboratory(Laboratory lab){
+        this.labAccess.add(lab);
+    }
     
 
     public String getName() {
@@ -55,6 +67,21 @@ public class Person implements Serializable {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(obj instanceof Person){
+            if(((Person)obj).getId() == this.getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
     
     
     

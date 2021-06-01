@@ -18,8 +18,12 @@ public enum Topics {
     USER_CONNECTED("UserConnected"),
     USER_DISCONNECTED("UserDisconnected"),
     EMERGENCY("emergency"),
+    LOG("log"),
+    USERNAME("username"),
     RESPONSES("responses"),
     COMMAND("commands"),
+    BUTTON_PRESSED("button_pressed"),
+    REPEAT("repeat"),
     INFO("info_channel");
     
     private Topics(String topic) {

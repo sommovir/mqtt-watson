@@ -29,4 +29,21 @@
                 <jpda.listen>true</jpda.listen>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-test</actionName>
+            <displayName>test</displayName>
+            <goals>
+                <goal>test</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-build skipping test</actionName>
+            <displayName>build skipping test</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests></skipTests>
+            </properties>
+        </action>
     </actions>

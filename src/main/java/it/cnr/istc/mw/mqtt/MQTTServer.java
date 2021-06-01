@@ -15,6 +15,12 @@ import io.moquette.server.Server;
 import io.moquette.server.config.ClasspathResourceLoader;
 import io.moquette.server.config.ResourceLoaderConfig;
 import io.netty.buffer.ByteBufUtil;
+import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -22,6 +28,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +43,25 @@ public class MQTTServer {
     public static Map<String, String> idTopicMap = new HashMap<>();
     private boolean lock = false;
     private boolean serverEntered = false;
-
+    private static Map<String, Integer> resetMap = new  HashMap<>();
+    
+    
+    public static int getResetTurns(String userId){
+        return resetMap.get(userId);
+    }
+    
+    public static int clearResetTurns(String userId){
+        return resetMap.put(userId,0);
+    }
+    
+    public static void increaseResetTurns(String userId){
+        resetMap.put(userId,resetMap.get(userId)+1);
+    }
+    
+    public static void restartResetTurns(String userId){
+        resetMap.put(userId,0);
+    }
+    
     public void stop() {
         mqtt_broker.stopServer();
     }
@@ -67,12 +93,12 @@ public class MQTTServer {
                     @Override
                     public void onDisconnect(InterceptDisconnectMessage idm) {
                         if (idm.getClientID().equals("Server")) {
-                            System.out.println("[mqtt] disconnect ignoring s.d.");
+                            System.out.println(LogTitles.SERVER.getTitle()+"[mqtt] disconnect ignoring s.d.");
                             return;
                         }
                         synchronized (this) {
                             ON_LINE.removeIf(info -> info.getId().equals(idm.getClientID()));
-                            System.out.println("DISCONNECT");
+                            System.out.println(LogTitles.SERVER.getTitle()+"DISCONNECT");
                             MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), idm.getClientID());
                         }
                     }
@@ -85,13 +111,23 @@ public class MQTTServer {
 //                                return;
 //                            }
                             ON_LINE.removeIf(info -> info.getId().equals(iclm.getClientID()));
-                            System.out.println("LOST");
+                            System.out.println(LogTitles.SERVER.getTitle()+"LOST");
                             String tid = Topics.CHAT.getTopic() + "/" + iclm.getClientID();
                             idTopicMap.remove(tid, Topics.RESPONSES.getTopic() + "/" + iclm.getClientID());
                             //     MQTTClient.getInstance().unsubscribe(tid);
                             topicids.remove(tid);
                             MQTTClient.getInstance().publish(Topics.USER_DISCONNECTED.getTopic(), iclm.getClientID());
+                            
+                            try {
+                                LoggerManager.getInstance().log(LoggingTag.USER_DISCONNECTED.getTag() + " " + iclm.getClientID());
+                            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                            }
+                            
                         }
+                        
+                        
+                        
                     }
 
                     @Override
@@ -101,15 +137,30 @@ public class MQTTServer {
 //                                System.out.println("[mqtt] ignoring reconection of server");
 //                                return;
 //                            }
+                            if(WatsonManager.getInstance().isTestMode() && ON_LINE.size() == 2){
+                                return;
+                            }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
-                            System.out.println("[Server][info] l'utente [" + icm.getClientID() + "] si è connesso");
+                            resetMap.put(icm.getClientID(),0);
+                            System.out.println(LogTitles.SERVER.getTitle()+"[info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();
+                            String tlog = Topics.LOG.getTopic() + "/" + icm.getClientID();
                             idTopicMap.put(tid, Topics.RESPONSES.getTopic() + "/" + icm.getClientID());
                             topicids.add(tid);
                             MQTTClient.getInstance().subscribe(tid);
+                            MQTTClient.getInstance().subscribe(tlog);
                             if (icm.getClientID().equals("Server")) {
                                 serverEntered = true;
+                            } else {
+                                MQTTClient.getInstance().subscribe(Topics.USERNAME.getTopic()+ "/" + icm.getClientID());
+                                MQTTClient.getInstance().subscribe(Topics.BUTTON_PRESSED.getTopic()+ "/" + icm.getClientID());
+                                try {
+                                    LoggerManager.getInstance().log(LoggingTag.USER_CONNECTED.getTag() + " " + icm.getClientID());
+                                } catch (LogOffException | InvalidAttemptToLogException ex) {
+                                    System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                                }
                             }
+                            
                         }
 
                     }
@@ -117,7 +168,7 @@ public class MQTTServer {
                     @Override
                     public void onPublish(InterceptPublishMessage msg) {
                         final String decodedPayload = new String(ByteBufUtil.getBytes(msg.getPayload()), UTF_8);
-                        System.out.println("Received on topic: " + msg.getTopicName() + " content: " + decodedPayload);
+                        System.out.println(LogTitles.SERVER.getTitle()+"Received on topic: " + msg.getTopicName() + " content: " + decodedPayload);
                         String topic = msg.getTopicName();
 
                     }
@@ -126,7 +177,7 @@ public class MQTTServer {
         MQTTClient.getInstance().setIp_server("127.0.0.1");
         MQTTClient.getInstance().connect();
 
-        System.out.println("[Server]started..");
+        System.out.println(LogTitles.SERVER.getTitle()+"started..");
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             //app.stop();

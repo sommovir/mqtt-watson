@@ -20,5 +20,6 @@
 
         <!-- Names the annotated entity class -->
         <mapping class="it.cnr.istc.mw.mqtt.db.Person"/>
+        <mapping class="it.cnr.istc.mw.mqtt.db.Laboratory"/>
     </session-factory>
 </hibernate-configuration>

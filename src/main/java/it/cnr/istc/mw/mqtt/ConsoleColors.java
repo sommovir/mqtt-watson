@@ -20,6 +20,7 @@ public class ConsoleColors {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_ORANGE = "\033[38;2;199;109;0m";
    
 
     public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
@@ -30,6 +31,10 @@ public class ConsoleColors {
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    
+    public static final String RED_BLOODY = "\033[38;2;68;0;0m";
+    
+    public static final String IVORY = "\033[38;2;145;201;0m";
     
     // Bold
     public static final String BLACK_BOLD = "\033[1;30m";  // BLACK
