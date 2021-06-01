@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -123,9 +124,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton_ResetABG = new javax.swing.JButton();
         jButton_ApplyABG = new javax.swing.JButton();
         jLabel_FeedBack = new javax.swing.JLabel();
-        jOptionPane1 = new javax.swing.JOptionPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Nota:");
 
@@ -230,7 +231,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addComponent(jButton_log_end_pretest)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6)
-                        .addGap(0, 7, Short.MAX_VALUE))
+                        .addGap(0, 22, Short.MAX_VALUE))
                     .addComponent(jTextField_WallSpeak)
                     .addComponent(jTextField_Extra)
                     .addComponent(jTextField_WrongInput))
@@ -357,25 +358,19 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jOptionPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jOptionPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -389,152 +384,27 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_NoteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField_NoteActionPerformed
-
-    private void jButton_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NoteActionPerformed
-        newNote();
-    }//GEN-LAST:event_jButton_NoteActionPerformed
-
-    private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            newNote();
-        }
-    }//GEN-LAST:event_jTextField_NoteKeyPressed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            // TODO add your handling code here:
-            LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
-            System.out.println("Repromt tag logged");
-            printInfo("Repromt eseguito");
-        } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
-            if (ex instanceof GuiPrintableException) {
-                printError(((GuiPrintableException) ex).getGuiErrorMessage());
-            }
-
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            // TODO add your handling code here:
-            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
-            System.out.println("Wrong answer tag logged");
-            printInfo("Wrong answer logged");
-        } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
-            if (ex instanceof GuiPrintableException) {
-                printError(((GuiPrintableException) ex).getGuiErrorMessage());
-            }
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton_WrongInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongInputActionPerformed
-        // TODO add your handling code here:
-        if (!jTextField_WrongInput.getText().isEmpty()) {
-            try {
-                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
-                System.out.println("Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
-                printInfo("Wrong input tag logged + note");
-                jTextField_WrongInput.setText(null);
-            } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
-                if (ex instanceof GuiPrintableException) {
-                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                }
-            }
-        } else {
-            try {
-                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
-                System.out.println("Wrong input tag logged");
-                printInfo("Wrong input tag logged");
-            } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
-                if (ex instanceof GuiPrintableException) {
-                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                }
-            }
-        }
-    }//GEN-LAST:event_jButton_WrongInputActionPerformed
-
-    private void jButton_log_end_pretestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_log_end_pretestActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_log_end_pretestActionPerformed
-
-    private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
-        // TODO add your handling code here:
-        if (!jTextField_WallSpeak.getText().isEmpty()) {
-            try {
-                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
-                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
-                printInfo("Wallspeak tag logged + note");
-                jTextField_WallSpeak.setText(null);
-            } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
-                if (ex instanceof GuiPrintableException) {
-                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                }
-            }
-        } else {
-            try {
-                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
-                System.out.println("Wallspeak tag logged");
-                printInfo("Wallspeak tag logged");
-            } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
-                if (ex instanceof GuiPrintableException) {
-                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                }
-            }
-        }
-    }//GEN-LAST:event_jButton_WallSpeakActionPerformed
-
-    private void jButton_ResetABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResetABGActionPerformed
-        try {
-            // TODO add your handling code here:
-            //Senza Panel
-            String input = JOptionPane.showInputDialog(null, "Sei sicuro di resettare i valori a default?Scrivere CONFERMA per eseguire", "CONFERMA", JOptionPane.QUESTION_MESSAGE);
-            if (input.equals("CONFERMA")) {
-
-                WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
-                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
-                WatsonManager.getInstance().setMinDeltaThreshold(0.2);
-                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
-                WatsonManager.getInstance().setMaxDeadlocks(1);
-                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
-                System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
-                printWarning("Valori settati default");
-            }
-        } catch (LogOffException | InvalidAttemptToLogException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton_ResetABGActionPerformed
-
     private void jButton_ApplyABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ApplyABGActionPerformed
         // TODO add your handling code here:
         //Check di chi cambia
         boolean change = false;
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         if (WatsonManager.getInstance().getMinSingleDeltaThreshold() != Double.parseDouble(jSpinnerAlpha.getValue().toString())) {
             try {
                 WatsonManager.getInstance().setMinSingleDeltaThreshold(Double.parseDouble(jSpinnerAlpha.getValue().toString()));
-                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + Double.parseDouble(jSpinnerAlpha.getValue().toString()));
-                System.out.println(LogTitles.LOGGER.getTitle() + "alpha settata a: " + Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
+                System.out.println(LogTitles.LOGGER.getTitle() + "alpha settata a: " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
                 change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -544,8 +414,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         if (WatsonManager.getInstance().getMinDeltaThreshold() != Double.parseDouble(jSpinnerBeta.getValue().toString())) {
             try {
                 WatsonManager.getInstance().setMinDeltaThreshold(Double.parseDouble(jSpinnerBeta.getValue().toString()));
-                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + Double.parseDouble(jSpinnerBeta.getValue().toString()));
-                System.out.println(LogTitles.LOGGER.getTitle() + "beta settato a: " + Double.parseDouble(jSpinnerBeta.getValue().toString()));
+                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
+                System.out.println(LogTitles.LOGGER.getTitle() + "beta settato a: " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
                 change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -578,6 +448,59 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         printInfo("Wallspeak tag logged + note");*/
     }//GEN-LAST:event_jButton_ApplyABGActionPerformed
 
+    private void jButton_ResetABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResetABGActionPerformed
+        try {
+            // TODO add your handling code here:
+            //Senza Panel
+            String input = JOptionPane.showInputDialog(this, "Sei sicuro di resettare i valori a default?Scrivere CONFERMA per eseguire", "CONFERMA", JOptionPane.WARNING_MESSAGE);
+            if (input != null && input.equals("CONFERMA")) {
+
+                WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
+                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
+                WatsonManager.getInstance().setMinDeltaThreshold(0.2);
+                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
+                WatsonManager.getInstance().setMaxDeadlocks(1);
+                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
+                System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
+                printWarning("Valori settati default");
+            }
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton_ResetABGActionPerformed
+
+    private void jButton_log_end_pretestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_log_end_pretestActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_log_end_pretestActionPerformed
+
+    private void jButton_WrongInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongInputActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField_WrongInput.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
+                System.out.println("Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
+                printInfo("Wrong input tag logged + note");
+                jTextField_WrongInput.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
+                System.out.println("Wrong input tag logged");
+                printInfo("Wrong input tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_WrongInputActionPerformed
+
     private void jButton_ExtraInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExtraInputActionPerformed
         if (!jTextField_Extra.getText().isEmpty()) {
             try {
@@ -604,6 +527,78 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         }
     }//GEN-LAST:event_jButton_ExtraInputActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+            LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
+            System.out.println("Repromt tag logged");
+            printInfo("Repromt eseguito");
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
+            if (ex instanceof GuiPrintableException) {
+                printError(((GuiPrintableException) ex).getGuiErrorMessage());
+            }
+
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            // TODO add your handling code here:
+            LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
+            System.out.println("Wrong answer tag logged");
+            printInfo("Wrong answer logged");
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            System.out.println(ex.getMessage());
+            if (ex instanceof GuiPrintableException) {
+                printError(((GuiPrintableException) ex).getGuiErrorMessage());
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField_WallSpeak.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
+                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                printInfo("Wallspeak tag logged + note");
+                jTextField_WallSpeak.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                System.out.println("Wallspeak tag logged");
+                printInfo("Wallspeak tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton_WallSpeakActionPerformed
+
+    private void jButton_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NoteActionPerformed
+        newNote();
+    }//GEN-LAST:event_jButton_NoteActionPerformed
+
+    private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            newNote();
+        }
+    }//GEN-LAST:event_jTextField_NoteKeyPressed
+
+    private void jTextField_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_NoteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_NoteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -661,7 +656,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel_FeedBack;
-    private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
