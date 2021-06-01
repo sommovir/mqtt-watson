@@ -11,6 +11,7 @@ import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.GuiPrintableException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.LoggingTag;
 import java.awt.Color;
@@ -19,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -42,7 +44,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.jSpinnerBeta.setModel(modelBeta);//Prebdi valori da modelAlpha
         SpinnerNumberModel modelGamma = new SpinnerNumberModel(0, 0, 10, 1);
         this.jSpinnerGamma.setModel(modelGamma);//Prebdi valori da modelAlpha
-        
 
     }
 
@@ -60,7 +61,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.jLabel_FeedBack.setForeground(Color.cyan);
         this.jLabel_FeedBack.setText(message);
     }
-    
+
     private void newNote() {
         String text = this.jTextField_Note.getText();
         jLabel_FeedBack.setText("");
@@ -72,9 +73,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 if (text.isEmpty()) {
                     printError("Non puoi mandare note vuote");
-                } else{
+                } else {
                     LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
-                    printInfo("New note tag logged");                    
+                    printInfo("New note tag logged");
                 }
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 if (ex instanceof GuiPrintableException) {
@@ -122,6 +123,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton_ResetABG = new javax.swing.JButton();
         jButton_ApplyABG = new javax.swing.JButton();
         jLabel_FeedBack = new javax.swing.JLabel();
+        jOptionPane1 = new javax.swing.JOptionPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -249,7 +251,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_WrongInput)
                     .addComponent(jTextField_WrongInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -355,19 +357,25 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jOptionPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jOptionPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -439,7 +447,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
     private void jButton_WrongInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongInputActionPerformed
         // TODO add your handling code here:
-        if(!jTextField_WrongInput.getText().isEmpty()){
+        if (!jTextField_WrongInput.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
                 System.out.println("Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
@@ -451,12 +459,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
             }
-        }
-        else{
+        } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
                 System.out.println("Wrong input tag logged");
-                printInfo("Wrong input tag logged");                
+                printInfo("Wrong input tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
@@ -472,7 +479,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
     private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
         // TODO add your handling code here:
-        if(!jTextField_WallSpeak.getText().isEmpty()){
+        if (!jTextField_WallSpeak.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
                 System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
@@ -484,12 +491,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
             }
-        }
-        else{
+        } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
                 System.out.println("Wallspeak tag logged");
-                printInfo("Wallspeak tag logged");                
+                printInfo("Wallspeak tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
@@ -503,13 +509,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         try {
             // TODO add your handling code here:
             //Senza Panel
-            WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
-            LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
-            WatsonManager.getInstance().setMinDeltaThreshold(0.2);
-            LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
-            WatsonManager.getInstance().setMaxDeadlocks(1);
-            LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
-            printWarning("Valori settati default");
+            String input = JOptionPane.showInputDialog(null, "Sei sicuro di resettare i valori a default?Scrivere CONFERMA per eseguire", "CONFERMA", JOptionPane.QUESTION_MESSAGE);
+            if (input.equals("CONFERMA")) {
+
+                WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
+                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
+                WatsonManager.getInstance().setMinDeltaThreshold(0.2);
+                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
+                WatsonManager.getInstance().setMaxDeadlocks(1);
+                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
+                System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
+                printWarning("Valori settati default");
+            }
         } catch (LogOffException | InvalidAttemptToLogException ex) {
             Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -518,19 +529,57 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private void jButton_ApplyABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ApplyABGActionPerformed
         // TODO add your handling code here:
         //Check di chi cambia
-       /* String x = jSpinner1.getValue().toString();
-        WatsonManager.getInstance().setMinSingleDeltaThreshold(Float.parseFloat(x));
+        boolean change = false;
+        if (WatsonManager.getInstance().getMinSingleDeltaThreshold() != Double.parseDouble(jSpinnerAlpha.getValue().toString())) {
+            try {
+                WatsonManager.getInstance().setMinSingleDeltaThreshold(Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+                System.out.println(LogTitles.LOGGER.getTitle() + "alpha settata a: " + Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+                change = true;
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (WatsonManager.getInstance().getMinDeltaThreshold() != Double.parseDouble(jSpinnerBeta.getValue().toString())) {
+            try {
+                WatsonManager.getInstance().setMinDeltaThreshold(Double.parseDouble(jSpinnerBeta.getValue().toString()));
+                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + Double.parseDouble(jSpinnerBeta.getValue().toString()));
+                System.out.println(LogTitles.LOGGER.getTitle() + "beta settato a: " + Double.parseDouble(jSpinnerBeta.getValue().toString()));
+                change = true;
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (WatsonManager.getInstance().getMaxDeadlocks() != Integer.parseInt(jSpinnerGamma.getValue().toString())) {
+            try {
+                WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(jSpinnerGamma.getValue().toString()));
+                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
+                System.out.println(LogTitles.LOGGER.getTitle() + "gamma settato a: " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
+                change = true;
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (change) {
+            printInfo("Valori cambiati");
+        }
+
+        /*WatsonManager.getInstance().setMinSingleDeltaThreshold(Float.parseFloat(x));
         System.out.println("Alpha : " + x);
         String y = jSpinner2.getValue().toString();
         WatsonManager.getInstance().setMinDeltaThreshold(Float.parseFloat(x));
         System.out.println("Beta : " + y);
         String z = jSpinner3.getValue().toString();
         WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(z));
-        System.out.println("Gamma : " + z);*/
+        System.out.println("Gamma : " + z);
+        printInfo("Wallspeak tag logged + note");*/
     }//GEN-LAST:event_jButton_ApplyABGActionPerformed
 
     private void jButton_ExtraInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExtraInputActionPerformed
-        if(!jTextField_Extra.getText().isEmpty()){
+        if (!jTextField_Extra.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + jTextField_Extra.getText());
                 System.out.println("Wallspeak tag logged + ( " + jTextField_Extra.getText() + " )");
@@ -542,12 +591,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
             }
-        }
-        else{
+        } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
                 System.out.println("Extra Input tag logged");
-                printInfo("Extra input tag logged");                
+                printInfo("Extra input tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
@@ -556,7 +604,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         }
     }//GEN-LAST:event_jButton_ExtraInputActionPerformed
-
 
     /**
      * @param args the command line arguments
@@ -576,13 +623,17 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogSupportFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogSupportFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogSupportFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LogSupportFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LogSupportFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -610,6 +661,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel_FeedBack;
+    private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
