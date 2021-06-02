@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.cnr.istc.mw.mqtt;
+package it.cnr.istc.mw.mqtt.logic.crypto;
 
 import java.security.spec.KeySpec;
 import java.util.Base64;

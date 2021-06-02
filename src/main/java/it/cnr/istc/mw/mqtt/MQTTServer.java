@@ -5,6 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.logic.logger.InfoUser;
 import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
 import io.moquette.interception.AbstractInterceptHandler;
 import io.moquette.interception.messages.InterceptConnectMessage;
@@ -18,9 +19,9 @@ import io.netty.buffer.ByteBufUtil;
 import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;

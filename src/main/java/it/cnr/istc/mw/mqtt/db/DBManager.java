@@ -5,10 +5,10 @@
  */
 package it.cnr.istc.mw.mqtt.db;
 
-import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -5,12 +5,13 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
-import it.cnr.istc.mw.mqtt.logic.HistoryBook;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;

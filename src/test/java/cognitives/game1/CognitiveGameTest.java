@@ -5,7 +5,7 @@
  */
 package cognitives.game1;
 
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;

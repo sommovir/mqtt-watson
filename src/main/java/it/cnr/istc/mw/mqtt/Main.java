@@ -5,6 +5,8 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.logger.InfoUser;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -13,12 +15,12 @@ import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
-import it.cnr.istc.mw.mqtt.logic.GoogleDriveManager;
-import it.cnr.istc.mw.mqtt.logic.HistoryBook;
-import it.cnr.istc.mw.mqtt.logic.HistoryElement;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
+import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.IOException;

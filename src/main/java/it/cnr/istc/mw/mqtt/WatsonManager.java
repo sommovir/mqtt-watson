@@ -5,6 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import com.google.common.collect.HashBiMap;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.cloud.sdk.core.service.model.GenericModel;
@@ -31,12 +32,12 @@ import com.ibm.watson.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
-import it.cnr.istc.mw.mqtt.logic.Emotion;
-import it.cnr.istc.mw.mqtt.logic.HistoryBook;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
-import it.cnr.istc.mw.mqtt.logic.LowDeltaResult;
+import it.cnr.istc.mw.mqtt.logic.generals.Emotion;
+import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.LowDeltaResult;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;

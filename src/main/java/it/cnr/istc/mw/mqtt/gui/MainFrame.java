@@ -5,7 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt.gui;
 
-import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;

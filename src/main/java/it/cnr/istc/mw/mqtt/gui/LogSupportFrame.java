@@ -5,15 +5,15 @@
  */
 package it.cnr.istc.mw.mqtt.gui;
 
-import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.Main;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.GuiPrintableException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
-import it.cnr.istc.mw.mqtt.logic.LogTitles;
-import it.cnr.istc.mw.mqtt.logic.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;

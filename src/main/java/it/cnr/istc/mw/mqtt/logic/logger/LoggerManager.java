@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.cnr.istc.mw.mqtt.logic;
+package it.cnr.istc.mw.mqtt.logic.logger;
 
 import io.netty.buffer.ByteBufUtil;
 import static com.hazelcast.client.impl.protocol.util.UnsafeBuffer.UTF_8;
-import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;

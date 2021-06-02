@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.cnr.istc.mw.mqtt.logic;
+package it.cnr.istc.mw.mqtt.logic.logger;
 
-import it.cnr.istc.mw.mqtt.ConsoleColors;
+import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 
 /**
  *

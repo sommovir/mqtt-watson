@@ -5,7 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.events;
 
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -5,7 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.events;
 
-import it.cnr.istc.mw.mqtt.logic.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 
 /**
  *
