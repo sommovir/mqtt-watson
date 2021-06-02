@@ -14,6 +14,12 @@ import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 public interface LoggerEventListener {
     
     /**
+     * notify whenever the test [on/off] command is invoked. 
+     * @param mode 
+     */
+    public void testModeChanged(boolean mode);
+    
+    /**
      * notify whenever the log [on/off] command is invoked. 
      * @param mode 
      */
