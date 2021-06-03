@@ -69,14 +69,14 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
         if (!LoggerManager.getInstance().isLogActive()) {
             printError("Impossibile eseguire quando il log è OFF");
-            System.out.println(ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.GUI.getTitle()+ConsoleColors.ANSI_RED + "Impossibile eseguire quando il log è OFF (per maggiori informazioni consulta help log)" + ConsoleColors.ANSI_RESET);
         } else {
             try {
                 if (text.isEmpty()) {
                     printError("Non puoi mandare note vuote");
                 } else {
                     LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
-                    printInfo("New note tag logged");
+                    printInfo(LogTitles.GUI.getTitle()+"New note tag logged");
                 }
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 if (ex instanceof GuiPrintableException) {
@@ -84,7 +84,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 }
             }
             this.jTextField_Note.setText("");
-            System.out.println("Note has been added");
+            System.out.println(LogTitles.GUI.getTitle()+"Note has been added");
         }
     }
 
@@ -452,7 +452,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 WatsonManager.getInstance().setMinSingleDeltaThreshold(Double.parseDouble(jSpinnerAlpha.getValue().toString()));
                 LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
-                System.out.println(LogTitles.LOGGER.getTitle() + "alpha settata a: " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
+                System.out.println(LogTitles.GUI.getTitle()+ "alpha settata a: " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
                 change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -463,7 +463,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 WatsonManager.getInstance().setMinDeltaThreshold(Double.parseDouble(jSpinnerBeta.getValue().toString()));
                 LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
-                System.out.println(LogTitles.LOGGER.getTitle() + "beta settato a: " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
+                System.out.println(LogTitles.GUI.getTitle()+ "beta settato a: " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
                 change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -474,7 +474,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             try {
                 WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(jSpinnerGamma.getValue().toString()));
                 LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
-                System.out.println(LogTitles.LOGGER.getTitle() + "gamma settato a: " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
+                System.out.println(LogTitles.GUI.getTitle()+  "gamma settato a: " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
                 change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -509,7 +509,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
                 WatsonManager.getInstance().setMaxDeadlocks(1);
                 LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
-                System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
+                System.out.println(LogTitles.GUI.getTitle()+ ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
                 printWarning("Valori settati default");
             }
         } catch (LogOffException | InvalidAttemptToLogException ex) {
@@ -526,11 +526,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         if (!jTextField_WrongInput.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
-                System.out.println("Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
+                System.out.println(LogTitles.GUI.getTitle()+"Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
                 printInfo("Wrong input tag logged + note");
                 jTextField_WrongInput.setText(null);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -538,10 +538,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
-                System.out.println("Wrong input tag logged");
+                System.out.println(LogTitles.GUI.getTitle()+"Wrong input tag logged");
                 printInfo("Wrong input tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -553,11 +553,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         if (!jTextField_Extra.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + jTextField_Extra.getText());
-                System.out.println("Wallspeak tag logged + ( " + jTextField_Extra.getText() + " )");
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged + ( " + jTextField_Extra.getText() + " )");
                 printInfo("Extra tag logged + note");
                 jTextField_Extra.setText(null);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -565,10 +565,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
-                System.out.println("Extra Input tag logged");
+                System.out.println(LogTitles.GUI.getTitle()+"Extra Input tag logged");
                 printInfo("Extra input tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -580,10 +580,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
-            System.out.println("Repromt tag logged");
+            System.out.println(LogTitles.GUI.getTitle()+"Repromt tag logged");
             printInfo("Repromt eseguito");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
             if (ex instanceof GuiPrintableException) {
                 printError(((GuiPrintableException) ex).getGuiErrorMessage());
             }
@@ -595,10 +595,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
-            System.out.println("Wrong answer tag logged");
+            System.out.println(LogTitles.GUI.getTitle()+"Wrong answer tag logged");
             printInfo("Wrong answer logged");
         } catch (LogOffException | InvalidAttemptToLogException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
             if (ex instanceof GuiPrintableException) {
                 printError(((GuiPrintableException) ex).getGuiErrorMessage());
             }
@@ -610,11 +610,11 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         if (!jTextField_WallSpeak.getText().isEmpty()) {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
-                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
                 printInfo("Wallspeak tag logged + note");
                 jTextField_WallSpeak.setText(null);
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -622,10 +622,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         } else {
             try {
                 LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
-                System.out.println("Wallspeak tag logged");
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged");
                 printInfo("Wallspeak tag logged");
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
                 if (ex instanceof GuiPrintableException) {
                     printError(((GuiPrintableException) ex).getGuiErrorMessage());
                 }
@@ -737,7 +737,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     @Override
     public void windowClosing(WindowEvent e) {
         Main.suppressLogSupportGUI();
-        System.out.println(ConsoleColors.ANSI_YELLOW + "[LOG][SupportGui] " + ConsoleColors.RED_BRIGHT + "CLOSED" + ConsoleColors.ANSI_RESET);
+        System.out.println(LogTitles.GUI.getTitle()+ConsoleColors.ANSI_YELLOW + "[SupportGui] " + ConsoleColors.RED_BRIGHT + "CLOSED" + ConsoleColors.ANSI_RESET);
     }
 
     @Override
