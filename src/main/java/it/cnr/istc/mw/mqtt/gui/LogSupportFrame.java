@@ -305,11 +305,14 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jPanel5.add(jLabel2);
 
         jSpinnerAlpha.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(6.0f), Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(1.0f)));
+        jSpinnerAlpha.setToolTipText("<html><i> Definisce la soglia minima dell’intent con il più alto valore di confidence per essere accettato dalla chatbot</i><b> Valore default : 0.6 </b>");
         jPanel5.add(jSpinnerAlpha);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Beta");
         jPanel5.add(jLabel3);
+
+        jSpinnerBeta.setToolTipText("<html><i>Definisce la differenza minima tra gli intents a più alta confidence</i><b>Valore default: 0.2 </b>");
         jPanel5.add(jSpinnerBeta);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -325,7 +328,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         });
 
         jButton_ApplyABG.setText("Apply");
-        jButton_ApplyABG.setToolTipText("Applica i cambiamenti sui valori : Alpha - Beta - Gamma");
+        jButton_ApplyABG.setToolTipText("<html><b>Applica</b> i cambiamenti sui valori : Alpha - Beta - Gamma");
         jButton_ApplyABG.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_ApplyABGActionPerformed(evt);

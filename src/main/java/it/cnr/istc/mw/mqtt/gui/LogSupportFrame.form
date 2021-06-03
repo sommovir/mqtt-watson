@@ -390,6 +390,7 @@
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="6.0" maximum="6.0" minimum="0.0" numberType="java.lang.Float" stepSize="1.0" type="number"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;i&gt; Definisce la soglia minima dell&#x2019;intent con il pi&#xf9; alto valore di confidence per essere accettato dalla chatbot&lt;/i&gt;&lt;b&gt; Valore default : 0.6 &lt;/b&gt;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
@@ -399,6 +400,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="jSpinnerBeta">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;i&gt;Definisce la differenza minima tra gli intents a pi&#xf9; alta confidence&lt;/i&gt;&lt;b&gt;Valore default: 0.2 &lt;/b&gt;"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
@@ -421,7 +425,7 @@
             <Component class="javax.swing.JButton" name="jButton_ApplyABG">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Apply"/>
-                <Property name="toolTipText" type="java.lang.String" value="Applica i cambiamenti sui valori : Alpha - Beta - Gamma"/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;Applica&lt;/b&gt; i cambiamenti sui valori : Alpha - Beta - Gamma"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_ApplyABGActionPerformed"/>
