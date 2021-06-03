@@ -305,19 +305,21 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jPanel5.add(jLabel2);
 
         jSpinnerAlpha.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(6.0f), Float.valueOf(0.0f), Float.valueOf(6.0f), Float.valueOf(1.0f)));
-        jSpinnerAlpha.setToolTipText("<html><i> Definisce la soglia minima dell’intent con il più alto valore di confidence per essere accettato dalla chatbot</i><b> Valore default : 0.6 </b>");
+        jSpinnerAlpha.setToolTipText("<html> <div width = 150px><i> Definisce la soglia minima dell’<font color = blue> intent </font> con il più alto valore di confidence per essere accettato dalla chatbot</i><b> Valore default : 0.6 </b></div>");
         jPanel5.add(jSpinnerAlpha);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Beta");
         jPanel5.add(jLabel3);
 
-        jSpinnerBeta.setToolTipText("<html><i>Definisce la differenza minima tra gli intents a più alta confidence</i><b>Valore default: 0.2 </b>");
+        jSpinnerBeta.setToolTipText("<html><div width = 150px><i>Definisce la differenza minima tra gli <font color = red>intents </font> a più alta confidence</i><b> Valore default: 0.2 </b></div>");
         jPanel5.add(jSpinnerBeta);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Gamma");
         jPanel5.add(jLabel4);
+
+        jSpinnerGamma.setToolTipText("<html><div width= 150px><i>Indica il numero massimo di deadlocks nei <font color = green>nodi di Watson </font>, superato questo valore il server attuerà un hard reset.</i><b> Valore default: 1 </b></div>");
         jPanel5.add(jSpinnerGamma);
 
         jButton_ResetABG.setText("Reset to Default");

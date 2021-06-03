@@ -390,7 +390,7 @@
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="6.0" maximum="6.0" minimum="0.0" numberType="java.lang.Float" stepSize="1.0" type="number"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;i&gt; Definisce la soglia minima dell&#x2019;intent con il pi&#xf9; alto valore di confidence per essere accettato dalla chatbot&lt;/i&gt;&lt;b&gt; Valore default : 0.6 &lt;/b&gt;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt; &lt;div width = 150px&gt;&lt;i&gt; Definisce la soglia minima dell&#x2019;&lt;font color = blue&gt; intent &lt;/font&gt; con il pi&#xf9; alto valore di confidence per essere accettato dalla chatbot&lt;/i&gt;&lt;b&gt; Valore default : 0.6 &lt;/b&gt;&lt;/div&gt;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
@@ -401,7 +401,7 @@
                 </Component>
                 <Component class="javax.swing.JSpinner" name="jSpinnerBeta">
                   <Properties>
-                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;i&gt;Definisce la differenza minima tra gli intents a pi&#xf9; alta confidence&lt;/i&gt;&lt;b&gt;Valore default: 0.2 &lt;/b&gt;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;div width = 150px&gt;&lt;i&gt;Definisce la differenza minima tra gli &lt;font color = red&gt;intents &lt;/font&gt; a pi&#xf9; alta confidence&lt;/i&gt;&lt;b&gt; Valore default: 0.2 &lt;/b&gt;&lt;/div&gt;"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
@@ -411,6 +411,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="jSpinnerGamma">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;&lt;div width= 150px&gt;&lt;i&gt;Indica il numero massimo di deadlocks nei &lt;font color = green&gt;nodi di Watson &lt;/font&gt;, superato questo valore il server attuer&#xe0; un hard reset.&lt;/i&gt;&lt;b&gt; Valore default: 1 &lt;/b&gt;&lt;/div&gt;"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
