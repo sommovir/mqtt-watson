@@ -12,6 +12,7 @@ package it.cnr.istc.mw.mqtt.logic.generals;
 public enum DefaultPaths {
     
     LOGS("./logs/"),
+    MANUALS("./manuals/"),
     QR("./qr/");
     
     
