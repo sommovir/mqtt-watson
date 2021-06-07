@@ -43,6 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         laboratoryPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.LaboratoryPanel();
+        registrationPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.RegistrationPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Test", jPanel1);
         jTabbedPane1.addTab("Laboratori", laboratoryPanel1);
+        jTabbedPane1.addTab("tab3", registrationPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -188,5 +190,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private it.cnr.istc.mw.mqtt.gui.panels.LaboratoryPanel laboratoryPanel1;
+    private it.cnr.istc.mw.mqtt.gui.panels.RegistrationPanel registrationPanel1;
     // End of variables declaration//GEN-END:variables
 }

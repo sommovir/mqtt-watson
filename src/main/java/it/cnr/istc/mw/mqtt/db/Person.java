@@ -28,6 +28,9 @@ public class Person implements Serializable {
     private long id;
     private String name;
     private String surname;
+    private String validationKey;
+    private boolean validate = false;
+    
     @OneToMany
     private List<Laboratory> labAccess = new LinkedList<>();
 
@@ -42,6 +45,24 @@ public class Person implements Serializable {
     public long getId() {
         return id;
     }
+
+    public String getValidationKey() {
+        return validationKey;
+    }
+
+    public void setValidationKey(String validationKey) {
+        this.validationKey = validationKey;
+    }
+
+    public boolean isValidate() {
+        return validate;
+    }
+
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+    
+    
 
     public List<Laboratory> getLabAccess() {
         return labAccess;

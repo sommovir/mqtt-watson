@@ -15,6 +15,7 @@ import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
+import it.cnr.istc.mw.mqtt.gui.MainFrame;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
@@ -628,7 +629,14 @@ public class Main {
                             String free_text = line.startsWith("log wrong input ") ? line.split(" ")[3] : line.split(" ")[2]; 
                             LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + free_text);
                             System.out.println(LogTitles.LOGGER.getTitle()+"Wrong input tag has been added");
-                        } else if (line.equals("help")) {
+                        } 
+                        else if (line.equals("main gui")){
+                            
+                            MainFrame frame = new MainFrame();
+                            frame.setLocationRelativeTo(null);
+                            frame.setVisible(true);
+                        }
+                        else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);

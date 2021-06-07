@@ -13,6 +13,8 @@ public enum DefaultPaths {
     
     LOGS("./logs/"),
     MANUALS("./manuals/"),
+    REGISTRATION_PDF("./registration/"),
+    LINK_LAST_RELEASE("https://drive.google.com/file/d/1yDiI3x9lpAjrigsaiqCAL-3zrIp_0u1w/view?usp=sharing"),
     QR("./qr/");
     
     
