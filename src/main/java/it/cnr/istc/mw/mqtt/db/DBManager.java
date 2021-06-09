@@ -8,13 +8,17 @@ package it.cnr.istc.mw.mqtt.db;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
+import it.cnr.istc.mw.mqtt.exceptions.DBUniqueViolationException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import javax.persistence.PersistenceException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -24,6 +28,7 @@ public class DBManager {
 
     private static DBManager _instance = null;
     private SessionFactory sessionFactory;
+    private boolean installed = false;
 
     public static DBManager getInstance() {
         if (_instance == null) {
@@ -38,20 +43,30 @@ public class DBManager {
         super();
         initConnection();
     }
-    
-    private void initConnection(){
+
+    /**
+     * controlla se il database è già installato
+     *
+     * @return true se il db è già esistente e funzionante. False altrimenti.
+     */
+    public boolean isInstalled() {
+        return installed;
+    }
+
+    private void initConnection() {
         // configures settings from hibernate.cfg.xml 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
-            System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db "+ConsoleColors.PURPLE_BRIGHT+"[watsondb]"+ ConsoleColors.YELLOW_BRIGHT +" is already created .." + ConsoleColors.ANSI_RESET);
+            System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db " + ConsoleColors.PURPLE_BRIGHT + "[watsondb]" + ConsoleColors.YELLOW_BRIGHT + " is already created .." + ConsoleColors.ANSI_RESET);
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_GREEN + " YES" + ConsoleColors.ANSI_RESET);
+            installed = true;
 //             SessionFactory sessionFactory = new Configuration()
 //    .configure("/org/nitish/caller/hibernate.cfg.xml").buildSessionFactory();
         } catch (Exception e) {
             // handle the exception
             System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_RED + " NO" + ConsoleColors.ANSI_RESET);
-            
+
         }
     }
 
@@ -77,7 +92,7 @@ public class DBManager {
             throw new DBAlreadyInstalledException();
         }
         System.out.println(ConsoleColors.ANSI_GREEN + " NO" + ConsoleColors.ANSI_RESET);
-        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " populating table "+ConsoleColors.CYAN_BOLD+"[Laboratory]"+ConsoleColors.YELLOW_BRIGHT +" .. " + ConsoleColors.ANSI_RESET);
+        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " populating table " + ConsoleColors.CYAN_BOLD + "[Laboratory]" + ConsoleColors.YELLOW_BRIGHT + " .. " + ConsoleColors.ANSI_RESET);
         session = sessionFactory.openSession();
         session.beginTransaction();
         Laboratory labCucina = new Laboratory();
@@ -102,6 +117,33 @@ public class DBManager {
         session.close();
 
         return result;
+    }
+
+    /**
+     * Crea un laboratorio nel Database. Il nome del db è unico e non possono
+     * esistere due laboratori con lo stesso nome.
+     *
+     * @param name il nome del laboratorio
+     * @throws DBUniqueViolationException se il nome è già esistente nel
+     * database viene lanciata una DBUniqueViolationException
+     */
+    public void createLab(String name) throws DBUniqueViolationException {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Laboratory lab = new Laboratory();
+        lab.setName(name);
+        try {
+            session.persist(lab);
+        } catch (PersistenceException ex) {
+            if (ex.getCause() instanceof ConstraintViolationException) {
+                throw new DBUniqueViolationException("Laboratory.name");
+            }
+            System.out.println("EXCEPTION CAUSE = " + ex.getCause().getClass().getCanonicalName());
+            ex.printStackTrace();
+        }
+        session.getTransaction().commit();
+        session.close();
     }
 
     public void test() {

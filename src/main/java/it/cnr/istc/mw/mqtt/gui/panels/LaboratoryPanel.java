@@ -25,7 +25,7 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     public LaboratoryPanel() {
         initComponents();
         this.jList_lab.setModel(laboratoryListModel);
-        if (!Beans.isDesignTime()) {
+        if (!Beans.isDesignTime() && DBManager.getInstance().isInstalled()) {
             List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
             for (Laboratory lab : allLaboratories) {
                 laboratoryListModel.addElement(lab);

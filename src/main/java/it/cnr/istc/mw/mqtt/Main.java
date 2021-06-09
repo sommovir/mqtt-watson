@@ -47,6 +47,7 @@ public class Main {
     static MQTTServer server = new MQTTServer();
     public static final String version = "1.1.2"; //refactored
     private static LogSupportFrame logSupportFrame = null;
+    private static MainFrame mainFrame = null;
 
     public static void suppressLogSupportGUI() {
         logSupportFrame.setVisible(false);
@@ -554,7 +555,7 @@ public class Main {
                             try {
                                 UIManager.setLookAndFeel(new FlatDarkLaf());
                             } catch (Exception ex) {
-                                System.out.println(LogTitles.GUI.getTitle()+"Errore, tema FlatLightLaf non trovato");
+                                System.out.println(LogTitles.GUI.getTitle()+"Errore, tema FlatDarkLaf non trovato");
                             }
 
                             //</editor-fold>
@@ -632,9 +633,27 @@ public class Main {
                         } 
                         else if (line.equals("main gui")){
                             
-                            MainFrame frame = new MainFrame();
-                            frame.setLocationRelativeTo(null);
-                            frame.setVisible(true);
+                            
+                            try {
+                                UIManager.setLookAndFeel(new FlatDarkLaf());
+                            } catch (Exception ex) {
+                                System.out.println(LogTitles.GUI.getTitle()+"Errore, tema FlatDarkLaf non trovato");
+                            }
+
+                            //</editor-fold>
+
+                            /* Create and display the form */
+                            java.awt.EventQueue.invokeLater(new Runnable() {
+                                public void run() {
+                                    if (mainFrame == null) {
+                                        mainFrame = new MainFrame();
+                                        mainFrame.setVisible(true);
+                                    } else {
+                                        System.out.println(LogTitles.GUI.getTitle()+ConsoleColors.RED_BRIGHT + "Errore. La MainFrame GUI è già attiva" + ConsoleColors.ANSI_RESET);
+                                    }
+
+                                }
+                            });
                         }
                         else if (line.equals("help")) {
 
