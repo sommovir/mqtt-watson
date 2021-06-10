@@ -21,32 +21,47 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 //import org.junit.jupiter.api.Assumptions;
 
 /**
  *
  * @author sommovir
  */
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class DBTest {
-    
+   
     public DBTest() {
     }
     
+     private String message;
+    private boolean ok;
+
+    
+
     @BeforeAll
     public static void setUpClass() {
+        System.out.println("---------------------------");
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
+        System.out.println("----------------------------");
     }
-    
+
     @BeforeEach
     public void setUp() {
+   
+        ok = false;
     }
-    
+
     @AfterEach
     public void tearDown() {
+        System.out.println(message + (ok ? " SUCCESS" : " FAILED"));
+
     }
+
     
     @Test
     public void test_Alfa1(){
