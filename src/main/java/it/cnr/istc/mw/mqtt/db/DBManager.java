@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt.db;
 
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
+import it.cnr.istc.mw.mqtt.exceptions.DBBadParamaterException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.exceptions.DBUniqueViolationException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
@@ -106,6 +107,11 @@ public class DBManager {
 
     }
 
+    
+    /**
+     * Restituisce tutt l'elenco dei laboratori presenti nel database
+     * @return 
+     */
     public List<Laboratory> getAllLaboratories() {
         System.out.println(LogTitles.DATABASE.getTitle() + "fetching data.. [select * from laboratory]");
         Session session = sessionFactory.openSession();
@@ -124,10 +130,19 @@ public class DBManager {
      * esistere due laboratori con lo stesso nome.
      *
      * @param name il nome del laboratorio
-     * @throws DBUniqueViolationException se il nome è già esistente nel
+     * @throws DBUniqueViolationException 
+     * se il nome è già esistente nel
      * database viene lanciata una DBUniqueViolationException
+     * @throws DBBadParamaterException
+     * Se il parametro del metodo è nullo o vuoto.
      */
-    public void createLab(String name) throws DBUniqueViolationException {
+    public void createLab(String name) throws DBUniqueViolationException, DBBadParamaterException{
+        if(name == null){
+            throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.NULL);
+        }
+        if(name.isEmpty()){
+            throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.EMPTY);
+        }
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
@@ -144,6 +159,31 @@ public class DBManager {
         }
         session.getTransaction().commit();
         session.close();
+    }
+    
+    
+    /**
+     * Permette di modificare sul database un istanza di Laboratorio
+     * @param lab
+     * L'istanza da modificare e persistere anche sul database.
+     * @throws DBUniqueViolationException
+     * Se il nuovo nome del laboratorio è già in uso.
+     * @throws DBBadParamaterException 
+     * Se il nome modificato è nullo o vuoto.
+     */
+    public void editLab(Laboratory lab)throws DBUniqueViolationException, DBBadParamaterException{
+        
+    }
+    
+    /**
+     * Restituisce il laboratorio con l'id in argomento.
+     * @param id
+     * l'id del laboratorio
+     * @return 
+     * Il laboratorio se l'id è esistente, null viceversa o nel caso di id negativi
+     */
+    public Laboratory getLaboratoryByID(long id){
+        return null;
     }
 
     public void test() {
