@@ -190,10 +190,28 @@ public class DBManager {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
+        
 
         Person p1 = new Person("Luca", "Coraci");
         Person p2 = new Person("Luana", "Mercuri");
 
+        
+        
+        Laboratory lab = new Laboratory();
+        lab.setName("Laboratorio di Lettura");
+        Laboratory lab2 = new Laboratory();
+        lab2.setName("Laboratorio di Filatelia");
+        Laboratory lab3 = new Laboratory();
+        lab3.setName("Laboratorio di Informatica");
+        
+        session.persist(lab);
+        session.persist(lab2);
+        session.persist(lab3);
+        
+        p1.addLaboratory(lab3);
+        p2.addLaboratory(lab);
+        p2.addLaboratory(lab2);
+        
         session.persist(p1);
         session.persist(p2);
 
