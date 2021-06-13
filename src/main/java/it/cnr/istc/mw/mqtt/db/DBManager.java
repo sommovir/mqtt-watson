@@ -136,7 +136,7 @@ public class DBManager {
      * @throws DBBadParamaterException
      * Se il parametro del metodo è nullo o vuoto.
      */
-    public void createLab(String name) throws DBUniqueViolationException, DBBadParamaterException{
+    public long createLab(String name) throws DBUniqueViolationException, DBBadParamaterException{
         if(name == null){
             throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.NULL);
         }
@@ -159,6 +159,7 @@ public class DBManager {
         }
         session.getTransaction().commit();
         session.close();
+        return lab.getId();
     }
     
     
@@ -224,5 +225,9 @@ public class DBManager {
         session.getTransaction().commit();
         session.close();
     }
+    
+   public void deleteLaboratory(long id){
+       
+   }
 
 }
