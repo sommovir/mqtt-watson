@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt.db;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class Person implements Serializable {
     private String validationKey;
     private boolean validate = false;
     
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Laboratory> labAccess = new LinkedList<>();
 
     public Person() {
@@ -45,6 +46,12 @@ public class Person implements Serializable {
     public long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    
 
     public String getValidationKey() {
         return validationKey;

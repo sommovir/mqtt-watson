@@ -14,6 +14,7 @@ import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import javax.persistence.PersistenceException;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -107,10 +108,10 @@ public class DBManager {
 
     }
 
-    
     /**
      * Restituisce tutt l'elenco dei laboratori presenti nel database
-     * @return 
+     *
+     * @return
      */
     public List<Laboratory> getAllLaboratories() {
         System.out.println(LogTitles.DATABASE.getTitle() + "fetching data.. [select * from laboratory]");
@@ -130,17 +131,16 @@ public class DBManager {
      * esistere due laboratori con lo stesso nome.
      *
      * @param name il nome del laboratorio
-     * @throws DBUniqueViolationException 
-     * se il nome è già esistente nel
+     * @throws DBUniqueViolationException se il nome è già esistente nel
      * database viene lanciata una DBUniqueViolationException
-     * @throws DBBadParamaterException
-     * Se il parametro del metodo è nullo o vuoto.
+     * @throws DBBadParamaterException Se il parametro del metodo è nullo o
+     * vuoto.
      */
-    public long createLab(String name) throws DBUniqueViolationException, DBBadParamaterException{
-        if(name == null){
+    public long createLab(String name) throws DBUniqueViolationException, DBBadParamaterException {
+        if (name == null) {
             throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.NULL);
         }
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             throw new DBBadParamaterException("name", DBBadParamaterException.ErrorType.EMPTY);
         }
         Session session = sessionFactory.openSession();
@@ -161,29 +161,27 @@ public class DBManager {
         session.close();
         return lab.getId();
     }
-    
-    
+
     /**
      * Permette di modificare sul database un istanza di Laboratorio
-     * @param lab
-     * L'istanza da modificare e persistere anche sul database.
-     * @throws DBUniqueViolationException
-     * Se il nuovo nome del laboratorio è già in uso.
-     * @throws DBBadParamaterException 
-     * Se il nome modificato è nullo o vuoto.
+     *
+     * @param lab L'istanza da modificare e persistere anche sul database.
+     * @throws DBUniqueViolationException Se il nuovo nome del laboratorio è già
+     * in uso.
+     * @throws DBBadParamaterException Se il nome modificato è nullo o vuoto.
      */
-    public void editLab(Laboratory lab)throws DBUniqueViolationException, DBBadParamaterException{
-        
+    public void editLab(Laboratory lab) throws DBUniqueViolationException, DBBadParamaterException {
+
     }
-    
+
     /**
      * Restituisce il laboratorio con l'id in argomento.
-     * @param id
-     * l'id del laboratorio
-     * @return 
-     * Il laboratorio se l'id è esistente, null viceversa o nel caso di id negativi
+     *
+     * @param id l'id del laboratorio
+     * @return Il laboratorio se l'id è esistente, null viceversa o nel caso di
+     * id negativi
      */
-    public Laboratory getLaboratoryByID(long id){
+    public Laboratory getLaboratoryByID(long id) {
         return null;
     }
 
@@ -191,30 +189,34 @@ public class DBManager {
 
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        
 
         Person p1 = new Person("Luca", "Coraci");
         Person p2 = new Person("Luana", "Mercuri");
 
-        
-        
         Laboratory lab = new Laboratory();
         lab.setName("Laboratorio di Lettura");
         Laboratory lab2 = new Laboratory();
         lab2.setName("Laboratorio di Filatelia");
         Laboratory lab3 = new Laboratory();
         lab3.setName("Laboratorio di Informatica");
-        
+
         session.persist(lab);
         session.persist(lab2);
         session.persist(lab3);
-        
+
         p1.addLaboratory(lab3);
         p2.addLaboratory(lab);
         p2.addLaboratory(lab2);
-        
+
         session.persist(p1);
         session.persist(p2);
+
+        Person p3 = new Person("Alfonso", "Alfonzini");
+        Laboratory lab4 = new Laboratory();
+        lab4.setName("Laboratorio da rimuovere");
+        p3.addLaboratory(lab4);
+
+        session.persist(p3);
 
         List<Person> result = session.createQuery("from Person", Person.class).list();
 
@@ -225,9 +227,54 @@ public class DBManager {
         session.getTransaction().commit();
         session.close();
     }
+
+    /**
+     * Ritorna l'id di un laboratorio che ha come nome il nome passato in
+     * argomento
+     *
+     * @param name
+     * @return ritorna l'id del laboratorio se viene trovato, -1 viceversa o se
+     * l'input è errato.
+     */
+    public long getLabIdByName(String name) {
+        Laboratory laboratory = null;
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        laboratory = session.byNaturalId(Laboratory.class)
+                .using("name", name)
+                .load();
+
+        session.getTransaction().commit();
+        session.close();
+
+        return laboratory == null ? -1 : laboratory.getId();
+
+    }
     
-   public void deleteLaboratory(long id){
-       
-   }
+
+    public void deleteLaboratory(long id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Laboratory spacciato = new Laboratory();
+        spacciato.setId(id);
+        session.delete(spacciato);
+
+        session.getTransaction().commit();
+        session.close();
+    }
+    
+    public void deletePerson(long id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Person spacciato = new Person();
+        spacciato.setId(id);
+        session.delete(spacciato);
+
+        session.getTransaction().commit();
+        session.close();
+    }
 
 }
