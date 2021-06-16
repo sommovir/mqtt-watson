@@ -37,6 +37,7 @@ public class DBTest {
 
     long id1 = -1;
     long id2 = -1;
+    Laboratory saved;
 
     public DBTest() {
     }
@@ -74,8 +75,37 @@ public class DBTest {
 
     }
 
+    private boolean isFoundLab(String lab) {
+        for (Laboratory l : DBManager.getInstance().getAllLaboratories()) {
+            if (l.getName().equals(lab)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public void removeToList(int num) {   //
+        List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
+        if (result.size() > 0 || num < result.size()) {
+            saved = result.get(num);
+            result.remove(num);
+        }
+
+    }
+
+    public boolean isLaboratoryPresent(String name) {
+        List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
+        for (Laboratory allLaboratory : allLaboratories) {
+            if (allLaboratory.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Test
-    @DisplayName("Test alfa_1")
+    @DisplayName("[getAllLaboratories()] create, oldsize, newsize, test size")
     public void test_Alfa1(TestInfo info) {
         message = info.getDisplayName();
         //test di prova delle Assumption
@@ -86,8 +116,9 @@ public class DBTest {
         int oldSize = allLaboratories.size();
         DBUniqueViolationException assertThrows = assertThrows(
                 DBUniqueViolationException.class,
-                () -> {
-                    DBManager.getInstance().createLab("Laboratorio di Cucina");
+                 () -> {
+                    DBManager.getInstance()
+                            .createLab("Laboratorio di Cucina");
                 },
                 "Il metodo createLab non ha lanciato l'eccezione di violazione di vincolo di unicità sul nome"
         );
@@ -97,7 +128,7 @@ public class DBTest {
     }
 
     @Test
-    @DisplayName("Test alfa_2")
+    @DisplayName("[getAllLaboratories()] create, create, test size")
     public void test_Alfa2(TestInfo info) {
         try {
             message = info.getDisplayName();
@@ -109,28 +140,20 @@ public class DBTest {
             id2 = DBManager.getInstance().createLab("Prova 2");
             int newSize = DBManager.getInstance().getAllLaboratories().size();
             assertEquals(oldSize + 2, newSize, "Mi aspettavo che il size fosse incrementato di 2");
+            ok = true;
 
         } catch (DBUniqueViolationException ex) {
-            Logger.getLogger(DBTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (DBBadParamaterException ex) {
-            Logger.getLogger(DBTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private boolean isFoundLab(String lab) {
-        for (Laboratory l : DBManager.getInstance().getAllLaboratories()) {
-            if (l.getName().equals(lab)) {
-                return true;
-            }
-        }
-        return false;
-
-    }
-    
-    
 
     @Test
-    @DisplayName("Test alfa_3")
+    @DisplayName("[getAllLaboratories()] create, create, Test find laboratories created")
     public void test_Alfa3(TestInfo info) {
         try {
             message = info.getDisplayName();
@@ -143,11 +166,60 @@ public class DBTest {
             boolean found2 = isFoundLab("Prova 2");
             assertTrue(found, "Mi aspettavo che Prova 1 fosse inserito correttamente");
             assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
-
+            ok = true;
         } catch (DBUniqueViolationException ex) {
-            Logger.getLogger(DBTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
         } catch (DBBadParamaterException ex) {
-            Logger.getLogger(DBTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Test
+    @DisplayName("Test alfa_4")
+    public void test_Alfa4(TestInfo info) {
+        try {
+            message = info.getDisplayName();
+            boolean db_installed = DBManager.getInstance().isInstalled();
+            Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
+            List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
+            id1 = DBManager.getInstance().createLab("Prova 1");
+            id2 = DBManager.getInstance().createLab("Prova 2");
+            boolean found = isFoundLab("Prova 1");
+            boolean found2 = isFoundLab("Prova 2");
+            assertTrue(found, "Mi aspettavo che Prova 1 fosse inserito correttamente");
+            assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
+            ok = true;
+        } catch (DBUniqueViolationException ex) {
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
+
+        } catch (DBBadParamaterException ex) {
+            Logger.getLogger(DBTest.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    @DisplayName("[getAllLaboratories()] test isLaboratoryPresent ")
+    public void test_Alfa5(TestInfo info) {
+        message = info.getDisplayName();
+        boolean db_installed = DBManager.getInstance().isInstalled();
+        Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
+        boolean n1 = isLaboratoryPresent("Laboratorio di Cucito");
+        boolean n2 = isLaboratoryPresent("Laboratorio di Arte");
+        boolean n3 = isLaboratoryPresent("Laboratorio di Moda");
+        boolean n4 = isLaboratoryPresent("Laboratorio di Sport");
+        boolean n5 = isLaboratoryPresent("Laboratorio di Cucina");
+        boolean n6 = isLaboratoryPresent("Laboratorio di Elettronica");
+        assertFalse(n1, "Non mi aspettavo che Lab di Cucito fosse inserito nel database");
+        assertFalse(n2, "Non mi aspettavo che Lab di Arte fosse inserito nel database");
+        assertFalse(n3, "Non mi aspettavo che Lab di Moda fosse inserito nel database");
+        assertFalse(n4, "Non mi aspettavo che Lab di Sport fosse inserito nel database");
+        assertTrue(n5, "Mi aspettavo che Lab di Cucina fosse inserito nel database");
+        assertFalse(n6, "Non mi aspettavo che Lab di Eletronicao fosse inserito nel database");
+        ok = true;
     }
 }
