@@ -215,12 +215,10 @@ public class DBTest {
             ok = true;
 
         } catch (DBUniqueViolationException ex) {
-            Logger.getLogger(DBTest.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            assertTrue(false, "Rilevata eccezione: DBUniqueViolationException ");
 
         } catch (DBBadParamaterException ex) {
-            Logger.getLogger(DBTest.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            assertTrue(false, "Rilevata eccezione: DBBadParamaterException ");
         }
     }
 
