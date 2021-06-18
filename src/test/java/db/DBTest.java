@@ -37,6 +37,9 @@ public class DBTest {
 
     long id1 = -1;
     long id2 = -1;
+    long id3 = -1;
+    long id4 = -1;
+    long id5 = -1;
     Laboratory saved;
 
     public DBTest() {
@@ -71,6 +74,23 @@ public class DBTest {
         if (id2 != -1) {
             DBManager.getInstance().deleteLaboratory(id2);
             id2 = -1;
+        }
+
+        if (id3
+                != -1) {
+            DBManager.getInstance().deleteLaboratory(id2);
+            id3 = -1;
+        }
+
+        if (id4
+                != -1) {
+            DBManager.getInstance().deleteLaboratory(id2);
+            id4 = -1;
+        }
+        if (id5
+                != -1) {
+            DBManager.getInstance().deleteLaboratory(id2);
+            id5 = -1;
         }
 
     }
@@ -116,7 +136,7 @@ public class DBTest {
         int oldSize = allLaboratories.size();
         DBUniqueViolationException assertThrows = assertThrows(
                 DBUniqueViolationException.class,
-                 () -> {
+                () -> {
                     DBManager.getInstance()
                             .createLab("Laboratorio di Cucina");
                 },
@@ -167,6 +187,7 @@ public class DBTest {
             assertTrue(found, "Mi aspettavo che Prova 1 fosse inserito correttamente");
             assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
             ok = true;
+
         } catch (DBUniqueViolationException ex) {
             Logger.getLogger(DBTest.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -192,6 +213,7 @@ public class DBTest {
             assertTrue(found, "Mi aspettavo che Prova 1 fosse inserito correttamente");
             assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
             ok = true;
+
         } catch (DBUniqueViolationException ex) {
             Logger.getLogger(DBTest.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -219,7 +241,31 @@ public class DBTest {
         assertFalse(n3, "Non mi aspettavo che Lab di Moda fosse inserito nel database");
         assertFalse(n4, "Non mi aspettavo che Lab di Sport fosse inserito nel database");
         assertTrue(n5, "Mi aspettavo che Lab di Cucina fosse inserito nel database");
-        assertFalse(n6, "Non mi aspettavo che Lab di Eletronicao fosse inserito nel database");
+        assertFalse(n6, "Non mi aspettavo che Lab di Eletronica fosse inserito nel database");
         ok = true;
+    }
+
+    @Test
+    @DisplayName("[createLab()] Test paramater valid")
+    public void test_Alfa6(TestInfo info) {
+
+        message = info.getDisplayName();
+        boolean db_installed = DBManager.getInstance().isInstalled();
+        Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
+        DBBadParamaterException assertThrowsEmpty = assertThrows(
+                DBBadParamaterException.class,
+                () -> {
+                    DBManager.getInstance().createLab("");
+                },
+                "Il metodo createLab non ha lanciato l'eccezione di inserimento di stringa vuota"
+        );
+        DBBadParamaterException assertThrowsNull = assertThrows(
+                DBBadParamaterException.class,
+                () -> {
+                    DBManager.getInstance().createLab(null);
+                },
+                "Il metodo createLab non ha lanciato l'eccezione di inserimento nullo"
+        );
+
     }
 }
