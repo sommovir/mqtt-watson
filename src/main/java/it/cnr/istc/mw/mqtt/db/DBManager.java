@@ -31,6 +31,8 @@ public class DBManager {
     private static DBManager _instance = null;
     private SessionFactory sessionFactory;
     private boolean installed = false;
+    
+    
 
     public static DBManager getInstance() {
         if (_instance == null) {
