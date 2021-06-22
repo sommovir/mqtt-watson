@@ -111,10 +111,10 @@ public class DBTest {
 
     }
 
-    public void removeToList(int num) {
+    public void removeToList(long num) {
         List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
         if (result.size() > 0 || num < result.size()) {
-            saved = result.get(num);
+            saved = result.get((int) num);
             result.remove(num);
         }
 
@@ -194,7 +194,7 @@ public class DBTest {
             boolean db_installed = DBManager.getInstance().isInstalled();
             Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
             List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
-            id1 = DBManager.getInstance().createLab("Prova 1");
+            DBManager.getInstance().createLab("Prova 1");
             id2 = DBManager.getInstance().createLab("Prova 2");
             id3 = DBManager.getInstance().createLab("Laboratorio di cucina");
             id3 = DBManager.getInstance().createLab("Laboratorio di informatica");
@@ -300,7 +300,30 @@ public class DBTest {
         boolean db_installed = DBManager.getInstance().isInstalled();
         assertTrue(db_installed, "Il database non è installato!!!!");
         ok = true;
-        
+
     }
 
+    @Test
+    @DisplayName("[getAllLaboratories()] removeToList check in to list object removed test")
+    public void test_Alfa8(TestInfo info) {
+        try {
+            message = info.getDisplayName();
+            boolean db_installed = DBManager.getInstance().isInstalled();
+            Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
+            id1 = DBManager.getInstance().createLab("Laboratorio di scacchi");
+            id2 = DBManager.getInstance().createLab("Laboratorio di videogiochi");
+            id3 = DBManager.getInstance().createLab("Laboratorio di programmazione");
+            id4 = DBManager.getInstance().createLab("Laboratorio di Balze");
+            List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
+            removeToList(id2);
+            boolean foundLab = isFoundLab("Laboratorio di videogiochi");
+            assertFalse(foundLab, "Mi aspettavo che Laboratorio di videogiochi fosse stato eliminato!");
+            ok = true;
+        } catch (DBUniqueViolationException ex) {
+            assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
+
+        } catch (DBBadParamaterException ex) {
+            assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
+        }
+    }
 }
