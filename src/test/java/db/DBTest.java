@@ -111,7 +111,7 @@ public class DBTest {
 
     }
 
-    public void removeToList(int num) {   
+    public void removeToList(int num) {
         List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
         if (result.size() > 0 || num < result.size()) {
             saved = result.get(num);
@@ -129,10 +129,10 @@ public class DBTest {
         }
         return false;
     }
-    
-    public boolean isLaboratoryValid(String name){
-        if(name.contains("Laboratorio")){
-           return true; 
+
+    public boolean isLaboratoryValid(String name) {
+        if (name.contains("Laboratorio")) {
+            return true;
         }
         return false;
     }
@@ -259,7 +259,7 @@ public class DBTest {
                 "Il metodo createLab non ha lanciato l'eccezione di inserimento nullo"
         );
         assertThrows(
-        DBBadParamaterException.class,
+                DBBadParamaterException.class,
                 () -> {
                     id3 = DBManager.getInstance().createLab(" ");
                 },
@@ -292,4 +292,15 @@ public class DBTest {
         }
         ok = true;
     }
+
+    @Test
+    @DisplayName("[isInstalled()] Test database isInstalled")
+    public void test_Alfa7(TestInfo info) {
+        message = info.getDisplayName();
+        boolean db_installed = DBManager.getInstance().isInstalled();
+        assertTrue(db_installed, "Il database non è installato!!!!");
+        ok = true;
+        
+    }
+
 }
