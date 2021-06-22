@@ -314,16 +314,16 @@ public class DBTest {
             id2 = DBManager.getInstance().createLab("Laboratorio di videogiochi");
             id3 = DBManager.getInstance().createLab("Laboratorio di programmazione");
             id4 = DBManager.getInstance().createLab("Laboratorio di Balze");
-            List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
+            List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
             removeToList(id2);
             boolean foundLab = isFoundLab("Laboratorio di videogiochi");
             assertFalse(foundLab, "Mi aspettavo che Laboratorio di videogiochi fosse stato eliminato!");
-            ok = true;
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
 
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
+        ok = true;
     }
 }
