@@ -308,7 +308,7 @@ public class DBTest {
     }
 
     @Test
-    @DisplayName("[getAllLaboratories()] removeToList check in to list object removed test")
+    @DisplayName("[getAllLaboratories()] removeToList check into list object removed Test")
     public void test_Alfa8(TestInfo info) {
         try {
             message = info.getDisplayName();
@@ -322,6 +322,7 @@ public class DBTest {
             removeToList(id2);
             boolean foundLab = isFoundLab("Laboratorio di videogiochi");
             assertFalse(foundLab, "Mi aspettavo che Laboratorio di videogiochi fosse stato eliminato!");
+            allLaboratories.add(saved);
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
 
