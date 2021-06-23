@@ -21,34 +21,41 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author sommovir
  */
 public class BasicWatsonTest {
-    
+
     public BasicWatsonTest() {
     }
-    
+
+    private String message;
+    boolean ok = false;
+
     @BeforeAll
     public static void setUpClass() {
+        System.out.println("---------------------------");
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
+        System.out.println("---------------------------");
     }
-    
+
     @BeforeEach
     public void setUp() {
+        ok = false;
     }
-    
+
     @AfterEach
     public void tearDown() {
+        System.out.println(message + (ok ? " SUCCESS" : " FAILED"));
     }
-    
+
     @Test
-    public void testG(){
+    public void testG() {
         //test di prova delle Assumption
-        boolean connected  =MQTTClient.getInstance().isConnected();
+        boolean connected = MQTTClient.getInstance().isConnected();
 //        org.junit.jupiter.api.Assumptions.assumeTrue(connected, "Server non connesso");
         Assumptions.assumeThat(connected).withFailMessage("ciaaia").isTrue();
-        assertTrue(MQTTClient.getInstance().getIP().startsWith("192"),"L'ip è strano");
-        
+        assertTrue(MQTTClient.getInstance().getIP().startsWith("192"), "L'ip è strano");
+
     }
-    
+
 }
