@@ -312,7 +312,7 @@ public class DBTest {
     }
 
     @Test
-    @DisplayName("[getAllLaboratories()] removeToList check into list object removed Test")
+    @DisplayName("[getAllLaboratories()] removeToDatabase check into list object removed Test")
     public void test_Alfa8(TestInfo info) {
         try {
             message = info.getDisplayName();
