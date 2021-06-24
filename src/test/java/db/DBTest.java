@@ -111,12 +111,17 @@ public class DBTest {
 
     }
 
-    public void removeToList(long num) {
+    public void removeToList(long num) {    //da revisionare con luca );
         List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
         if (result.size() > 0 || num < result.size()) {
             saved = result.get((int) num);
             result.remove(num);
         }
+
+    }
+
+    public void removeToDatabase(long num) {
+        DBManager.getInstance().deleteLaboratory(num);
 
     }
 
@@ -149,11 +154,11 @@ public class DBTest {
         int oldSize = allLaboratories.size();
         DBUniqueViolationException assertThrows = assertThrows(
                 DBUniqueViolationException.class,
-                () -> {
+                 () -> {
                     id1 = DBManager.getInstance()
                             .createLab("Laboratorio di Cucina");
                 },
-                "Il metodo createLab non ha lanciato l'eccezione di violazione di vincolo di unicità sul nome"
+                 "Il metodo createLab non ha lanciato l'eccezione di violazione di vincolo di unicità sul nome"
         );
         List<Laboratory> allLaboratories2 = DBManager.getInstance().getAllLaboratories();
         assertEquals(oldSize, allLaboratories2.size(), "Non puoi aggiungere due laboratori con lo stesso nome!");
@@ -176,7 +181,6 @@ public class DBTest {
             id2 = DBManager.getInstance().createLab("Prova 2");
             int newSize = DBManager.getInstance().getAllLaboratories().size();
             assertEquals(oldSize + 2, newSize, "Mi aspettavo che il size fosse incrementato di 2");
-            
 
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
@@ -184,7 +188,7 @@ public class DBTest {
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
-        
+        ok = true;
     }
 
     @Test
@@ -207,7 +211,7 @@ public class DBTest {
             assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
             assertTrue(found3, "Mi aspettavo che Laboratorio di cucina fosse inserito correttamente");
             assertTrue(found4, "Mi aspettavo che Laboratorio di informatica fosse inserito correttamente");
-            ok = true;
+            
 
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
@@ -215,7 +219,7 @@ public class DBTest {
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
-        
+        ok = true;
     }
 
     @Test
@@ -248,24 +252,24 @@ public class DBTest {
         Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
         assertThrows(
                 DBBadParamaterException.class,
-                () -> {
+                 () -> {
                     id1 = DBManager.getInstance().createLab("");
                 },
-                "Il metodo createLab non ha lanciato l'eccezione di inserimento di stringa vuota"
+                 "Il metodo createLab non ha lanciato l'eccezione di inserimento di stringa vuota"
         );
         assertThrows(
                 DBBadParamaterException.class,
-                () -> {
+                 () -> {
                     id2 = DBManager.getInstance().createLab(null);
                 },
-                "Il metodo createLab non ha lanciato l'eccezione di inserimento nullo"
+                 "Il metodo createLab non ha lanciato l'eccezione di inserimento nullo"
         );
         assertThrows(
                 DBBadParamaterException.class,
-                () -> {
+                 () -> {
                     id3 = DBManager.getInstance().createLab(" ");
                 },
-                "Il metodo createLab non ha lanciato l'eccezione di inserimento di parametri errati"
+                 "Il metodo createLab non ha lanciato l'eccezione di inserimento di parametri errati"
         );
         ok = true;
 
@@ -285,16 +289,16 @@ public class DBTest {
             id5 = DBManager.getInstance().createLab("Laboratorio di Balze");
             assertThrows(
                     DBUniqueViolationException.class,
-                    () -> {
+                     () -> {
                         id2 = DBManager.getInstance().createLab("Laboratorio di scacchi");
                     },
-                    "Il metodo create lab non ha lanciato l'eccezione di vincolo di unicità del nome"
+                     "Il metodo create lab non ha lanciato l'eccezione di vincolo di unicità del nome"
             );
-            ok = true;
+            
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
-        
+        ok = true;
     }
 
     @Test
@@ -319,10 +323,10 @@ public class DBTest {
             id3 = DBManager.getInstance().createLab("Laboratorio di programmazione");
             id4 = DBManager.getInstance().createLab("Laboratorio di Balze");
             List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
-            removeToList(id2);
+            removeToDatabase(id2);
             boolean foundLab = isFoundLab("Laboratorio di videogiochi");
             assertFalse(foundLab, "Mi aspettavo che Laboratorio di videogiochi fosse stato eliminato!");
-            allLaboratories.add(saved);
+            id2 = DBManager.getInstance().createLab("Laboratorio di videogiochi");
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
 
