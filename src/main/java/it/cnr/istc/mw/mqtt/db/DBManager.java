@@ -14,6 +14,7 @@ import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import javax.persistence.PersistenceException;
+import javax.swing.JOptionPane;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -226,6 +227,31 @@ public class DBManager {
 
         session.getTransaction().commit();
         session.close();
+
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Room room = new Room("Cucina");
+        Room room1 = new Room("Cesso");
+
+        House h1 = new House("Casa mia", "Via bamboccioni 33");
+        h1.addRoom(room);
+        h1.addRoom(room1);
+
+        session.persist(h1);
+
+        session.getTransaction().commit();
+        session.close();
+
+        JOptionPane.showMessageDialog(null, "sidasdj");
+
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        session.remove(h1);
+        session.getTransaction().commit();
+        session.close();
+
     }
 
     /**
@@ -251,7 +277,6 @@ public class DBManager {
         return laboratory == null ? -1 : laboratory.getId();
 
     }
-    
 
     public void deleteLaboratory(long id) {
         Session session = sessionFactory.openSession();
@@ -264,7 +289,7 @@ public class DBManager {
         session.getTransaction().commit();
         session.close();
     }
-    
+
     public void deletePerson(long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();

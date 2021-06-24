@@ -45,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jTextField_idDelete = new javax.swing.JTextField();
         laboratoryPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.LaboratoryPanel();
         registrationPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.RegistrationPanel();
 
@@ -110,6 +111,8 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField_idDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -125,7 +128,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jTextField_idDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(38, 38, 38)
                 .addComponent(jButton2)
                 .addContainerGap(56, Short.MAX_VALUE))
@@ -185,7 +190,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+        String text = this.jTextField_idDelete.getText();
+        long parseLong = Long.parseLong(text);
+        DBManager.getInstance().deletePerson(parseLong);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -233,6 +240,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField_idDelete;
     private it.cnr.istc.mw.mqtt.gui.panels.LaboratoryPanel laboratoryPanel1;
     private it.cnr.istc.mw.mqtt.gui.panels.RegistrationPanel registrationPanel1;
     // End of variables declaration//GEN-END:variables
