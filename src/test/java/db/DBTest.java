@@ -338,6 +338,7 @@ public class DBTest {
         try {
             message = info.getDisplayName();
             boolean db_installed = DBManager.getInstance().isInstalled();
+            Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
             Laboratory lab1 = DBManager.getInstance().createLab("Cucina");
             id1 = lab1.getId();
             Laboratory lab2 = DBManager.getInstance().createLab("Laboratorio di Pittura");
