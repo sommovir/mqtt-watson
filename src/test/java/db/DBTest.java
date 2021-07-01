@@ -398,20 +398,23 @@ public class DBTest {
             Laboratory lab3 = DBManager.getInstance().createLab("Laboratorio di cucina");
             Laboratory lab4 = DBManager.getInstance().createLab("Laboratorio di arte");
             //-----------------------------------------------------------------------------
-            long idLab1 = DBManager.getInstance().getLabIdByName("Laboratorio di scacchi");
-            long idLab2 = DBManager.getInstance().getLabIdByName("Laboratorio di Luca");
-            long idLab3 = DBManager.getInstance().getLabIdByName("Laboratorio di informatica");
-            long idLab4 = DBManager.getInstance().getLabIdByName("Laboratorio di videogiochi");
-            long idLab5 = DBManager.getInstance().getLabIdByName("Laboratorio di arte");
-            long idLab6 = DBManager.getInstance().getLabIdByName("Laboratorio di cucina");
-            //---------------------------------------------------------------------------------------
-            assertEquals(idLab1, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            assertEquals(idLab2, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            assertEquals(idLab3, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            assertEquals(idLab4, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            assertEquals(idLab5, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            assertEquals(idLab6, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
+            long id1 = lab1.getId();
+            long id2 = lab2.getId();
+            long id3 = lab3.getId();
+            long id4 = lab4.getId();
+            //-----------------------------------------------------------------------------
+
+            long idLabA = DBManager.getInstance().getLabIdByName("Laboratorio di scacchi");
+            long idLabB = DBManager.getInstance().getLabIdByName("Laboratorio di balze");
+            long idLabC = DBManager.getInstance().getLabIdByName("Laboratorio di cucina");
+            long idLabD = DBManager.getInstance().getLabIdByName("Laboratorio di arte");
             
+            //---------------------------------------------------------------------------------------
+            assertEquals(idLabA, id1, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
+            assertEquals(idLabB, id2, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
+            assertEquals(idLabC, id3, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
+            assertEquals(idLabD, id4, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
         } catch (DBBadParamaterException ex) {
@@ -419,4 +422,6 @@ public class DBTest {
         }
         ok = true;
     }
+
+    
 }
