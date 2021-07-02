@@ -173,7 +173,7 @@ public class DBManager {
      * @throws DBBadParamaterException Se il nome modificato è nullo o vuoto.
      */
     public void editLab(Laboratory lab) throws DBUniqueViolationException, DBBadParamaterException {
-
+            
     }
 
     /**
