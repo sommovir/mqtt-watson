@@ -505,7 +505,7 @@ public class DBTest {
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
-        ok = true;
+        ok = true; 
     }
     
     @Test
