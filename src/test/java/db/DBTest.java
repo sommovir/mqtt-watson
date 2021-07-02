@@ -574,14 +574,6 @@ public class DBTest {
         lab.setName(newName);
     }
     
-    @Test
-    @DisplayName("[editLab()] create x4 Test editLab correctly ")
-    public void test_Alfa13(TestInfo info) {
-        message = info.getDisplayName();
-        boolean db_install = DBManager.getInstance().isInstalled();
-        Assumptions.assumeThat(db_install).withFailMessage("Database non installato").isTrue();
-        //----------------------------------------------------------------------------------------
-
-    }
+   
     
 }
