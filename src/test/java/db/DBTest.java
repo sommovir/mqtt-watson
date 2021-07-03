@@ -36,39 +36,41 @@ import org.junit.jupiter.api.TestMethodOrder;
 //@Disabled
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class DBTest {
-    
+
     long id1 = -1;
     long id2 = -1;
     long id3 = -1;
     long id4 = -1;
     long id5 = -1;
     long id6 = -1;
+    long id7 = -1;
+    long id8 = -1;
     Laboratory saved;
-    
+
     private String DatabaseNotInstalledMsg = "Il database non è installlato";
-    
+
     public DBTest() {
     }
-    
+
     private String message;
     private boolean ok;
-    
+
     @BeforeAll
     public static void setUpClass() {
         System.out.println("---------------------------");
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
         System.out.println("----------------------------");
     }
-    
+
     @BeforeEach
     public void setUp() {
-        
+
         ok = false;
     }
-    
+
     @AfterEach
     public void tearDown() {
         System.out.println(message + (ok ? " [SUCCESS] " : " [FAILED] "));
@@ -80,13 +82,13 @@ public class DBTest {
             DBManager.getInstance().deleteLaboratory(id2);
             id2 = -1;
         }
-        
+
         if (id3
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id3);
             id3 = -1;
         }
-        
+
         if (id4
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id4);
@@ -102,14 +104,24 @@ public class DBTest {
             DBManager.getInstance().deleteLaboratory(id6);
             id6 = -1;
         }
+        if (id7
+                != -1) {
+            DBManager.getInstance().deleteLaboratory(id7);
+            id7 = -1;
+        }
+        if (id8
+                != -1) {
+            DBManager.getInstance().deleteLaboratory(id8);
+            id8 = -1;
+        }
         //DBManager.getInstance().getAllLaboratories().clear();
 
     }
-    
+
     private String DatabaseMessageError() {  //luca lascia stare, volevo provare una cosa ma ho failato
         return DatabaseNotInstalledMsg;
     }
-    
+
     private boolean isFoundLab(String lab) {
         for (Laboratory l : DBManager.getInstance().getAllLaboratories()) {
             if (l.getName().equals(lab)) {
@@ -117,23 +129,23 @@ public class DBTest {
             }
         }
         return false;
-        
+
     }
-    
+
     public void removeToList(long num) {    //da revisionare con luca );
         List<Laboratory> result = DBManager.getInstance().getAllLaboratories();
         if (result.size() > 0 || num < result.size()) {
             saved = result.get((int) num);
             result.remove(num);
         }
-        
+
     }
-    
+
     public void removeToDatabase(long num) {
         DBManager.getInstance().deleteLaboratory(num);
-        
+
     }
-    
+
     public boolean isLaboratoryPresent(String name) {
         List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
         for (Laboratory allLaboratory : allLaboratories) {
@@ -143,11 +155,11 @@ public class DBTest {
         }
         return false;
     }
-    
+
     public boolean isLaboratoryValid(String name) {
         return name.contains("Laboratorio");
     }
-    
+
     public long findIdByName(Laboratory name) {
         List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories(); //posso mettere tipo if e se lancia eccezioni returna -1???
         if (name.getName() == null || name.getName().isEmpty() || !name.getName().contains("Laboratorio")) {
@@ -160,7 +172,7 @@ public class DBTest {
         }
         return -1;
     }
-    
+
     public boolean isFindIdLabById(long id) {
         List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
         for (Laboratory allLab : allLaboratories) {
@@ -170,7 +182,7 @@ public class DBTest {
         }
         return false;
     }
-    
+
     @Test
     @DisplayName("[getAllLaboratories()] create, oldsize, newsize, test size")
     public void test_Alfa1(TestInfo info) {
@@ -195,7 +207,7 @@ public class DBTest {
         assertEquals(oldSize, allLaboratories2.size(), "Non puoi aggiungere due laboratori con lo stesso nome!");
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[getAllLaboratories()] create, create, test size")
     public void test_Alfa2(TestInfo info) {
@@ -216,16 +228,16 @@ public class DBTest {
             //----------------------------------------------------------------------------------
             int newSize = DBManager.getInstance().getAllLaboratories().size();
             assertEquals(oldSize + 2, newSize, "Mi aspettavo che il size fosse incrementato di 2");
-            
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
-            
+
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[getAllLaboratories()] create x4, Test isFoundLab")
     public void test_Alfa3(TestInfo info) {
@@ -249,16 +261,16 @@ public class DBTest {
             assertTrue(found2, "Mi aspettavo che Prova 2 fosse inserito correttamente");
             assertTrue(found3, "Mi aspettavo che Laboratorio di cucina fosse inserito correttamente");
             assertTrue(found4, "Mi aspettavo che Laboratorio di informatica fosse inserito correttamente");
-            
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
-            
+
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[getAllLaboratories()] test isLaboratoryPresent ")
     public void test_Alfa4(TestInfo info) {
@@ -281,11 +293,11 @@ public class DBTest {
         assertFalse(n6, "Non mi aspettavo che Lab di Eletronica fosse inserito nel database");
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[createLab()] Test paramater valid")
     public void test_Alfa5(TestInfo info) {
-        
+
         message = info.getDisplayName();
         boolean db_installed = DBManager.getInstance().isInstalled();
         Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
@@ -312,13 +324,13 @@ public class DBTest {
                 "Il metodo createLab non ha lanciato l'eccezione di inserimento di parametri errati"
         );
         ok = true;
-        
+
     }
-    
+
     @Test
     @DisplayName("[createLab()] create x5 Test createLab DBUniqueViolationException")
     public void test_Alfa6(TestInfo info) throws DBUniqueViolationException {
-        
+
         try {
             message = info.getDisplayName();
             boolean db_installed = DBManager.getInstance().isInstalled();
@@ -336,14 +348,14 @@ public class DBTest {
                     },
                     "Il metodo create lab non ha lanciato l'eccezione di vincolo di unicità del nome"
             );
-            
+
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
         ok = true;
     }
-    
-    @Test
+
+    @Test   //fake test
     @DisplayName("[isInstalled()] Test database isInstalled")
     public void test_Alfa7(TestInfo info) {
         message = info.getDisplayName();
@@ -351,9 +363,9 @@ public class DBTest {
         Assumptions.assumeThat(db_installed).withFailMessage("Database non installato").isTrue();
         //assertTrue(db_installed, "Il database non è installato!!!!");
         ok = true;
-        
+
     }
-    
+
     @Test
     @DisplayName("[getAllLaboratories()] removeToDatabase check into list object removed Test")
     public void test_Alfa8(TestInfo info) {
@@ -375,13 +387,13 @@ public class DBTest {
             id2 = DBManager.getInstance().createLab("Laboratorio di videogiochi").getId();
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
-            
+
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[createLab()] create x4 isLaboratoryValid Test")
     public void test_Alfa9(TestInfo info) {
@@ -416,16 +428,16 @@ public class DBTest {
             assertFalse(labValid4, "Ho inserito un laboratorio sbagliato e me lo ha accettato");
             assertFalse(labValid5, "Ho inserito un laboratorio sbagliato e me lo ha accettato");
             assertFalse(labValid6, "Ho inserito un laboratorio sbagliato e me lo ha accettato");
-            
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
         ok = true;
-        
+
     }
-    
+
     @Test
     @DisplayName("[getLabIdByName()] create x4 Test idLab")
     public void test_Alfa10(TestInfo info) {
@@ -455,7 +467,7 @@ public class DBTest {
             assertEquals(idLabB, id2, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
             assertEquals(idLabC, id3, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
             assertEquals(idLabD, id4, "Mi aspettavo che il metodo mi returnasse l'id del laboratorio");
-            
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
         } catch (DBBadParamaterException ex) {
@@ -463,11 +475,11 @@ public class DBTest {
         }
         ok = true;
     }
-    
+
     @Test
     @DisplayName("[getLabIdByName()] create x4 Test idLab")
     public void test_Alfa11(TestInfo info) {
-        
+
         try {
             message = info.getDisplayName();
             boolean db_install = DBManager.getInstance().isInstalled();
@@ -498,68 +510,110 @@ public class DBTest {
             assertEquals(id4, findIdLabById4, "Mi aspettavo che il metodo getLabByIdName mi returnasse l'id corretto");
             assertEquals(id5, -1, "Mi aspettavo che il metodo getLabByIdName mi returnasse -1");
             assertEquals(id6, -1, "Mi aspettavo che il metodo getLabByIdName mi returnasse -1");
-            
+
             DBManager.getInstance().deleteLaboratory(lab1.getId());
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
         }
-        ok = true; 
+        ok = true;
     }
-    
+
     @Test
     @DisplayName("[editLab()] create x4 Test editLab correctly ")
     public void test_Alfa12(TestInfo info) {
-        Laboratory lab1 = null;
-        Laboratory lab2 = null;
-        Laboratory lab3 = null;
-        Laboratory lab4 = null;
         try {
-            message = info.getDisplayName();
-            boolean db_install = DBManager.getInstance().isInstalled();
-            Assumptions.assumeThat(db_install).withFailMessage("Database non installato").isTrue();
-            //----------------------------------------------------------------------------------------
+            final Laboratory lab1 = DBManager.getInstance().createLab("Laboratorio di scacchi");
+            final Laboratory lab2 = DBManager.getInstance().createLab("Laboratorio di balze");
+            final Laboratory lab3 = DBManager.getInstance().createLab("Laboratorio di cucina");
+            final Laboratory lab4 = DBManager.getInstance().createLab("Laboratorio di arte");
+            final Laboratory lab5 = DBManager.getInstance().createLab("Laboratorio di calcio");
+            final Laboratory lab6 = DBManager.getInstance().createLab("Laboratorio di sport");
+            final Laboratory lab7 = DBManager.getInstance().createLab("Laboratorio di medicina");
+            final Laboratory lab8 = DBManager.getInstance().createLab("Laboratorio di testate al muro");
+            try {
+                message = info.getDisplayName();
+                boolean db_install = DBManager.getInstance().isInstalled();
+                Assumptions.assumeThat(db_install).withFailMessage("Database non installato").isTrue();
+                //----------------------------------------------------------------------------------------               
+                Assumptions.assumeThat(lab1).isNotNull();
+                Assumptions.assumeThat(lab2).isNotNull();
+                Assumptions.assumeThat(lab3).isNotNull();
+                Assumptions.assumeThat(lab4).isNotNull();
+                Assumptions.assumeThat(lab5).isNotNull();
+                Assumptions.assumeThat(lab6).isNotNull();
+                Assumptions.assumeThat(lab7).isNotNull();
+                Assumptions.assumeThat(lab8).isNotNull();
+                //---------------------------------------------------------------------------------------
+                id1 = DBManager.getInstance().getLabIdByName("Laboratorio di scacchi");
+                id2 = DBManager.getInstance().getLabIdByName("Laboratorio di balze");
+                id3 = DBManager.getInstance().getLabIdByName("Laboratorio di cucina");
+                id4 = DBManager.getInstance().getLabIdByName("Laboratorio di arte");
+                id5 = DBManager.getInstance().getLabIdByName("Laboratorio di calcio");
+                id6 = DBManager.getInstance().getLabIdByName("Laboratorio di sport");
+                id7 = DBManager.getInstance().getLabIdByName("Laboratorio di medicina");
+                id8 = DBManager.getInstance().getLabIdByName("Laboratorio di testate al muro");
+                //----------------------------------------------------------------------------------------
 
-            lab1 = DBManager.getInstance().createLab("Laboratorio di scacchi");
-            //long idLab1 = lab1.getId();
-            Assumptions.assumeThat(lab1).isNotNull();
-            lab2 = DBManager.getInstance().createLab("Laboratorio di balze");
-            //long idLab2 = lab2.getId();
-            Assumptions.assumeThat(lab2).isNotNull();
-            lab3 = DBManager.getInstance().createLab("Laboratorio di cucina");
-            //long idLab3 = lab3.getId();
-            Assumptions.assumeThat(lab3).isNotNull();
-            lab4 = DBManager.getInstance().createLab("Laboratorio di arte");
-            //long idLab4 = lab4.getId();
-            Assumptions.assumeThat(lab4).isNotNull();
-            //---------------------------------------------------------------------------------------
-            id1 = DBManager.getInstance().getLabIdByName("Laboratorio di scacchi");
-            id2 = DBManager.getInstance().getLabIdByName("Laboratorio di balze");
-            id3 = DBManager.getInstance().getLabIdByName("Laboratorio di cucina");
-            id4 = DBManager.getInstance().getLabIdByName("Laboratorio di arte");
-            //----------------------------------------------------------------------------------------
-            DBManager.getInstance().editLab(lab1);
-            lab1.setName("Laboratorio di calcio");
-            DBManager.getInstance().editLab(lab2);
-            DBManager.getInstance().editLab(lab3);
-            DBManager.getInstance().editLab(lab4);
-            
+                lab1.setName("Laboratorio di nazismo");
+                lab2.setName("Laboratorio di sport");
+                lab3.setName("Laboratorio di storia");
+                lab4.setName("lab di nazibalze");
+                lab5.setName("lab di informatica");
+                lab6.setName("");
+                lab7.setName(null);
+                lab8.setName("Laboratorio di sport");
+                DBManager.getInstance().editLab(lab1);               
+                DBManager.getInstance().editLab(lab8);
+                //------------------------------------------------------------
+                assertNotEquals(id1, lab1.getName(), "Mi aspettavo che il nome del lab fosse cambiato");
+                assertThrows(DBUniqueViolationException.class, () -> {
+                    DBManager.getInstance().editLab(lab2);
+                });
+                assertNotEquals(id3, lab3.getName(), "Mi aspettavo che il nome del lab fosse cambiato");
+                assertThrows(DBBadParamaterException.class, () -> {
+                    DBManager.getInstance().editLab(lab3);
+                });
+                assertThrows(DBBadParamaterException.class, () -> {
+                    DBManager.getInstance().editLab(lab4);
+                });
+                assertThrows(DBBadParamaterException.class, () -> {
+                    DBManager.getInstance().editLab(lab5);
+                });
+                assertThrows(DBBadParamaterException.class, () -> {
+                    DBManager.getInstance().editLab(lab6);
+                });
+                assertThrows(DBBadParamaterException.class, () -> {
+                    DBManager.getInstance().editLab(lab7);
+                });
+                assertNotEquals(id8, lab8.getName(), "Mi aspettavo che il nome del lab fosse cambiato");
+            } catch (DBUniqueViolationException ex) {
+                assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
+            } catch (DBBadParamaterException ex) {
+                assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
+            } finally {    //il codice all'interno verrà eseguito anche in caso di eccezione
+                DBManager.getInstance().deleteLaboratory(lab1.getId());
+                DBManager.getInstance().deleteLaboratory(lab2.getId());
+                DBManager.getInstance().deleteLaboratory(lab3.getId());
+                DBManager.getInstance().deleteLaboratory(lab4.getId());
+                DBManager.getInstance().deleteLaboratory(lab5.getId());
+                DBManager.getInstance().deleteLaboratory(lab6.getId());
+                DBManager.getInstance().deleteLaboratory(lab7.getId());
+                DBManager.getInstance().deleteLaboratory(lab8.getId());
+            }
+            ok = true;
+
         } catch (DBUniqueViolationException ex) {
             assertTrue(false, "Rilevata eccezione: DBUniqueViolationException (nome lab uguale a un altro)");
         } catch (DBBadParamaterException ex) {
             assertTrue(false, "Rilevata eccezione: DBBadParamaterException (parametro nullo o empty)");
-        } finally {    //il codice all'interno verrà eseguito anche in caso di eccezione
-            DBManager.getInstance().deleteLaboratory(lab1.getId());
-            DBManager.getInstance().deleteLaboratory(lab2.getId());
-            DBManager.getInstance().deleteLaboratory(lab3.getId());
-            DBManager.getInstance().deleteLaboratory(lab4.getId());
         }
-        ok = true;
-        
-    }   //cambio nome con null, empty o nome gia in uso;
-    //prendere un lab con l'id, modificarlo e lo riprendo con getLabIdById e controllo se il nome è cambiato;
+    }
+    //cambio nome con null, empty o nome gia in uso;
+    //prendere un lab con l'id, modificarlo e riprenderlo con getLabIdById e controllo se il nome è cambiato;
 
+    //metodi fatti a caso pensando fossero utili :(
     public void changeNameLaboratory(Laboratory lab, String newName) throws DBBadParamaterException, DBUniqueViolationException {
         String replaced = lab.getName().replace(lab.getName(), newName);
         if (newName == null || newName.isEmpty() || newName.contains("Laboratorio")) {
@@ -573,7 +627,17 @@ public class DBTest {
         }
         lab.setName(newName);
     }
-    
-   
-    
+
+    public boolean isNameChanged(Laboratory lab, long id) {
+        List<Laboratory> allLab = DBManager.getInstance().getAllLaboratories();
+        for (Laboratory laboratory : allLab) {
+            if (laboratory.getId() == id) {
+                if (laboratory.getName() != lab.getName()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
