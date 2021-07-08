@@ -25,7 +25,7 @@ public class BasicWatsonTest {
     public BasicWatsonTest() {
     }
 
-    private String message;
+    private String message = "Test BasicWatsonTest"; //andrà cancellato alla creazione del primo metodo di test
     boolean ok = false;
 
     @BeforeAll

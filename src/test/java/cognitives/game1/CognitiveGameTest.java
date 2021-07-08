@@ -23,7 +23,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 public class CognitiveGameTest {
 
     boolean ok = false;
-    private String message;
+    private String message = "Test CognitiveGameTest"; //andrà cancellato alla creazione del primo metodo di test
 
     public CognitiveGameTest() {
     }
