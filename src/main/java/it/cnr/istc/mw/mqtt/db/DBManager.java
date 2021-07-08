@@ -185,7 +185,15 @@ public class DBManager {
      * id negativi
      */
     public Laboratory getLaboratoryByID(long id) {
-        return null;
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Laboratory found = session.find(Laboratory.class, id);
+
+        session.getTransaction().commit();
+        session.close();
+        
+        return found;
     }
 
     public void test() {
