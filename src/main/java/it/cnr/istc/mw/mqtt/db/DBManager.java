@@ -28,6 +28,7 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author Luca 2
  */
 public class DBManager {
+    //try
 
     private static DBManager _instance = null;
     private SessionFactory sessionFactory;
