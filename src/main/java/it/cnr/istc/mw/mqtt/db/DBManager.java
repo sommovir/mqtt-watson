@@ -25,7 +25,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
- * @author Luca
+ * @author Luca 2
  */
 public class DBManager {
 
