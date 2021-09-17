@@ -656,7 +656,7 @@ public class WatsonManager {
                     case INDECISION:
                         return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene"+BAD_LUCK;
                     case WATSON_SUGGESTION:
-                        return "<AUTOLISTEN>Perdonami <NAME>, mi potresti chiedere la stessa cosa in forma più semplice ?"+BAD_LUCK;
+                        return "<AUTOLISTEN>Perdonami, mi potresti chiedere la stessa cosa in forma più semplice ?"+BAD_LUCK;
                 }
                 return "<AUTOLISTEN>Scusa potresti essere più preciso?"+BAD_LUCK;
             }
