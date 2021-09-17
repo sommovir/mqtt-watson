@@ -637,9 +637,9 @@ public class WatsonManager {
 
             LowDeltaResult lowDeltaExisting = isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList);
             boolean watsonSuggestion = response.getOutput().getGeneric().get(0).responseType().equals("suggestion");
-            if (watsonSuggestion && !lowDeltaExisting.isLowDelta()) {
-                lowDeltaExisting = LowDeltaResult.WATSON_SUGGESTION;
-            }
+//            if (watsonSuggestion && !lowDeltaExisting.isLowDelta()) {
+//                lowDeltaExisting = LowDeltaResult.WATSON_SUGGESTION;
+//            }
             if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && lowDeltaExisting.isLowDelta()) || watsonSuggestion) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " -low delta- " + generateIntensLog(response.getOutput().getIntents()));
