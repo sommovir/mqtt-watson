@@ -7,6 +7,7 @@ package watson;
 
 import it.cnr.istc.mw.mqtt.MQTTClient;
 import it.cnr.istc.mw.mqtt.MQTTServer;
+import it.cnr.istc.mw.mqtt.db.DBManager;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -14,12 +15,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Assumptions;
 
 /**
  *
  * @author sommovir
  */
+@Disabled
 public class BasicWatsonTest {
 
     public BasicWatsonTest() {

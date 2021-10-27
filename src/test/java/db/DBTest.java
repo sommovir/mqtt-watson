@@ -33,18 +33,18 @@ import org.junit.jupiter.api.TestMethodOrder;
  *
  * @author sommovir
  */
-//@Disabled
+@Disabled
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class DBTest {
 
-    long id1 = -1;
-    long id2 = -1;
-    long id3 = -1;
-    long id4 = -1;
-    long id5 = -1;
-    long id6 = -1;
-    long id7 = -1;
-    long id8 = -1;
+    Long id1 = -1l; //-1 L 
+    Long id2 = -1l;
+    Long id3 = -1l;
+    Long id4 = -1l;
+    Long id5 = -1l;
+    Long id6 = -1l;
+    Long id7 = -1l;
+    Long id8 = -1l;
     Laboratory saved;
 
     private String DatabaseNotInstalledMsg = "Il database non è installlato";
@@ -76,43 +76,43 @@ public class DBTest {
         System.out.println(message + (ok ? " [SUCCESS] " : " [FAILED] "));
         if (id1 != -1) {
             DBManager.getInstance().deleteLaboratory(id1);
-            id1 = -1;
+            id1 = -1L;
         }
         if (id2 != -1) {
             DBManager.getInstance().deleteLaboratory(id2);
-            id2 = -1;
+            id2 = -1L;
         }
 
         if (id3
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id3);
-            id3 = -1;
+            id3 = -1L;
         }
 
         if (id4
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id4);
-            id4 = -1;
+            id4 = -1L;
         }
         if (id5
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id5);
-            id5 = -1;
+            id5 = -1L;
         }
         if (id6
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id6);
-            id6 = -1;
+            id6 = -1L;
         }
         if (id7
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id7);
-            id7 = -1;
+            id7 = -1L;
         }
         if (id8
                 != -1) {
             DBManager.getInstance().deleteLaboratory(id8);
-            id8 = -1;
+            id8 = -1L;
         }
         //DBManager.getInstance().getAllLaboratories().clear();
 
@@ -197,8 +197,7 @@ public class DBTest {
         DBUniqueViolationException assertThrows = assertThrows(
                 DBUniqueViolationException.class,
                 () -> {
-                    id1 = DBManager.getInstance()
-                            .createLab("Laboratorio di Cucina").getId();
+                    id1 = DBManager.getInstance().createLab("Laboratorio di Cucina").getId();
                 },
                 "Il metodo createLab non ha lanciato l'eccezione di violazione di vincolo di unicità sul nome"
         );
