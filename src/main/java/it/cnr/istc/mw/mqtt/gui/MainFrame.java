@@ -49,7 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
         laboratoryPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.LaboratoryPanel();
         registrationPanel1 = new it.cnr.istc.mw.mqtt.gui.panels.RegistrationPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("TODO");
 

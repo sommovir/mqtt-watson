@@ -35,6 +35,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
      */
     public LogSupportFrame() {//Cambia il nome dei Jspinner
         initComponents();
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/icons/logger_logo4.png")).getImage());
         this.setTitle("Log Support v0.1");
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
