@@ -149,7 +149,7 @@ public class Main {
                                 if (infoUser.getId().equals("Server")) {
                                     System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_RED + " " + infoUser.getId() + "\t\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 } else {
-                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId() + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId()+"["+MQTTServer.getDeviceType(infoUser.getId())+"]" + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 }
                                 i++;
                             }
