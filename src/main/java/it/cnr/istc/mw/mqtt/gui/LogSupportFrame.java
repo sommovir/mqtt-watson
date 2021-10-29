@@ -155,7 +155,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shortcuts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shortcuts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255)) );
 
         jButton_WallSpeak.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_WallSpeak.setForeground(new java.awt.Color(204, 204, 0));
@@ -184,6 +184,12 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
+        jTextField_WallSpeak.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_WallSpeakKeyPressed(evt);
+            }
+        });
+
         jButton_ExtraInput.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_ExtraInput.setForeground(new java.awt.Color(102, 204, 0));
         jButton_ExtraInput.setText("<EXTRA>");
@@ -193,12 +199,29 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
+        jTextField_Extra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_ExtraActionPerformed(evt);
+            }
+        });
+        jTextField_Extra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_ExtraKeyPressed(evt);
+            }
+        });
+
         jButton_WrongInput.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_WrongInput.setForeground(new java.awt.Color(0, 153, 255));
         jButton_WrongInput.setText("<WRONG INPUT>");
         jButton_WrongInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_WrongInputActionPerformed(evt);
+            }
+        });
+
+        jTextField_WrongInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_WrongInputKeyPressed(evt);
             }
         });
 
@@ -296,7 +319,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "General Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "General Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255)));
 
         jPanel5.setLayout(new java.awt.GridLayout(4, 2, 10, 10));
 
@@ -421,7 +444,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 12, Short.MAX_VALUE)
+                        .addGap(0, 36, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -656,6 +679,100 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jTextField_WallSpeakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_WallSpeakKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (!jTextField_WallSpeak.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                printInfo("Wallspeak tag logged + note");
+                jTextField_WallSpeak.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged");
+                printInfo("Wallspeak tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        }
+    }//GEN-LAST:event_jTextField_WallSpeakKeyPressed
+
+    private void jTextField_ExtraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_ExtraKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (!jTextField_Extra.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag() + " " + jTextField_Extra.getText());
+                System.out.println(LogTitles.GUI.getTitle()+"Wallspeak tag logged + ( " + jTextField_Extra.getText() + " )");
+                printInfo("Extra tag logged + note");
+                jTextField_Extra.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.EXTRA_INPUT.getTag());
+                System.out.println(LogTitles.GUI.getTitle()+"Extra Input tag logged");
+                printInfo("Extra input tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        }
+    }//GEN-LAST:event_jTextField_ExtraKeyPressed
+
+    private void jTextField_ExtraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_ExtraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_ExtraActionPerformed
+
+    private void jTextField_WrongInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_WrongInputKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (!jTextField_WrongInput.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag() + " " + jTextField_WrongInput.getText());
+                System.out.println(LogTitles.GUI.getTitle()+"Wrong input tag logged + ( " + jTextField_WrongInput.getText() + " )");
+                printInfo("Wrong input tag logged + note");
+                jTextField_WrongInput.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WRONG_INPUT.getTag());
+                System.out.println(LogTitles.GUI.getTitle()+"Wrong input tag logged");
+                printInfo("Wrong input tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        }
+    }//GEN-LAST:event_jTextField_WrongInputKeyPressed
 
     /**
      * @param args the command line arguments
