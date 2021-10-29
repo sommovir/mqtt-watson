@@ -149,8 +149,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Shortcuts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-
         jButton_WallSpeak.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButton_WallSpeak.setForeground(new java.awt.Color(204, 204, 0));
         jButton_WallSpeak.setText("<WALL SPEAK>");
@@ -175,6 +173,17 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jTextField_WallSpeak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_WallSpeakActionPerformed(evt);
+            }
+        });
+        jTextField_WallSpeak.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_WallSpeakKeyPressed(evt);
             }
         });
 
@@ -290,8 +299,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "General Settings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
-
         jPanel5.setLayout(new java.awt.GridLayout(4, 2, 10, 10));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -380,7 +387,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 8, Short.MAX_VALUE)
+                        .addGap(0, 32, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -610,6 +617,39 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private void jTextField_NoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_NoteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_NoteActionPerformed
+
+    private void jTextField_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_WallSpeakActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_WallSpeakActionPerformed
+
+    private void jTextField_WallSpeakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_WallSpeakKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (!jTextField_WallSpeak.getText().isEmpty()) {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
+                System.out.println("Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
+                printInfo("Wallspeak tag logged + note");
+                jTextField_WallSpeak.setText(null);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        } else {
+            try {
+                LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
+                System.out.println("Wallspeak tag logged");
+                printInfo("Wallspeak tag logged");
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(ex.getMessage());
+                if (ex instanceof GuiPrintableException) {
+                    printError(((GuiPrintableException) ex).getGuiErrorMessage());
+                }
+            }
+        }
+        }
+    }//GEN-LAST:event_jTextField_WallSpeakKeyPressed
 
     /**
      * @param args the command line arguments
