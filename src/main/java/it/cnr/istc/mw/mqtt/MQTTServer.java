@@ -19,6 +19,7 @@ import io.netty.buffer.ByteBufUtil;
 import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
@@ -45,8 +46,16 @@ public class MQTTServer {
     private boolean lock = false;
     private boolean serverEntered = false;
     private static Map<String, Integer> resetMap = new  HashMap<>();
+    private static Map<String, DeviceType> deviceMap = new  HashMap<>();
     
-    
+    public static DeviceType getDeviceType(String id){
+        if(deviceMap.isEmpty()){
+            return null;
+        }
+        return deviceMap.get(id);
+    }
+            
+            
     public static int getResetTurns(String userId){
         return resetMap.get(userId);
     }
