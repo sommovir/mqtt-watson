@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class InitialGame {
     
     private String initialtext;
-    List<Prodotto> listaProdottiEReparto = new ArrayList<Prodotto>();
+    List<Product> productAndDepartmentList = new ArrayList<Product>();
 
     public InitialGame() {
     }
@@ -29,16 +29,16 @@ public class InitialGame {
         return initialtext;
     }
 
-    public List<Prodotto> getListaProdottiEReparto() {
-        return listaProdottiEReparto;
+    public List<Product> productAndDepartmentList () {
+        return productAndDepartmentList ;
     }
 
     public void setInitialtext(String initialtext) {
         this.initialtext = initialtext;
     }
 
-    public void setListaProdottiEReparto(List<Prodotto> listaProdottiEReparto) {
-        this.listaProdottiEReparto = listaProdottiEReparto;
+    public void setListaProdottiEReparto(List<Product> productAndDepartmentList ) {
+        this.productAndDepartmentList  = productAndDepartmentList ;
     }
     
  

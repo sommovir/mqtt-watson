@@ -10,16 +10,16 @@ import java.util.logging.Logger;
  *
  * @author Luca
  */
-public class Prodotto extends Reparto{
+public class Product extends Department{
     
     private long id;
     private String name;
-    private Reparto reparto = new Reparto(id, name);
+    private Department department = new Department(id, name);
 
-    public Prodotto() {
+    public Product() {
     }
 
-    public Prodotto(long id, String name) {
+    public Product(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -32,8 +32,8 @@ public class Prodotto extends Reparto{
         return name;
     }
 
-    public Reparto getReparto() {
-        return reparto;
+    public Department getDepartment() {
+        return department;
     }
 
     public void setId(long id) {
@@ -44,8 +44,8 @@ public class Prodotto extends Reparto{
         this.name = name;
     }
 
-    public void setReparto(Reparto reaparto) {
-        this.reparto = reparto;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override
@@ -53,9 +53,8 @@ public class Prodotto extends Reparto{
         if(obj == null){
             return false;
         }
-        if(obj instanceof Prodotto){
-            Prodotto p = (Prodotto) obj;
-            if(p.getReparto().equals(this.reparto)&&p.getName().equals(this.name)){
+        if(obj instanceof Product p){
+            if(p.getDepartment().equals(this.department)&&p.getName().equals(this.name)){
                 return true;
             }else{
                 return false;

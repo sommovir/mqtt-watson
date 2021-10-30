@@ -8,15 +8,15 @@ package it.cnr.istc.mw.mqtt.logic.mindgames;
  *
  * @author Luca
  */
-public class Reparto {
+public class Department {
     
     private long id;
     private String name;
 
-    public Reparto() {
+    public Department() {
     }
 
-    public Reparto(long id, String name) {
+    public Department(long id, String name) {
         this.id = id;
         this.name = name;
     }
