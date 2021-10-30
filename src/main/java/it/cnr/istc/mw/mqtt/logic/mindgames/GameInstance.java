@@ -18,13 +18,13 @@ public class GameInstance {
     private Person user;                //- utente che l'ha richiesto
     private Date date;                  //- data di svolgimento
     private GameResult gameResult;      //- esito del gioco
-    private List<Prodotto>products;     //- pacchetto dati della sessione di gioco particolare
-    private List<Prodotto>pruducts;     //(Solution, lista dei prodotto con relativo reparto)"
+    private List<Product>products;     //- pacchetto dati della sessione di gioco particolare
+    private List<Product>pruducts;     //(Solution, lista dei prodotto con relativo reparto)"
 
     public GameInstance() {
     }
 
-    public GameInstance(String gameType, Person user, Date date, GameResult gameResult, List<Prodotto> products, List<Prodotto> pruducts) {
+    public GameInstance(String gameType, Person user, Date date, GameResult gameResult, List<Product> products, List<Product> pruducts) {
         this.gameType = gameType;
         this.user = user;
         this.date = date;
@@ -65,19 +65,19 @@ public class GameInstance {
         this.gameResult = gameResult;
     }
 
-    public List<Prodotto> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Prodotto> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 
-    public List<Prodotto> getPruducts() {
+    public List<Product> getPruducts() {
         return pruducts;
     }
 
-    public void setPruducts(List<Prodotto> pruducts) {
+    public void setPruducts(List<Product> pruducts) {
         this.pruducts = pruducts;
     }
     
