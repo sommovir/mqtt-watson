@@ -44,8 +44,8 @@ public class Prodotto extends Reparto{
         this.name = name;
     }
 
-    public void setFrist(Reparto frist) {
-        this.reparto = frist;
+    public void setReparto(Reparto reaparto) {
+        this.reparto = reparto;
     }
     
     
