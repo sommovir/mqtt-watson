@@ -9,6 +9,9 @@ import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
+import it.cnr.istc.mw.mqtt.logic.mindgames.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.Product;
+import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -123,6 +126,20 @@ public class DBManager {
 
         session.getTransaction().commit();
         session.close();
+    }
+    
+    
+    //MOCKUP
+    public List<Product> getAllProducts(){
+        List<Product> prodotti = new LinkedList<Product>();
+        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura")));
+        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura")));
+        prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne")));
+        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta")));
+        
+        return prodotti;
+        
+        
     }
 
 }
