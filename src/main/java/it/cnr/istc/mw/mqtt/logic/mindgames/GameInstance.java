@@ -1,0 +1,88 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package it.cnr.istc.mw.mqtt.logic.mindgames;
+
+import it.cnr.istc.mw.mqtt.db.Person;
+import java.util.Date;
+import java.util.List;
+
+/**
+ *
+ * @author loren
+ */
+public class GameInstance {
+
+    private String gameType;            //- tipo di gioco selezionato
+    private Person user;                //- utente che l'ha richiesto
+    private Date date;                  //- data di svolgimento
+    private GameResult gameResult;      //- esito del gioco
+    private List<Prodotto>products;     //- pacchetto dati della sessione di gioco particolare
+    private List<Prodotto>pruducts;     //(Solution, lista dei prodotto con relativo reparto)"
+
+    public GameInstance() {
+    }
+
+    public GameInstance(String gameType, Person user, Date date, GameResult gameResult, List<Prodotto> products, List<Prodotto> pruducts) {
+        this.gameType = gameType;
+        this.user = user;
+        this.date = date;
+        this.gameResult = gameResult;
+        this.products = products;
+        this.pruducts = pruducts;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
+
+    public Person getUser() {
+        return user;
+    }
+
+    public void setUser(Person user) {
+        this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public GameResult getGameResult() {
+        return gameResult;
+    }
+
+    public void setGameResult(GameResult gameResult) {
+        this.gameResult = gameResult;
+    }
+
+    public List<Prodotto> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Prodotto> products) {
+        this.products = products;
+    }
+
+    public List<Prodotto> getPruducts() {
+        return pruducts;
+    }
+
+    public void setPruducts(List<Prodotto> pruducts) {
+        this.pruducts = pruducts;
+    }
+    
+    
+    
+    
+
+}
