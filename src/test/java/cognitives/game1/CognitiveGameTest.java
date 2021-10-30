@@ -6,18 +6,27 @@
 package cognitives.game1;
 
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
+import it.cnr.istc.mw.mqtt.logic.mindgames.MindGameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.Product;
+import java.lang.ProcessHandle.Info;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
 
 /**
  *
  * @author sommovir
  */
 public class CognitiveGameTest {
+    
+    String message;
+    List<Product> prodotti = new LinkedList<Product>();
     
     public CognitiveGameTest() {
     }
@@ -39,10 +48,14 @@ public class CognitiveGameTest {
     }
     
     @Test
-    public void test1(){
+    @DisplayName("[checkDuplicate]")
+    public void test1(Info info){
         //prova, da rimuovere. Luca
         //@TODO
-        assertFalse(LoggerManager.getInstance().isLogActive(),"Dovrebbe essere falso la prima volta");
+        //assertFalse(LoggerManager.getInstance().isLogActive(),"Dovrebbe essere falso la prima volta");
+        prodotti.add(new Product(8, "carota"));
+        boolean check = MindGameEngine.getInstance().checkDuplicate(prodotti); 
+        //assertFalse();
     }
     
 }
