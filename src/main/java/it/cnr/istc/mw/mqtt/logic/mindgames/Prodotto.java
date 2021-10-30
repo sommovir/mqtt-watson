@@ -32,7 +32,7 @@ public class Prodotto extends Reparto{
         return name;
     }
 
-    public Reparto getFrist() {
+    public Reparto getReparto() {
         return reparto;
     }
 
@@ -47,6 +47,25 @@ public class Prodotto extends Reparto{
     public void setReparto(Reparto reaparto) {
         this.reparto = reparto;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(obj instanceof Prodotto){
+            Prodotto p = (Prodotto) obj;
+            if(p.getReparto().equals(this.reparto)&&p.getName().equals(this.name)){
+                return true;
+            }else{
+                return false;
+            }
+    }else{
+            return false;
+        }
+    }
+    
+    
     
     
     
