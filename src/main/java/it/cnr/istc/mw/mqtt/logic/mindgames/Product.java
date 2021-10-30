@@ -23,6 +23,13 @@ public class Product extends Department{
         this.id = id;
         this.name = name;
     }
+    
+    public Product(long id, String name, Department dep) {
+        this.id = id;
+        this.name = name;
+        this.department = dep;
+    }
+    
 
     public long getId() {
         return id;
