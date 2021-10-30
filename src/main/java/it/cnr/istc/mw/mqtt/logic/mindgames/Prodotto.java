@@ -14,7 +14,7 @@ public class Prodotto extends Reparto{
     
     private long id;
     private String name;
-    private Reparto frist = new Reparto(id, name);
+    private Reparto reparto = new Reparto(id, name);
 
     public Prodotto() {
     }
@@ -33,7 +33,7 @@ public class Prodotto extends Reparto{
     }
 
     public Reparto getFrist() {
-        return frist;
+        return reparto;
     }
 
     public void setId(long id) {
@@ -45,7 +45,7 @@ public class Prodotto extends Reparto{
     }
 
     public void setFrist(Reparto frist) {
-        this.frist = frist;
+        this.reparto = frist;
     }
     
     
