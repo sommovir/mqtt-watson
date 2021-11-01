@@ -749,6 +749,7 @@ public class WatsonManager {
             return risposta;
         } catch (Exception ex) {
             System.out.println(LogTitles.LOGGER.getTitle()+ex.getMessage());
+            ex.printStackTrace();
             return "errore";
         }
         // risposta = risposta.replace("televita", " .Televita");
