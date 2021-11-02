@@ -59,7 +59,9 @@ public enum LoggingTag {
     GAMMA("GAMMA"),
     EXTRA_INPUT("EXTRA_INPUT"),
     WRONG_INPUT("WRONG_INPUT"),
-    LOGGER_ADMIN("LOGGER ADMIN");
+    LOGGER_ADMIN("LOGGER ADMIN"),
+    GAME_START("GAME START"),
+    GAME_END("GAME END");
 
     private LoggingTag(String tag) {
         this.tag = tag;
