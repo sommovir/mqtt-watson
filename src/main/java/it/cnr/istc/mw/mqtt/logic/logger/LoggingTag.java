@@ -61,7 +61,8 @@ public enum LoggingTag {
     WRONG_INPUT("WRONG_INPUT"),
     LOGGER_ADMIN("LOGGER ADMIN"),
     GAME_START("GAME START"),
-    GAME_END("GAME END");
+    GAME_END("GAME END"),
+    GAME_DIFFICULTY("GAME DIFFICULTY");
 
     private LoggingTag(String tag) {
         this.tag = tag;
