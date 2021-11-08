@@ -57,6 +57,8 @@ import java.util.logging.Logger;
  * @author Luca
  */
 public class WatsonManager {
+    
+    //SWITCH BRANCH
 
     private static WatsonManager _instance = null;
     private Assistant assistant = null;
