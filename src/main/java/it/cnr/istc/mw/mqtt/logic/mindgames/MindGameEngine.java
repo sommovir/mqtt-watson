@@ -41,6 +41,12 @@ public class MindGameEngine {
       
     }
     
+    /**
+     * 
+     * @param difficulty
+     * @deprecated
+     */
+    @Deprecated
     public void generateGame1Input(GameDifficulty difficulty){
         
         List<Product> productList = new ArrayList<Product>();               
