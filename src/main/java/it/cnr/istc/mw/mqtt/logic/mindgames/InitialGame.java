@@ -15,29 +15,29 @@ import java.util.logging.Logger;
  */
 public class InitialGame {
     
-    private String initialtext;
-    List<Product> productAndDepartmentList = new ArrayList<Product>();
+    private String initialText;
+    private List<Product> productAndDepartmentList = new ArrayList<Product>();
 
     public InitialGame() {
     }
 
     public InitialGame(String initialtext) {
-        this.initialtext = initialtext;
+        this.initialText = initialtext;
     }
 
-    public String getInitialtext() {
-        return initialtext;
+    public String getInitialText() {
+        return initialText;
     }
 
     public List<Product> productAndDepartmentList () {
         return productAndDepartmentList ;
     }
 
-    public void setInitialtext(String initialtext) {
-        this.initialtext = initialtext;
+    public void setInitialText(String initialtext) {
+        this.initialText = initialtext;
     }
 
-    public void setListaProdottiEReparto(List<Product> productAndDepartmentList ) {
+    public void setProductAndDepartmentList(List<Product> productAndDepartmentList ) {
         this.productAndDepartmentList  = productAndDepartmentList ;
     }
     

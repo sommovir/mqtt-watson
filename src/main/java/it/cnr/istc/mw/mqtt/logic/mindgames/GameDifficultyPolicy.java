@@ -12,6 +12,6 @@ public enum GameDifficultyPolicy {
     
     RANDOM,
     RAISING,
-    DECRAISING;
+    DECREASING;
     
 }

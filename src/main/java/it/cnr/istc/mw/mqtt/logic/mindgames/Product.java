@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  *
  * @author Luca
  */
-public class Product extends Department{
+public class Product{
     
     private long id;
     private String name;
