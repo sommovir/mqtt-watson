@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.cnr.istc.mw.mqtt.logic.mindgames;
+package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameResult;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.db.Person;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  *
  * @author loren
  */
-public class GameInstance {
+public class OLD_GameInstance {
 
     private String gameType;            //- tipo di gioco selezionato
     private Person user;                //- utente che l'ha richiesto
@@ -21,10 +23,10 @@ public class GameInstance {
     private List<Product>products;     //- pacchetto dati della sessione di gioco particolare
     private List<Product>pruducts;     //(Solution, lista dei prodotto con relativo reparto)"
 
-    public GameInstance() {
+    public OLD_GameInstance() {
     }
 
-    public GameInstance(String gameType, Person user, Date date, GameResult gameResult, List<Product> products, List<Product> pruducts) {
+    public OLD_GameInstance(String gameType, Person user, Date date, GameResult gameResult, List<Product> products, List<Product> pruducts) {
         this.gameType = gameType;
         this.user = user;
         this.date = date;

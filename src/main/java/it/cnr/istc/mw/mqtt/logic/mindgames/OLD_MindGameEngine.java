@@ -5,6 +5,8 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames;
 
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameDifficulty;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -14,18 +16,18 @@ import java.util.List;
  *
  * @author sommovir
  */
-public class MindGameEngine {
+public class OLD_MindGameEngine {
     
-    private static MindGameEngine _instance = null;
+    private static OLD_MindGameEngine _instance = null;
     
-    public static MindGameEngine getInstance() {
+    public static OLD_MindGameEngine getInstance() {
         if (_instance == null) {
-            _instance = new MindGameEngine();
+            _instance = new OLD_MindGameEngine();
         }
         return _instance;
     }
     
-    private MindGameEngine() {
+    private OLD_MindGameEngine() {
         super();
     }
     

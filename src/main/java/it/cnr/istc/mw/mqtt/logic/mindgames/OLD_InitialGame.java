@@ -4,6 +4,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames;
 
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,15 +14,15 @@ import java.util.logging.Logger;
  *
  * @author Luca
  */
-public class InitialGame {
+public class OLD_InitialGame {
     
     private String initialText;
     private List<Product> productAndDepartmentList = new ArrayList<Product>();
 
-    public InitialGame() {
+    public OLD_InitialGame() {
     }
 
-    public InitialGame(String initialtext) {
+    public OLD_InitialGame(String initialtext) {
         this.initialText = initialtext;
     }
 

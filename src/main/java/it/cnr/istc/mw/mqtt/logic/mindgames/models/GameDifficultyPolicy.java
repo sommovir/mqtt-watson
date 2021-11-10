@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
  */
-package it.cnr.istc.mw.mqtt.logic.mindgames;
+package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
 /**
  *
@@ -10,6 +10,7 @@ package it.cnr.istc.mw.mqtt.logic.mindgames;
  */
 public enum GameDifficultyPolicy {
     
+    AUTO,
     RANDOM,
     RAISING,
     DECREASING;

@@ -4,18 +4,20 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
+import it.cnr.istc.mw.mqtt.db.Person;
+
 /**
  * Bridge Pattern
  * @author sommovir
  */
-public final class MindGame {
+public abstract class MindGame<I extends InitialState, S extends Solution> {
     
-    //Bridge
-    private GenericMindGame mindGame;
+    private Long id ;
+    private GameType type;
 
-    public MindGame(GenericMindGame mindGame) {
-        this.mindGame = mindGame;
-    }
+    public abstract I generateInitialState(GameDifficulty difficulty);
+    
+    public abstract boolean validate(I initialState,S solution);
     
     
     
