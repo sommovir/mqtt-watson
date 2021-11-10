@@ -142,4 +142,8 @@ public class DBManager {
         
     }
 
+    public List<Department> getAllDepartments() {
+        return null;
+    }
+
 }
