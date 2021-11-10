@@ -9,19 +9,20 @@ package it.cnr.istc.mw.mqtt.logic.mindgames.models;
  * @author Admin
  */
 public enum GameDifficulty {
-    Facile(5),
-    Medio(7),
-    Difficile(10);
+    
+    Facile("Facile"),
+    Medio("Medio"),
+    Difficile("Difficie");
     
     
     
-    private int difficulty;
+    private String difficulty;
 
-    private GameDifficulty(int difficulty) {
+    private GameDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
  
