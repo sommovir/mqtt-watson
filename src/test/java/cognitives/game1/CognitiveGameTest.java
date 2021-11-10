@@ -6,8 +6,8 @@
 package cognitives.game1;
 
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.mindgames.MindGameEngine;
-import it.cnr.istc.mw.mqtt.logic.mindgames.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.OLD_MindGameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import java.lang.ProcessHandle.Info;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,7 +56,7 @@ public class CognitiveGameTest {
         //@TODO
         //assertFalse(LoggerManager.getInstance().isLogActive(),"Dovrebbe essere falso la prima volta");
         prodotti.add(new Product(8, "carota"));
-        boolean check = MindGameEngine.getInstance().checkDuplicate(prodotti); 
+        boolean check = OLD_MindGameEngine.getInstance().checkDuplicate(prodotti); 
         //assertFalse();
     }
     
