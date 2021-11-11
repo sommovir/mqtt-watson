@@ -11,6 +11,9 @@ import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.util.LinkedList;
 import java.util.List;
 import org.hibernate.Session;
@@ -143,6 +146,10 @@ public class DBManager {
     }
 
     public List<Department> getAllDepartments() {
+        return null;
+    }
+
+    public <G extends MindGame> List<GameInstance<G>> getLast5GameInstances(Person user, G mindGame) {
         return null;
     }
 

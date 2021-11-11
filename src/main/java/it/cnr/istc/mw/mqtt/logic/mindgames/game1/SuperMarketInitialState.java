@@ -4,13 +4,22 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
+import java.util.List;
 
 /**
  *
  * @author Luca
  */
-public class SuperMarketInitialState extends InitialState<SuperMarketSolution>{
+public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
+
+    private List<Product> products = null;
+
+    public SuperMarketInitialState(List<Product> products) {
+        super(GameType.UNO);
+        this.products = products;
+    }
 
     @Override
     public String getWatsonText() {
@@ -29,7 +38,8 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution>{
 
     @Override
     public SuperMarketSolution getSolution() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         //TASK #103
+         return null;
     }
-    
+
 }

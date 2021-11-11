@@ -11,12 +11,14 @@ import java.util.Date;
  *
  * @author Luca
  */
-public class GameInstance {
+public class GameInstance<G extends MindGame> {
 
     private InitialState initialState;
     private Solution solution ;
     private Date date;
     private Person person;
+    private G mindGame;
+    private GameResult gameResult;      //- esito del gioco
 
     public GameInstance(InitialState initialState, Solution solution) {
         this.initialState = initialState;

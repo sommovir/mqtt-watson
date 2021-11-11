@@ -4,7 +4,11 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
+import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.db.Person;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
+import java.util.List;
+import org.jboss.jandex.TypeTarget;
 
 /**
  *
@@ -43,18 +47,36 @@ public class GameEngine {
 
     }
 
+    /**
+     * Genera un istanza di un nuovo gioco a seconda dell'utente che sta giocando
+     * e del mindgame selezionato, tenendo conto dello storico della persona. 
+     * @param user
+     * @param mindgame
+     * @return 
+     */
     private GameInstance generateDeepLearningGI(Person user, MindGame mindgame) {
         //generate il livello
-        GameDifficulty difficulty = calculateDifficulty(user, mindgame);
+        GameDifficulty difficulty = calculateDifficultyByAI(user, mindgame);
         
         InitialState initialState  = mindgame.generateInitialState(difficulty);
         Solution solution = initialState.getSolution();
-        boolean  valid = mindgame.validate(initialState,solution);
+        
+        boolean  valid = mindgame.validate(initialState,solution); //qua deve sparare eccezioni nel caso che..
+        
         
         return new GameInstance(initialState, solution);
     }
     
-    private GameDifficulty calculateDifficulty(Person user, MindGame mindgame){
+    /**
+     * Genera la difficoltà del prossimo game a seconda del modulo di Machine
+     * Learning che tiene traccia dello storico delle ultime 5 partite. 
+     * @param user
+     * @param mindgame
+     * @return 
+     */
+    private <G extends MindGame>GameDifficulty calculateDifficultyByAI(Person user, G mindgame){
+        List<GameInstance<G>> gameInstances = DBManager.getInstance().getLast5GameInstances(user,mindgame);
+        //INSERT DEEP LEARNING
         return GameDifficulty.Facile;
     }
 

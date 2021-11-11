@@ -9,6 +9,16 @@ package it.cnr.istc.mw.mqtt.logic.mindgames.models;
  * @author Luca
  */
 public abstract class InitialState<S extends Solution> {
+    
+    private GameType gameType;
+
+    public InitialState(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
 
     public  abstract S getSolution();
     

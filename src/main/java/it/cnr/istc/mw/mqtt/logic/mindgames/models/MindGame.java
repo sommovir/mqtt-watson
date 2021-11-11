@@ -15,7 +15,22 @@ public abstract class MindGame<I extends InitialState, S extends Solution> {
     private Long id ;
     private GameType type;
 
+    public MindGame(GameType type) {
+        this.id = -1l;
+        this.type = type;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public GameType getType() {
+        return type;
+    }
+    
     public abstract I generateInitialState(GameDifficulty difficulty);
+    
+   
     
     public abstract boolean validate(I initialState,S solution);
     
