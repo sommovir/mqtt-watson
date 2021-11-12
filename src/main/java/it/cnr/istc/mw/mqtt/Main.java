@@ -48,6 +48,8 @@ public class Main {
     public static final String version = "1.1.2"; //refactored
     private static LogSupportFrame logSupportFrame = null;
     private static MainFrame mainFrame = null;
+    private static boolean researchMode = false;
+    private static final String RESEARCH_MODE_ARG = "--research";
 
     public static void suppressLogSupportGUI() {
         logSupportFrame.setVisible(false);
@@ -56,6 +58,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        for (String arg : args) {
+            System.out.println("ARG: "+arg);
+            if(arg.equals(RESEARCH_MODE_ARG)){
+                researchMode = true;
+            }
+        }
         AnsiConsole.systemInstall();
         FlatDarkLaf.installLafInfo();
         FlatLightLaf.installLafInfo();
