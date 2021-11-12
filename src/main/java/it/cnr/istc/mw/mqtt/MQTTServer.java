@@ -56,6 +56,9 @@ public class MQTTServer {
     }
             
     public static void updateDeviceType(String id, DeviceType deviceType){
+        System.out.println("STO AGGIORNANDO LA MAPPA CON: ");
+        System.out.println("ID: "+id);
+        System.out.println("DEVICE: "+deviceType.name());
         deviceMap.put(id, deviceType);
     }
             

@@ -294,7 +294,7 @@ public class MQTTClient implements MqttCallback {
                         try {
                             LoggerManager.getInstance().log(LoggingTag.WATSON_HARD_RESET.getTag() + "AUTOMATIC!");
                         } catch (LogOffException | InvalidAttemptToLogException ex) {
-                            System.out.println(LogTitles.SERVER.getTitle()+ex.getMessage());
+                            System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
                         }
                     } else {
                         System.out.println(LogTitles.SERVER.getTitle() + "EXITING WATSON WORLD and client is: " + (sampleClient.isConnected() ? "ONLINE" : "OFFLINE"));
@@ -327,18 +327,17 @@ public class MQTTClient implements MqttCallback {
         }
         if (topic.startsWith(Topics.GETDEVICE.getTopic())) {
             System.out.println(LogTitles.SERVER.getTitle() + ">>>> get device <<<<<");
+            //message = id:device
+            String[] split = message.split(":");
+            String id = split[0];
+            String device = split[1];
+            MQTTServer.updateDeviceType(id, DeviceType.of(device));
+            
             try {
-                //message = id:device
-                String[] split = message.split(":");
-                String id = split[0];
-                String device = split[1];
                 LoggerManager.getInstance().log(LoggingTag.DEVICE.getTag() + " " + device);
-                MQTTServer.updateDeviceType(id, DeviceType.of(device));
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(LogTitles.LOGGER.getTitle() + ex.getMessage());
             }
-            String id = topic.split("/")[1];
-            idNameMap.put(id, message);
         }
         if (topic.startsWith(Topics.BUTTON_PRESSED.getTopic()) && message.equals(LoggingTag.SPEAK.getTag())) {
             System.out.println(LogTitles.SERVER.getTitle() + "button speak pressed");
