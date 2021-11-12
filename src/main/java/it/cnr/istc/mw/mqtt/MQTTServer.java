@@ -19,6 +19,7 @@ import io.netty.buffer.ByteBufUtil;
 import static it.cnr.istc.mw.mqtt.MQTTClient.clientId;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
@@ -45,8 +46,22 @@ public class MQTTServer {
     private boolean lock = false;
     private boolean serverEntered = false;
     private static Map<String, Integer> resetMap = new  HashMap<>();
+    private static Map<String, DeviceType> deviceMap = new  HashMap<>();
     
-    
+    public static DeviceType getDeviceType(String id){
+        if(deviceMap.isEmpty()){
+            return null;
+        }
+        return deviceMap.get(id);
+    }
+            
+    public static void updateDeviceType(String id, DeviceType deviceType){
+        System.out.println("STO AGGIORNANDO LA MAPPA CON: ");
+        System.out.println("ID: "+id);
+        System.out.println("DEVICE: "+deviceType.name());
+        deviceMap.put(id, deviceType);
+    }
+            
     public static int getResetTurns(String userId){
         return resetMap.get(userId);
     }
@@ -142,6 +157,7 @@ public class MQTTServer {
                                 return;
                             }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
+                            deviceMap.put(icm.getClientID(), DeviceType.UNKNOWN);
                             resetMap.put(icm.getClientID(),0);
                             System.out.println(LogTitles.SERVER.getTitle()+"[info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();

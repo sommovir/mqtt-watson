@@ -140,20 +140,20 @@ public class Main {
                         } else if (line.equals("list")) {
                             List<InfoUser> on_line = server.getON_LINE();
 
-                            System.out.println(ConsoleColors.ANSI_GREEN + "#  |id\t\t\t| timestamp \t\t\t\t| expiration " + ConsoleColors.ANSI_RESET);
-                            System.out.println(ConsoleColors.ANSI_GREEN + "--------------------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_GREEN + "#  |id\t\t\t\t| timestamp \t\t\t\t| expiration " + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                             int i = 1;
                             for (InfoUser infoUser : on_line) {
                                 String sessionId = WatsonManager.getInstance().getSessionId(infoUser.getId());
                                 String expireStatus = WatsonManager.getInstance().getExpireStatus(infoUser.getId());
                                 if (infoUser.getId().equals("Server")) {
-                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_RED + " " + infoUser.getId() + "\t\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_RED + " " + infoUser.getId() + "\t\t\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 } else {
-                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId() + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId()+"["+MQTTServer.getDeviceType(infoUser.getId())+"]" + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 }
                                 i++;
                             }
-                            System.out.println(ConsoleColors.ANSI_GREEN + "--------------------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
+                            System.out.println(ConsoleColors.ANSI_GREEN + "---------------------------------------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
 
                         } else if (line.equals("test")) {
                             WatsonManager.getInstance().sendMessage("ciao", "110");
@@ -853,6 +853,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il numero massimo di deadlocks nei nodi di Watson, superato questo valore il server attuerà un hard reset.");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "40) " + ConsoleColors.ANSI_CYAN + "LOGGER ADMIN");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIl tag esplicita il nome del responsabile del server al momento del logging.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "40) " + ConsoleColors.ANSI_CYAN + "DEVICE");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIl tag mostra il dipo di dispositivo connesso che può essere MOBILE, TV, ROBOT o sconosciuto");
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {
