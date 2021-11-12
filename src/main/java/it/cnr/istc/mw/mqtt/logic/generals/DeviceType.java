@@ -12,7 +12,8 @@ package it.cnr.istc.mw.mqtt.logic.generals;
 public enum DeviceType {
     MOBILE("Mobile"),
     ROBOT("Robot"),
-    TV("TV");
+    TV("TV"),
+    UNKNOWN("unknown");
 
     String maxVersion;
     private String deviceType;
