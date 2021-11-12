@@ -55,6 +55,9 @@ public class MQTTServer {
         return deviceMap.get(id);
     }
             
+    public static void updateDeviceType(String id, DeviceType deviceType){
+        deviceMap.put(id, deviceType);
+    }
             
     public static int getResetTurns(String userId){
         return resetMap.get(userId);
@@ -151,6 +154,7 @@ public class MQTTServer {
                                 return;
                             }
                             ON_LINE.add(new InfoUser(icm.getClientID(), new Date()));
+                            deviceMap.put(icm.getClientID(), DeviceType.UNKNOWN);
                             resetMap.put(icm.getClientID(),0);
                             System.out.println(LogTitles.SERVER.getTitle()+"[info] l'utente [" + icm.getClientID() + "] si è connesso");
                             String tid = Topics.CHAT.getTopic() + "/" + icm.getClientID();

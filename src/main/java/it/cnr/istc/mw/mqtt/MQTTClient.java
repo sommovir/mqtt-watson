@@ -8,6 +8,7 @@ package it.cnr.istc.mw.mqtt;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
@@ -148,6 +149,7 @@ public class MQTTClient implements MqttCallback {
             sampleClient.subscribe(Topics.USERNAME.getTopic());
             sampleClient.subscribe(Topics.BUTTON_PRESSED.getTopic());
             sampleClient.subscribe(Topics.REPEAT.getTopic());
+            sampleClient.subscribe(Topics.GETDEVICE.getTopic());
             sampleClient.subscribe("AllConnected");
 
             sampleClient.setCallback(this);
@@ -317,6 +319,21 @@ public class MQTTClient implements MqttCallback {
             try {
                 //message = id:username
                 LoggerManager.getInstance().log(LoggingTag.CHANGE_USERNAME.getTag() + " " + message);
+            } catch (LogOffException | InvalidAttemptToLogException ex) {
+                System.out.println(LogTitles.LOGGER.getTitle() + ex.getMessage());
+            }
+            String id = topic.split("/")[1];
+            idNameMap.put(id, message);
+        }
+        if (topic.startsWith(Topics.GETDEVICE.getTopic())) {
+            System.out.println(LogTitles.SERVER.getTitle() + ">>>> get device <<<<<");
+            try {
+                //message = id:device
+                String[] split = message.split(":");
+                String id = split[0];
+                String device = split[1];
+                LoggerManager.getInstance().log(LoggingTag.DEVICE.getTag() + " " + device);
+                MQTTServer.updateDeviceType(id, DeviceType.of(device));
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(LogTitles.LOGGER.getTitle() + ex.getMessage());
             }

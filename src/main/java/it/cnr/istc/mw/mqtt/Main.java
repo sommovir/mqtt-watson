@@ -853,6 +853,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIndica il numero massimo di deadlocks nei nodi di Watson, superato questo valore il server attuerà un hard reset.");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "40) " + ConsoleColors.ANSI_CYAN + "LOGGER ADMIN");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tIl tag esplicita il nome del responsabile del server al momento del logging.");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "40) " + ConsoleColors.ANSI_CYAN + "DEVICE");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tIl tag mostra il dipo di dispositivo connesso che può essere MOBILE, TV, ROBOT o sconosciuto");
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else {

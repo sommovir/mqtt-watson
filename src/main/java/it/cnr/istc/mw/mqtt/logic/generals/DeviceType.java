@@ -25,5 +25,14 @@ public enum DeviceType {
     public String getDeviceType() {
         return deviceType;
     }
+    
+    public static DeviceType of(String device){
+        switch(device){
+            case "Mobile": return DeviceType.MOBILE;
+            case "Robot": return DeviceType.ROBOT;
+            case "TV": return DeviceType.TV;
+            default: return DeviceType.UNKNOWN;
+        }
+    }
 
 }
