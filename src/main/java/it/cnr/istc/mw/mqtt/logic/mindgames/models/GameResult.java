@@ -12,7 +12,8 @@ public enum GameResult {
 
     FAIL("L'Utente ha concluso la sessisione miseramente"),
     SUCCESS("L'utente ha concluso la sessione vincendo la partita"),
-    TERMINATED("L'utente ha smesso di giocare anzitempo");
+    TERMINATED("L'utente ha smesso di giocare anzitempo"),
+    NOT_FINISHED("L'utente non ha ancora finito la sessione");
 
     private GameResult(String gameResult) {
         this.gameResult = gameResult;
