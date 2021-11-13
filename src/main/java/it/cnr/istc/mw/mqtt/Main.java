@@ -164,7 +164,12 @@ public class Main {
                         } else if (line.equals("test db")) {
                             System.out.println(LogTitles.DATABASE.getTitle() + "testing db");
                             DBManager.getInstance().test();
-                        } else if (line.equals("log on")) {
+                        }  else if (line.equals("chad")) {
+                            String chadFace = ChadManager.getInstance().getChadFace();
+                            for (int i = 0; i < chadFace.length(); i++) {
+                                System.out.print(chadFace.charAt(i));
+                            }
+                        }else if (line.equals("log on")) {
                             System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Logging module is now ACTIVE" + ConsoleColors.ANSI_RESET);
                             LoggerManager.getInstance().setLogActive(true);
                         } else if (line.equals("test on")) {
