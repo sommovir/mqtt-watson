@@ -4,10 +4,19 @@
  */
 package it.cnr.istc.mw.mqtt.ai.neuralnet;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  *
  * @author Luca
  */
 public class NeuralNetwork {
+    
+    List<Perceptron> inputLayer =new LinkedList<Perceptron>();
+    List<Perceptron> hiddenLayer = new LinkedList<Perceptron>();
+    List<Perceptron> outputLayer = new LinkedList<Perceptron>();
+    
+    
     
 }
