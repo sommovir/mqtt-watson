@@ -37,6 +37,20 @@ public class Department {
         this.name = name;
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(obj instanceof Department p){
+            if(p.getName().equals(this.name)&&p.getId() == this.id){
+                return true;
+            }else{
+                return false;
+            }
+    }else{
+            return false;
+        }
+    }
     
 }
