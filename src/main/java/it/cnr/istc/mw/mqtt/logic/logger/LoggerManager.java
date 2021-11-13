@@ -11,6 +11,7 @@ import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameResult;
 import java.io.BufferedReader;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
@@ -373,5 +374,11 @@ public class LoggerManager {
     public String getLastFile() {
         return this.lastFileName;
     }
-
+    
+    
+    public void endGame(GameResult result) throws LogOffException, InvalidAttemptToLogException{
+        
+        log(LoggingTag.GAME_END.getTag()+" motivation: "+ result.getGameResult());
+        
+    }
 }
