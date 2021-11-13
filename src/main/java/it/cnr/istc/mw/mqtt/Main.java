@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.gui.MainFrame;
+import it.cnr.istc.mw.mqtt.logic.chad.ChadManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
@@ -72,6 +73,7 @@ public class Main {
 //                        System.out.println(originalString);
 //                        System.out.println(encryptedString);
 //                        System.out.println(decryptedString);
+                        System.out.println(ChadManager.getInstance().getChad());
                         System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_GREEN + "Welcome to Appia Server " + version + ConsoleColors.ANSI_RESET);
                         System.out.println(ConsoleColors.ANSI_GREEN + "[Server IP] " + ConsoleColors.CYAN_BRIGHT + MQTTClient.getInstance().getIP() + ConsoleColors.ANSI_RESET);
                         server.start();
