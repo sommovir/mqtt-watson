@@ -477,36 +477,37 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
         if (WatsonManager.getInstance().getMinSingleDeltaThreshold() != Double.parseDouble(jSpinnerAlpha.getValue().toString())) {
-            try {
-                WatsonManager.getInstance().setMinSingleDeltaThreshold(Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+            WatsonManager.getInstance().setMinSingleDeltaThreshold(Double.parseDouble(jSpinnerAlpha.getValue().toString()));
+			System.out.println(LogTitles.GUI.getTitle()+ "alpha settata a: " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
+            change = true;
+			
+			try {
                 LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
-                System.out.println(LogTitles.GUI.getTitle()+ "alpha settata a: " + df.format(Double.parseDouble(jSpinnerAlpha.getValue().toString())));
-                change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+				System.out.println(ex.getMessage());
+			}
         }
 
         if (WatsonManager.getInstance().getMinDeltaThreshold() != Double.parseDouble(jSpinnerBeta.getValue().toString())) {
-            try {
-                WatsonManager.getInstance().setMinDeltaThreshold(Double.parseDouble(jSpinnerBeta.getValue().toString()));
-                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
-                System.out.println(LogTitles.GUI.getTitle()+ "beta settato a: " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
+            WatsonManager.getInstance().setMinDeltaThreshold(Double.parseDouble(jSpinnerBeta.getValue().toString()));
+			System.out.println(LogTitles.GUI.getTitle()+ "beta settato a: " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
                 change = true;
+			try {
+                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + df.format(Double.parseDouble(jSpinnerBeta.getValue().toString())));
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getMessage());
             }
         }
 
         if (WatsonManager.getInstance().getMaxDeadlocks() != Integer.parseInt(jSpinnerGamma.getValue().toString())) {
-            try {
-                WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(jSpinnerGamma.getValue().toString()));
+            WatsonManager.getInstance().setMaxDeadlocks(Integer.parseInt(jSpinnerGamma.getValue().toString()));
+			System.out.println(LogTitles.GUI.getTitle()+  "gamma settato a: " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
+            change = true;
+			try {
                 LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
-                System.out.println(LogTitles.GUI.getTitle()+  "gamma settato a: " + Integer.parseInt(jSpinnerGamma.getValue().toString()));
-                change = true;
             } catch (LogOffException | InvalidAttemptToLogException ex) {
-                Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+				System.out.println(ex.getMessage());
+			}
         }
 
         if (change) {
@@ -525,24 +526,33 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }//GEN-LAST:event_jButton_ApplyABGActionPerformed
 
     private void jButton_ResetABGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ResetABGActionPerformed
-        try {
+        
             // TODO add your handling code here:
             //Senza Panel
             String input = JOptionPane.showInputDialog(this, "Sei sicuro di resettare i valori a default?Scrivere CONFERMA per eseguire", "CONFERMA", JOptionPane.WARNING_MESSAGE);
             if (input != null && input.equals("CONFERMA")) {
 
-                WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6);
-                LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
-                WatsonManager.getInstance().setMinDeltaThreshold(0.2);
-                LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
-                WatsonManager.getInstance().setMaxDeadlocks(1);
-                LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
-                System.out.println(LogTitles.GUI.getTitle()+ ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
-                printWarning("Valori settati default");
-            }
-        } catch (LogOffException | InvalidAttemptToLogException ex) {
-            Logger.getLogger(LogSupportFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                WatsonManager.getInstance().setMinSingleDeltaThreshold(0.6); //Alpha
+				this.jSpinnerAlpha.setValue(0.6f);
+				WatsonManager.getInstance().setMinDeltaThreshold(0.2); //Beta
+				this.jSpinnerBeta.setValue(0.2f);
+				WatsonManager.getInstance().setMaxDeadlocks(1); //Gamma
+				this.jSpinnerGamma.setValue(1f);
+				printWarning("Valori settati default");
+				System.out.println(LogTitles.GUI.getTitle()+ ConsoleColors.ANSI_GREEN + "Reset eseguito" + ConsoleColors.ANSI_RESET);
+				
+				try { 
+				
+					LoggerManager.getInstance().log(LoggingTag.ALPHA.getTag() + " " + 0.6);
+					LoggerManager.getInstance().log(LoggingTag.BETA.getTag() + " " + 0.2);
+					LoggerManager.getInstance().log(LoggingTag.GAMMA.getTag() + " " + 1);
+				
+				} catch (LogOffException | InvalidAttemptToLogException ex) {
+					System.out.println(ex.getMessage());
+				}
+			} else {
+				System.out.println("Ciao");
+			}
     }//GEN-LAST:event_jButton_ResetABGActionPerformed
 
     private void jButton_log_end_pretestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_log_end_pretestActionPerformed
