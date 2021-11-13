@@ -38,7 +38,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     }
 
     public GameSuperMarket() {
-        super(GameType.UNO);
+        super(GameType.LISTA_SPESA);
 
     }
 

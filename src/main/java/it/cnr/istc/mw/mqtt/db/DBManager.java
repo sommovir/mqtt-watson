@@ -150,7 +150,9 @@ public class DBManager {
     }
 
     public <G extends MindGame> List<GameInstance<G>> getLast5GameInstances(Person user, G mindGame) {
+        
         return null;
     }
 
+    
 }

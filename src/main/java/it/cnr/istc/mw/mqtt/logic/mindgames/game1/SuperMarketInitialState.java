@@ -17,7 +17,7 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
     private List<Product> products = null;
 
     public SuperMarketInitialState(List<Product> products) {
-        super(GameType.UNO);
+        super(GameType.LISTA_SPESA);
         this.products = products;
     }
 
