@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.gui.MainFrame;
+import it.cnr.istc.mw.mqtt.logic.config.ConfigurationManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
@@ -60,6 +61,7 @@ public class Main {
         FlatDarkLaf.installLafInfo();
         FlatLightLaf.installLafInfo();
         FlatIntelliJLaf.installLafInfo();
+        ConfigurationManager.getInstance();
         try {
             Thread t = new Thread(new Runnable() {
                 @Override
