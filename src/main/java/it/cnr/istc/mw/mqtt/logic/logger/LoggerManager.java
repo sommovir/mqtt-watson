@@ -11,6 +11,7 @@ import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.events.LoggerEventListener;
 import java.io.BufferedReader;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
@@ -59,6 +60,7 @@ public class LoggerManager {
     private double totalIntents = 0;
     private double totalEntities = 0;
     private double totalIntentsWithFails = 0;
+    private List<LoggerEventListener> loggerListeners = new LinkedList<LoggerEventListener>();
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -66,6 +68,14 @@ public class LoggerManager {
 
         }
         return _instance;
+    }
+
+    public void addLoggerEventListener(LoggerEventListener listener) {
+        this.loggerListeners.add(listener);
+    }
+
+    public void removeLoggerEventListener(LoggerEventListener listener) {
+        this.loggerListeners.remove(listener);
     }
 
     public void newIntentDetected(double confidence) {
@@ -109,7 +119,7 @@ public class LoggerManager {
         String adminName = "";
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(System.in));
-        
+
         System.out.println(LogTitles.LOGGER.getTitle() + "Inserire il nome del responsabile del log: ");
         try {
             adminName = reader.readLine();
@@ -117,7 +127,7 @@ public class LoggerManager {
             System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
         }
         if (adminName.isEmpty()) {
-            System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED +"Il nome del responsabile del log non può essere vuoto."+ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Il nome del responsabile del log non può essere vuoto." + ConsoleColors.ANSI_RESET);
             return false;
         } else {
             try {
@@ -125,7 +135,7 @@ public class LoggerManager {
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
             }
-            System.out.println(LogTitles.LOGGER.getTitle()+"Responsabile del log registrato a nome di: "+adminName);
+            System.out.println(LogTitles.LOGGER.getTitle() + "Responsabile del log registrato a nome di: " + adminName);
             return true;
         }
     }
@@ -349,6 +359,12 @@ public class LoggerManager {
 
     }
 
+    public void fireTestModeChanged(boolean mode) {
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.testModeChanged(mode);
+        }
+    }
+
     public void setLogActive(boolean logActive) {
         if (!logActive) {
             try {
@@ -359,6 +375,9 @@ public class LoggerManager {
             cache.clear();
         }
         this.logActive = logActive;
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.loggingModeChanged(logActive);
+        }
     }
 
     public boolean isLogActive() {

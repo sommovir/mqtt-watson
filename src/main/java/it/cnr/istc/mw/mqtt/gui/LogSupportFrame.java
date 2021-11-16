@@ -11,6 +11,7 @@ import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.GuiPrintableException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.events.LoggerEventListener;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
@@ -28,7 +29,7 @@ import javax.swing.SpinnerNumberModel;
  *
  * @author Alessio
  */
-public class LogSupportFrame extends javax.swing.JFrame implements WindowListener {
+public class LogSupportFrame extends javax.swing.JFrame implements WindowListener, LoggerEventListener {
 
     /**
      * Creates new form LogSupportFrame
@@ -45,9 +46,22 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.jSpinnerBeta.setModel(modelBeta);//Prebdi valori da modelAlpha
         SpinnerNumberModel modelGamma = new SpinnerNumberModel(1, 0, 10, 1);
         this.jSpinnerGamma.setModel(modelGamma);//Prebdi valori da modelAlpha
+        renderLogOnOffButton(LoggerManager.getInstance().isLogActive());
+        renderTestOnOffButton(WatsonManager.getInstance().isTestMode());
+        LoggerManager.getInstance().addLoggerEventListener(this);
 
     }
+    
+    private void renderLogOnOffButton(boolean logActive){
+        this.jToggleButton_LogOff.setSelected(logActive);
+        this.jLabel_logOn.setIcon(logActive ? Icons.GREEN_DOT.getIcon() : Icons.RED_DOT.getIcon());
+    }
 
+    private void renderTestOnOffButton(boolean testActive){
+        this.jToggleButton_TestMode.setSelected(testActive);
+        this.jLabel_TestMode.setIcon(testActive ? Icons.GREEN_DOT.getIcon() : Icons.RED_DOT.getIcon());
+    }
+    
     public void printError(String message) {
         this.jLabel_FeedBack.setForeground(Color.red);
         this.jLabel_FeedBack.setText(message);
@@ -126,10 +140,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jLabel_FeedBack = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton_TestMode = new javax.swing.JToggleButton();
         jLabel_TestMode = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton_LogOff = new javax.swing.JToggleButton();
         jLabel_logOn = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -392,26 +406,26 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        jToggleButton1.setText("Test Mode ON");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jToggleButton1);
+        jToggleButton_TestMode.setText("Test Mode ON");
+        jToggleButton_TestMode.setFocusable(false);
+        jToggleButton_TestMode.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton_TestMode.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jToggleButton_TestMode);
 
         jLabel_TestMode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/green16.png"))); // NOI18N
         jToolBar1.add(jLabel_TestMode);
         jToolBar1.add(jSeparator1);
 
-        jToggleButton2.setText("Log OFF");
-        jToggleButton2.setFocusable(false);
-        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+        jToggleButton_LogOff.setText("Log OFF");
+        jToggleButton_LogOff.setFocusable(false);
+        jToggleButton_LogOff.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton_LogOff.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton_LogOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton2ActionPerformed(evt);
+                jToggleButton_LogOffActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton2);
+        jToolBar1.add(jToggleButton_LogOff);
 
         jLabel_logOn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/red16.png"))); // NOI18N
         jToolBar1.add(jLabel_logOn);
@@ -686,9 +700,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_NoteActionPerformed
 
-    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+    private void jToggleButton_LogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_LogOffActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton2ActionPerformed
+    }//GEN-LAST:event_jToggleButton_LogOffActionPerformed
 
     private void jTextField_WallSpeakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_WallSpeakKeyPressed
         // TODO add your handling code here:
@@ -856,8 +870,8 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     private javax.swing.JTextField jTextField_Note;
     private javax.swing.JTextField jTextField_WallSpeak;
     private javax.swing.JTextField jTextField_WrongInput;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton_LogOff;
+    private javax.swing.JToggleButton jToggleButton_TestMode;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
@@ -895,5 +909,35 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     @Override
     public void windowDeactivated(WindowEvent e) {
 
+    }
+
+    @Override
+    public void testModeChanged(boolean mode) {
+        renderTestOnOffButton(mode);
+    }
+
+    @Override
+    public void loggingModeChanged(boolean mode) {
+        renderLogOnOffButton(mode);
+    }
+
+    @Override
+    public void newTagAdded(LoggingTag tag, boolean manually) {
+        
+    }
+
+    @Override
+    public void pretestEnded() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void logStop() {
+        
+    }
+
+    @Override
+    public void resume() {
+        
     }
 }
