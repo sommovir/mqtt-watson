@@ -128,6 +128,11 @@ public class WatsonManager {
 
     public void setTestMode(boolean testMode) {
         this.testMode = testMode;
+        if(testMode){
+            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now ACTIVE, it will be allowed only " + ConsoleColors.ANSI_RED + "1" + ConsoleColors.ANSI_GREEN + " connection" + ConsoleColors.ANSI_RESET);
+        }else{
+            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
+        }
         LoggerManager.getInstance().fireTestModeChanged(testMode);
     }
 

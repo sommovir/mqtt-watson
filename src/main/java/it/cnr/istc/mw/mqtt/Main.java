@@ -14,6 +14,7 @@ import com.formdev.flatlaf.IntelliJTheme;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.gui.Icons;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
 import it.cnr.istc.mw.mqtt.gui.MainFrame;
 import it.cnr.istc.mw.mqtt.logic.chad.ChadManager;
@@ -33,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.Ansi;
@@ -164,19 +166,17 @@ public class Main {
                         } else if (line.equals("test db")) {
                             System.out.println(LogTitles.DATABASE.getTitle() + "testing db");
                             DBManager.getInstance().test();
-                        }  else if (line.equals("chad")) {
+                        } else if (line.equals("chad")) {
                             String chadFace = ChadManager.getInstance().getChadFace();
                             for (int i = 0; i < chadFace.length(); i++) {
                                 System.out.print(chadFace.charAt(i));
                             }
-                        }else if (line.equals("log on")) {
+                        } else if (line.equals("log on")) {
                             System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Logging module is now ACTIVE" + ConsoleColors.ANSI_RESET);
                             LoggerManager.getInstance().setLogActive(true);
                         } else if (line.equals("test on")) {
-                            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now ACTIVE, it will be allowed only " + ConsoleColors.ANSI_RED + "1" + ConsoleColors.ANSI_GREEN + " connection" + ConsoleColors.ANSI_RESET);
                             WatsonManager.getInstance().setTestMode(true);
                         } else if (line.equals("test off")) {
-                            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
                             WatsonManager.getInstance().setTestMode(false);
                         } else if (line.equals("print context")) {
                             WatsonManager.getInstance().printContext();
@@ -564,6 +564,15 @@ public class Main {
                                 System.out.println(LogTitles.GUI.getTitle() + "Errore, tema FlatLightLaf non trovato");
                             }
 
+                            String admin = null;
+
+                            do {
+                                admin = (String) JOptionPane.showInputDialog(null, "Config Admin", "Logger Administrator:", JOptionPane.INFORMATION_MESSAGE, Icons.YELLOW_DOT.getIcon(), null, null);
+
+                            } while (admin == null || admin.isEmpty());
+                            LoggerManager.getInstance().setAdminSetByGui(true);
+                            LoggerManager.getInstance().setAdminName(admin);
+
                             //</editor-fold>
 
                             /* Create and display the form */
@@ -650,7 +659,7 @@ public class Main {
                                 }
                             });
 
-                        }else if (line.equals("server gui -white")) {
+                        } else if (line.equals("server gui -white")) {
 
                             try {
                                 UIManager.setLookAndFeel(new FlatIntelliJLaf());

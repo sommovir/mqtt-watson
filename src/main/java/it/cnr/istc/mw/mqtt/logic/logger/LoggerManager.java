@@ -50,6 +50,7 @@ public class LoggerManager {
     private int systemTurns = 0;
     private int totalTurns = 0;
     private String logName;
+    private String adminName = "";
     public static final String LOG_FOLDER = "./logs";
     private boolean currentlyPaused = false;
     private boolean alreadyPaused = false;
@@ -61,6 +62,7 @@ public class LoggerManager {
     private double totalEntities = 0;
     private double totalIntentsWithFails = 0;
     private List<LoggerEventListener> loggerListeners = new LinkedList<LoggerEventListener>();
+    private boolean adminSetByGui = false; //è true quando il logger admin è settato dalla gui e non dalla console
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -116,7 +118,7 @@ public class LoggerManager {
     }
 
     public boolean setLoggerAdmin() {
-        String adminName = "";
+
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(System.in));
 
@@ -168,10 +170,15 @@ public class LoggerManager {
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
             log("del giorno " + timestamp);
-            boolean nameValid = false;
-            do {
-                nameValid = setLoggerAdmin();
-            } while (!nameValid);
+            if (!adminSetByGui) {
+                boolean nameValid = false;
+                do {
+                    nameValid = setLoggerAdmin();
+                } while (!nameValid);
+            }else{
+                log(LoggingTag.LOGGER_ADMIN.getTag() + adminName);
+                System.out.println(LogTitles.LOGGER.getTitle() + "Responsabile del log registrato a nome di: " + adminName);
+            }
             LoggerManager.getInstance().logConfigs();
 
         } catch (Exception ex) {
@@ -180,6 +187,22 @@ public class LoggerManager {
         }
 
     }
+
+    public void setAdminSetByGui(boolean adminSetByGui) {
+        this.adminSetByGui = adminSetByGui;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+    public String getAdminName() {
+        return adminName;
+    }
+    
+    
+    
+    
 
     public void openPath(String path) {
         File fileLog = new File(path);
@@ -229,6 +252,10 @@ public class LoggerManager {
         this.startingLoggingTime = -1;
         this.alreadyPaused = false;
         clearAvg();
+        logActive = false;
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.loggingModeChanged(logActive);
+        }
     }
 
     public boolean isAlreadyPaused() {
