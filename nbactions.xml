@@ -14,7 +14,7 @@
                 <exec.executable>java</exec.executable>
                 <exec.mainClass>it.cnr.istc.mw.mqtt.Main</exec.mainClass>
                 <exec.vmArgs></exec.vmArgs>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>--research</exec.appArgs>
             </properties>
         </action>
         <action>
@@ -32,7 +32,7 @@
                 <jpda.listen>true</jpda.listen>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>--research</exec.appArgs>
             </properties>
         </action>
         <action>
@@ -66,7 +66,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>--research</exec.appArgs>
             </properties>
         </action>
     </actions>
