@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package it.cnr.istc.mw.mqtt.ai.neuralnet;
+package it.cnr.istc.mw.mqtt.ai.neuralnet.perceptron;
+
+import it.cnr.istc.mw.mqtt.ai.neuralnet.databucket.Dataset;
 
 /**
  *
@@ -30,7 +32,7 @@ public class Perceptron {
     }
 
     public float[] getInput() {
-        //float [] inn = new float[4];
+      
         return inputs;
     }
 

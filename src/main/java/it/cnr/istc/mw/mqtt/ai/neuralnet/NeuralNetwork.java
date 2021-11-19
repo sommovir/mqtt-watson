@@ -4,6 +4,7 @@
  */
 package it.cnr.istc.mw.mqtt.ai.neuralnet;
 
+import it.cnr.istc.mw.mqtt.ai.neuralnet.perceptron.Perceptron;
 import java.util.LinkedList;
 import java.util.List;
 
