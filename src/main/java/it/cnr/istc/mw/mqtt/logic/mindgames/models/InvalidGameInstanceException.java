@@ -4,13 +4,20 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
+
 /**
  *
  * @author Luca
  */
-public class InvalidGameInstanceException extends Exception {
+public class InvalidGameInstanceException extends MindGameException {
 
     public InvalidGameInstanceException() {
+    }
+
+    @Override
+    public String errorMessage() {
+        return "Il gioco contiene dati invalidi";
     }
     
 }

@@ -35,8 +35,13 @@ public abstract class InitialState<S extends Solution> {
      */
     public abstract String getDescriptionText();
     
+    /**
+     * restituisce la stringa che descrive vocalmente il gico
+     * @return 
+     */
+    public abstract String getDescriptionVocal();
     
-    public abstract String toMQTTString();
+    
     
     
 }
