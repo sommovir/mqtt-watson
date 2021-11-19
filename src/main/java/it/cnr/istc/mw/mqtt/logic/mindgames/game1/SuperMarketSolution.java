@@ -4,12 +4,16 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.Solution;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,12 +25,30 @@ public class SuperMarketSolution extends Solution{
     List<Product> products = null;
     private Department selectedDepartment = null;
     private List<Product> solutionProduct = null;
+    private static Map<Department, List<Product>> productMap = new HashMap<>();
+    
+  
 
     public SuperMarketSolution( List<Product> products) {
         this.products = products;
-        this.selectedDepartment = selectedDepartment;
-        this.solutionProduct = solutionProduct;
+        this.selectedDepartment = generateDepartment();
+        for (Product product : products) {
+            if (productMap.containsKey(product.getDepartment())) {
+                productMap.put(product.getDepartment(), new LinkedList<>());
 
+            }
+            productMap.get(product.getDepartment()).add(product);
+        }
+        this.solutionProduct = productMap.get(selectedDepartment);
+
+    }
+    
+    private Department generateDepartment(){
+        
+        Collections.shuffle(products);
+        
+        return products.get(0).getDepartment(); 
+  
     }
 
     public List<Product> getProducts() {
