@@ -28,7 +28,7 @@ public class SuperMarketSolution extends Solution{
     private static Map<Department, List<Product>> productMap = new HashMap<>();
     
   
-
+    
     public SuperMarketSolution( List<Product> products) {
         this.products = products;
         this.selectedDepartment = generateDepartment();
@@ -100,7 +100,10 @@ public class SuperMarketSolution extends Solution{
         }
  
 }
-    
+    /**
+     * Controlla la lista di prodotti e al primo duplicato lancia un eccezione
+     * @throws ProductDuplicateException 
+     */
     public final void checkDuplicate() throws ProductDuplicateException{
         Product product;
         
