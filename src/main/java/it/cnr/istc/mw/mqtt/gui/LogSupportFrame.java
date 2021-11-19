@@ -37,7 +37,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
      */
     public LogSupportFrame() {//Cambia il nome dei Jspinner
         initComponents();
-        this.setTitle("Log Support v0.2 - "+LoggerManager.getInstance().getAdminName());
+        this.setTitle("Log Support v0.2 - " + LoggerManager.getInstance().getAdminName());
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
         this.addWindowListener(this);
@@ -51,14 +51,26 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         renderTestOnOffButton(WatsonManager.getInstance().isTestMode());
         LoggerManager.getInstance().addLoggerEventListener(this);
         this.jToggleButton_LogOff.setEnabled(WatsonManager.getInstance().isTestMode());
+        setMainCommandsEnabled(LoggerManager.getInstance().isLogActive());
+        noteEnabled(LoggerManager.getInstance().isLogging());
+        
 
     }
 
+    
+    private void noteEnabled(boolean enabled){
+        this.jTextField_Note.setEnabled(enabled);
+        this.jButton_Note.setEnabled(enabled);
+    }
+    
     private void renderLogOnOffButton(boolean logActive) {
 
         this.jToggleButton_LogOff.setSelected(logActive);
         this.jLabel_logOn.setIcon(logActive ? Icons.GREEN_DOT.getIcon() : Icons.RED_DOT.getIcon());
         this.jToggleButton_LogOff.setText(logActive ? "Log ON" : "Log OFF");
+        noteEnabled(logActive);
+        setMainCommandsEnabled(logActive);
+        this.jButton_log_end_pretest.setEnabled(logActive);
     }
 
     private void renderTestOnOffButton(boolean testActive) {
@@ -124,15 +136,15 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         jButton_Note = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton_WallSpeak = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButton_Wrong = new javax.swing.JButton();
+        jButton_Reprompt = new javax.swing.JButton();
         jTextField_WallSpeak = new javax.swing.JTextField();
         jButton_ExtraInput = new javax.swing.JButton();
         jTextField_Extra = new javax.swing.JTextField();
         jButton_WrongInput = new javax.swing.JButton();
         jTextField_WrongInput = new javax.swing.JTextField();
         jButton_log_end_pretest = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jButton_resume = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -186,21 +198,21 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 51, 0));
-        jButton2.setText("<WRONG>");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Wrong.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_Wrong.setForeground(new java.awt.Color(255, 51, 0));
+        jButton_Wrong.setText("<WRONG>");
+        jButton_Wrong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton_WrongActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 153, 0));
-        jButton3.setText("<REPROMPT>");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Reprompt.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_Reprompt.setForeground(new java.awt.Color(255, 153, 0));
+        jButton_Reprompt.setText("<REPROMPT>");
+        jButton_Reprompt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton_RepromptActionPerformed(evt);
             }
         });
 
@@ -256,11 +268,16 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
         });
 
-        jButton6.setBackground(new java.awt.Color(102, 255, 0));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(0, 51, 204));
-        jButton6.setText("resume");
-        jButton6.setEnabled(false);
+        jButton_resume.setBackground(new java.awt.Color(102, 255, 0));
+        jButton_resume.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton_resume.setForeground(new java.awt.Color(0, 51, 204));
+        jButton_resume.setText("resume");
+        jButton_resume.setEnabled(false);
+        jButton_resume.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_resumeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -269,19 +286,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton_Wrong, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_WrongInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_WallSpeak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton_ExtraInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_Reprompt, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton_log_end_pretest)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_resume))
                     .addComponent(jTextField_WallSpeak)
                     .addComponent(jTextField_Extra)
                     .addComponent(jTextField_WrongInput))
@@ -304,10 +320,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     .addComponent(jTextField_WrongInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
+                    .addComponent(jButton_Wrong)
+                    .addComponent(jButton_Reprompt)
                     .addComponent(jButton_log_end_pretest)
-                    .addComponent(jButton6))
+                    .addComponent(jButton_resume))
                 .addContainerGap())
         );
 
@@ -580,8 +596,28 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jButton_ResetABGActionPerformed
 
+    private void setMainCommandsEnabled(boolean enabled) {
+        this.jButton_WallSpeak.setEnabled(enabled);
+        this.jTextField_WallSpeak.setEnabled(enabled);
+        this.jButton_ExtraInput.setEnabled(enabled);
+        this.jTextField_Extra.setEnabled(enabled);
+        this.jButton_WrongInput.setEnabled(enabled);
+        this.jTextField_WrongInput.setEnabled(enabled);
+        this.jButton_Wrong.setEnabled(enabled);
+        this.jButton_Reprompt.setEnabled(enabled);
+    }
+
     private void jButton_log_end_pretestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_log_end_pretestActionPerformed
-        // TODO add your handling code here:
+        try {
+            this.jButton_log_end_pretest.setEnabled(false);
+            this.jButton_resume.setEnabled(true);
+            LoggerManager.getInstance().pauseLogging();
+            printInfo("The pretest marker has been added, no further pretest will be accepted on such file");
+            System.out.println(LogTitles.LOGGER.getTitle() + "The pretest marker has been added, no further pretest will be accepted on such file");
+            setMainCommandsEnabled(false);
+        } catch (LogOffException | InvalidAttemptToLogException ex) {
+            printError(ex.getMessage());
+        }
     }//GEN-LAST:event_jButton_log_end_pretestActionPerformed
 
     private void jButton_WrongInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongInputActionPerformed
@@ -639,7 +675,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jButton_ExtraInputActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton_RepromptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RepromptActionPerformed
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.REPROMPT.getTag());
@@ -652,9 +688,9 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             }
 
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton_RepromptActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton_WrongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WrongActionPerformed
         try {
             // TODO add your handling code here:
             LoggerManager.getInstance().log(LoggingTag.WRONG_ANSWER.getTag());
@@ -666,7 +702,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 printError(((GuiPrintableException) ex).getGuiErrorMessage());
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton_WrongActionPerformed
 
     private void jButton_WallSpeakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_WallSpeakActionPerformed
         // TODO add your handling code here:
@@ -731,10 +767,13 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
             if (isValidFileName(logfileName)) {
 
                 System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Logging module is now ACTIVE" + ConsoleColors.ANSI_RESET);
+                printWarning("Logging module is now ACTIVE");
                 LoggerManager.getInstance().setLogActive(true);
                 LoggerManager.getInstance().newLog(logfileName);
                 System.out.println(LogTitles.LOGGER.getTitle() + "New log file with name [" + logfileName + "] has been created");
-
+                this.jButton_log_end_pretest.setEnabled(true);
+                setMainCommandsEnabled(true);
+                noteEnabled(true);
             } else {
                 printError("nome file invalido");
             }
@@ -746,8 +785,12 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 try {
                     String path = LoggerManager.getInstance().getCurrentLogPath();
                     LoggerManager.getInstance().stopLogging();
+                    setMainCommandsEnabled(false);
                     LoggerManager.getInstance().openPath(path);
                     System.out.println(LogTitles.LOGGER.getTitle() + "The current logging file has been closed, no further log will be accepted on such file");
+                    printWarning("The current logging file has been closed, no further log will be accepted on such file");
+                    this.jButton_log_end_pretest.setEnabled(false);
+                    noteEnabled(false);
                 } catch (LogOffException | InvalidAttemptToLogException ex) {
                     printError(ex.getGuiErrorMessage());
                 }
@@ -855,6 +898,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
 
     }//GEN-LAST:event_jToggleButton_TestModeActionPerformed
 
+    private void jButton_resumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_resumeActionPerformed
+        if (LoggerManager.getInstance().isLogActive() && LoggerManager.getInstance().isPaused()) {
+            printInfo("RESUME DONE, THE OFFICIAL TEST IS STARTED");
+            LoggerManager.getInstance().resume();
+            setMainCommandsEnabled(true);
+            this.jButton_resume.setEnabled(false);
+        } else {
+            printError("Impossibile eseguire quando il logger non è stato correttamente messo in pausa");
+        }
+        
+    }//GEN-LAST:event_jButton_resumeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -896,16 +951,16 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_ApplyABG;
     private javax.swing.JButton jButton_ExtraInput;
     private javax.swing.JButton jButton_Note;
+    private javax.swing.JButton jButton_Reprompt;
     private javax.swing.JButton jButton_ResetABG;
     private javax.swing.JButton jButton_WallSpeak;
+    private javax.swing.JButton jButton_Wrong;
     private javax.swing.JButton jButton_WrongInput;
     private javax.swing.JButton jButton_log_end_pretest;
+    private javax.swing.JButton jButton_resume;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
