@@ -4,6 +4,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.Solution;
 import java.util.HashSet;
@@ -78,7 +79,7 @@ public class SuperMarketSolution extends Solution{
  
 }
     
-    public final void checkDuplicate(){
+    public final void checkDuplicate() throws ProductDuplicateException{
         Product product;
         
      for(int i=1;i<products.size();i++){
@@ -86,7 +87,7 @@ public class SuperMarketSolution extends Solution{
              if(products.get(i).equals(products.get(j))){
                  
                  product = products.get(i);
-                 
+                 throw new ProductDuplicateException();
              }
              
          }
