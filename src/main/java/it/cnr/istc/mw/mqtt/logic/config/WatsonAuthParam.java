@@ -9,10 +9,17 @@ package it.cnr.istc.mw.mqtt.logic.config;
  * @author sommovir
  */
 public enum WatsonAuthParam {
-    API_KEY,
-    URL,
-    VERSION,
-    CLIENT_ID;
+    API_KEY("apikey"),
+    URL("url"),
+    VERSION("version"),
+    CLIENT_ID("clientid");
+    
+    private String stringParam;
+
+    private WatsonAuthParam(String stringParam) {
+        this.stringParam = stringParam;
+    }
+    
     
     //lasciare questa signature plz
     public String getParam(){
