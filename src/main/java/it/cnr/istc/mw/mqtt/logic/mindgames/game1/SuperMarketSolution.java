@@ -77,6 +77,21 @@ public class SuperMarketSolution extends Solution{
         }
  
 }
+    
+    public final void checkDuplicate(){
+        Product product;
+        
+     for(int i=1;i<products.size();i++){
+         for(int j=0;j<products.size();j++){
+             if(products.get(i).equals(products.get(j))){
+                 
+                 product = products.get(i);
+                 
+             }
+             
+         }
+     }   
+    }
 
     @Override
     public String toMQTTString() {
