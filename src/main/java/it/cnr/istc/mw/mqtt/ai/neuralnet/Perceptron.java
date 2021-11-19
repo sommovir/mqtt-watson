@@ -12,9 +12,9 @@ public class Perceptron {
     
     private int size;
     private float []weights;
-    private float []input;
+    private float []inputs;
     private int lastActivationResult;
-    private float learnigRate= 0.25f;
+    private float learningRate= 0.25f;
 
     
     public Perceptron(int size) {
@@ -31,7 +31,7 @@ public class Perceptron {
 
     public float[] getInput() {
         //float [] inn = new float[4];
-        return input;
+        return inputs;
     }
 
     public void setInput(float[] input) throws Exception{
@@ -39,7 +39,7 @@ public class Perceptron {
             throw new Exception("Lenghts Mismatch!");
         }else{
             for(int i=0; i<size ; i++){
-                this.input[i]= input[i];
+                this.inputs[i]= input[i];
             }
         }
     }
@@ -52,7 +52,7 @@ public class Perceptron {
 
         float potenzialeAttivazione = 0;
         for (int i = 0; i < size; i++) {
-            potenzialeAttivazione += (this.input[i] * this.weights[i]);
+            potenzialeAttivazione += (this.inputs[i] * this.weights[i]);
         }
         this.lastActivationResult = sign(potenzialeAttivazione);
         return this.lastActivationResult;
@@ -63,9 +63,19 @@ public class Perceptron {
         setInput(ins);
         return activate();
     }
-    
+    public void train(Dataset dataset){
+        this.inputs = dataset.getInputs();
+        dataset.setGivenAnswer(this.activate());
+        int error = dataset.getError();
+        for (int i = 0; i < this.size; i++) {
+             this.weights[i] +=  (error * this.inputs[i] * this.learningRate);
+        }
+    }
     public void wrong(){
-        
+        int error = -this.lastActivationResult - this.lastActivationResult;
+        for (int i = 0; i < this.size ; i++) {
+             this.weights[i] +=  (error * this.inputs[i] * this.learningRate);
+        }
     }
     
     
