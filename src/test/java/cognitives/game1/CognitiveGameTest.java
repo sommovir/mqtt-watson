@@ -5,8 +5,10 @@
  */
 package cognitives.game1;
 
+import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.mindgames.OLD_MindGameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import java.lang.ProcessHandle.Info;
 import java.util.LinkedList;
@@ -59,5 +61,78 @@ public class CognitiveGameTest {
         boolean check = OLD_MindGameEngine.getInstance().checkDuplicate(prodotti); 
         //assertFalse();
     }
+    
+   
+    @Test
+    @DisplayName("[checkEncapsulationDepartment]")
+    public void task170(){
+        Department department1= new Department(3L,null);
+        Department department2= new Department(3L,"");
+        Department department3= new Department(3L,"Gianni");
+        
+        assertEquals("unknown",department1.getName(),"mi aspettavo che il nome fosse unknown");
+        assertEquals(3L,department1.getId(),"mi aspettavo che l'id fosse uguale a 3L");
+        assertEquals("unknown",department2.getName(),"mi aspettavo che il nome fosse unknown ");
+        assertEquals("Gianni",department3.getName(),"mi aspettavo che il nome fosse Gianni");
+        
+        
+        
+        
+    }
+    @Test
+    @DisplayName("[checkEncapsulationProduct]")
+    public void task167(){
+        Product product1= new Product(3L,null);
+        Product product2= new Product(3L,"");
+        Product product3= new Product(3L,"Gianni");
+        
+        assertEquals("unknown",product1.getName(),"mi aspettavo che il nome fosse unknown");
+        assertEquals(3L,product1.getId(),"mi aspettavo che l'id fosse uguale a 3L");
+        assertEquals("unknown",product2.getName(),"mi aspettavo che il nome fosse unknown ");
+        assertEquals("Gianni",product3.getName(),"mi aspettavo che il nome fosse Gianni");
+        
+        
+        
+        
+    }
+    @Test
+    @DisplayName("[checkEqualsProduct]")
+    public void task168(){
+        Product product1 = new Product(5L,"Giorgio");
+        Product product2 = new Product(5L,"Giorgio");
+        Product product3 = new Product(6L,"Giorgio");
+        Product product4 = new Product(5L,"Giorgiogr");
+        
+        assertTrue(product1.equals(product2),"mi aspettavo true ma l'Equals mi ha ritornato false");
+        assertFalse(product1.equals(product3),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(product1.equals(product4),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(product1.equals(null),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato null)");
+        assertFalse(product1.equals(new Object()),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato new Object())");
+        
+        
+
+        
+        
+        
+        
+        
+        
+        
+    }
+    @Test
+    @DisplayName("[checkEqualsDepartment]")
+    public void task171(){
+        Department department1 = new Department(5L,"Giorgio");
+        Department department2 = new Department(5L,"Giorgio");
+        Department department3 = new Department(6L,"Giorgio");
+        Department department4 = new Department(5L,"Giorgiogr");
+        
+        assertTrue(department1.equals(department2),"mi aspettavo true ma l'Equals mi ha ritornato false");
+        assertFalse(department1.equals(department3),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(department1.equals(department4),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(department1.equals(null),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato null)");
+        assertFalse(department1.equals(new Object()),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato new Object())");
+    }
+    
     
 }

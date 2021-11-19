@@ -8,15 +8,15 @@ import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import java.util.logging.Logger;
 
 /**
- *
+ * name non può essere vuoto o nullo in caso contrario deve essere "unknown"
  * @author Luca
  */
 public class Product{
     
     private long id;
     private String name;
+    private Department department = null;
     private String articolo;
-    private Department department = new Department(id, name);
 
     public Product() {
     }
