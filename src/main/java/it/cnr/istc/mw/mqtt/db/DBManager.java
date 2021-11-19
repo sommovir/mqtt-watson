@@ -135,10 +135,10 @@ public class DBManager {
     //MOCKUP
     public List<Product> getAllProducts(){
         List<Product> prodotti = new LinkedList<Product>();
-        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura")));
-        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura")));
-        prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne")));
-        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta")));
+        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una"));
+        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un"));
+        prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
+        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di"));
         
         return prodotti;
         
