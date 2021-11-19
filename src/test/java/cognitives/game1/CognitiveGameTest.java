@@ -64,7 +64,7 @@ public class CognitiveGameTest {
     
    
     @Test
-    @DisplayName("[checkEncapsulation]")
+    @DisplayName("[checkEncapsulationDepartment]")
     public void task170(){
         Department department1= new Department(3L,null);
         Department department2= new Department(3L,"");
@@ -74,6 +74,22 @@ public class CognitiveGameTest {
         assertEquals(3L,department1.getId(),"mi aspettavo che l'id fosse uguale a 3L");
         assertEquals("unknown",department2.getName(),"mi aspettavo che il nome fosse unknown ");
         assertEquals("Gianni",department3.getName(),"mi aspettavo che il nome fosse Gianni");
+        
+        
+        
+        
+    }
+    @Test
+    @DisplayName("[checkEncapsulationProduct]")
+    public void task167(){
+        Product product1= new Product(3L,null);
+        Product product2= new Product(3L,"");
+        Product product3= new Product(3L,"Gianni");
+        
+        assertEquals("unknown",product1.getName(),"mi aspettavo che il nome fosse unknown");
+        assertEquals(3L,product1.getId(),"mi aspettavo che l'id fosse uguale a 3L");
+        assertEquals("unknown",product2.getName(),"mi aspettavo che il nome fosse unknown ");
+        assertEquals("Gianni",product3.getName(),"mi aspettavo che il nome fosse Gianni");
         
         
         
