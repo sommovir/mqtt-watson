@@ -108,6 +108,8 @@ public class CognitiveGameTest {
         assertFalse(product1.equals(product4),"mi aspettavo false ma l'Equals mi ha ritornato true");
         assertFalse(product1.equals(null),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato null)");
         assertFalse(product1.equals(new Object()),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato new Object())");
+        
+        
 
         
         
@@ -116,6 +118,20 @@ public class CognitiveGameTest {
         
         
         
+    }
+    @Test
+    @DisplayName("[checkEqualsDepartment]")
+    public void task171(){
+        Department department1 = new Department(5L,"Giorgio");
+        Department department2 = new Department(5L,"Giorgio");
+        Department department3 = new Department(6L,"Giorgio");
+        Department department4 = new Department(5L,"Giorgiogr");
+        
+        assertTrue(department1.equals(department2),"mi aspettavo true ma l'Equals mi ha ritornato false");
+        assertFalse(department1.equals(department3),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(department1.equals(department4),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(department1.equals(null),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato null)");
+        assertFalse(department1.equals(new Object()),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato new Object())");
     }
     
     
