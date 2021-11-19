@@ -6,6 +6,7 @@ package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.db.Person;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
 import java.util.List;
 import org.jboss.jandex.TypeTarget;
@@ -29,7 +30,7 @@ public class GameEngine {
         super();
     }
 
-    public GameInstance newGame(Person user, MindGame mindGame) throws InvalidGameInstanceException {
+    public GameInstance newGame(Person user, MindGame mindGame) throws InvalidGameInstanceException, MindGameException {
         GameDifficultyPolicy policy = getPolicy(user, mindGame);
         switch (policy) {
             case AUTO:
@@ -54,7 +55,7 @@ public class GameEngine {
      * @param mindgame
      * @return 
      */
-    private GameInstance generateDeepLearningGI(Person user, MindGame mindgame) {
+    private GameInstance generateDeepLearningGI(Person user, MindGame mindgame) throws MindGameException {
         //generate il livello
         GameDifficulty difficulty = calculateDifficultyByAI(user, mindgame);
         

@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.models;
 
 import it.cnr.istc.mw.mqtt.db.Person;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 
 /**
  * Bridge Pattern
@@ -28,7 +29,7 @@ public abstract class MindGame<I extends InitialState, S extends Solution> {
         return type;
     }
     
-    public abstract I generateInitialState(GameDifficulty difficulty);
+    public abstract I generateInitialState(GameDifficulty difficulty) throws MindGameException;
     
    
     

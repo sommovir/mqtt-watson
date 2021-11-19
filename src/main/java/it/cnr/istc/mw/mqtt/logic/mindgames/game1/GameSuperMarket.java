@@ -5,6 +5,8 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
+import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameDifficulty;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
@@ -44,7 +46,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     }
 
     @Override
-    public SuperMarketInitialState generateInitialState(GameDifficulty difficulty) {
+    public SuperMarketInitialState generateInitialState(GameDifficulty difficulty) throws ProductDuplicateException, TooFewRepartsExceptions {
         int howManyProducts = 0;
 
         switch (difficulty) {
@@ -69,30 +71,19 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
 
         List<Product> gameProduct = generateProducts(howManyProducts);
         
-
-        if (isValideProductList(gameProduct)) {
-
-            //in questo caso la selezione casuale è andata a buon fine 
-        } else {
-            //in questo caso ho meno di 3 reparti diversi ;(
-
-        }
+        SuperMarketSolution solution = new SuperMarketSolution(gameProduct);
+        solution.checkDuplicate();
+        solution.checkReparts();
+        
+        SuperMarketInitialState initialState = new SuperMarketInitialState(prodotti);
+        
+        
+        
+        
 
         return null;
     }
 
-    /**
-     * questo metodo serve a controllare se nella lista di prodotto ci siano
-     * almeno 3 reparti diversi
-     *
-     * @return
-     */
-    public boolean isValideProductList(List<Product> gameList) {
-        
-        
-        return false;
-
-    }
 
     public List<Product> generateProducts(int howmany) {
 

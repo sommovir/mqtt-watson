@@ -26,23 +26,31 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
 
     @Override
     public String getWatsonText() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       String istruzioni = "Buongiorno, se passi al supermercato mi puoi comprare: ";
+        for (int i = 0; i < products.size()-1; i++) {
+            istruzioni+=" "+products.get(i).toString()+",";
+        }
+        
+        istruzioni+=" e infine "+products.get(products.size()-1);
+
+       return istruzioni;
     }
 
     @Override
     public String getDescriptionText() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return GameType.LISTA_SPESA.getDescrizioneTestuale();
     }
 
-    @Override
-    public String toMQTTString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public SuperMarketSolution getSolution() {
         
          return this.solution;
+    }
+
+    @Override
+    public String getDescriptionVocal() {
+        return GameType.LISTA_SPESA.getDescrizioneVocale();
     }
 
 }

@@ -16,6 +16,7 @@ public class Product{
     private long id;
     private String name;
     private Department department = null;
+    private String articolo;
 
     public Product() {
     }
@@ -25,13 +26,17 @@ public class Product{
         this.name = name;
     }
     
-    public Product(long id, String name, Department dep) {
+    public Product(long id, String name, Department dep, String articolo) {
         this.id = id;
         this.name = name;
         this.department = dep;
+        this.articolo = articolo;
     }
-    
 
+    public String getArticolo() {
+        return articolo;
+    }
+        
     public long getId() {
         return id;
     }
@@ -43,6 +48,11 @@ public class Product{
     public Department getDepartment() {
         return department;
     }
+
+    public void setArticolo(String articolo) {
+        this.articolo = articolo;
+    }
+    
 
     public void setId(long id) {
         this.id = id;
@@ -71,17 +81,13 @@ public class Product{
             return false;
         }
     }
-    
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return articolo + " " + name;
+    }
 
     
     
-    
-    
-    
-    
-    
+   
 }
