@@ -4,9 +4,12 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.Solution;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -47,10 +50,36 @@ public class SuperMarketSolution extends Solution{
         return solutionProduct;
     }
     
+    /** 
+     *  questo metodo controlla che ci siano almeno 3 reparti differenti,
+     *  che la lista che viene passata nel costruttore non sia vuota e che la lista non sia nulla,
+     *  viceversa lanci l'eccezione tooFewRepartsException.
+     * 
+     * @throws TooFewRepartsExceptions
+     * l'eccezione viene lanciata quando la lista passata nel costruttore è vuota oppure nulla ed
+     * il set ha all'interno meno di 3 reparti.
+     */
+   
+    public final void checkReparts  () throws TooFewRepartsExceptions
+    {
+        Set<Department> set = new HashSet<>();
+        
+        for (Product product : products) {
+            
+            set.add(product.getDepartment());
+            
+        }
+        
+        if(products.isEmpty() || products == null || set.size()<3) {
+                
+            throw new TooFewRepartsExceptions();
+
+        }
+ 
+}
 
     @Override
     public String toMQTTString() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 }
