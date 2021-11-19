@@ -24,6 +24,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     private static List<Product> prodotti = null;
     private static List<Department> reparti = null;
     private static Map<Department, List<Product>> productMap = new HashMap<>();
+    
 
     static {
         prodotti = DBManager.getInstance().getAllProducts();
@@ -66,11 +67,8 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         }
         Collections.shuffle(prodotti);
 
-        List<Product> gameProduct = new LinkedList<Product>(prodotti);
-        for (int i = 0; i < howManyProducts; i++) {
-
-            gameProduct.add(prodotti.get(i));
-        }
+        List<Product> gameProduct = generateProducts(howManyProducts);
+        
 
         if (isValideProductList(gameProduct)) {
 
@@ -90,7 +88,8 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
      * @return
      */
     public boolean isValideProductList(List<Product> gameList) {
-
+        
+        
         return false;
 
     }
@@ -121,7 +120,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         Collections.shuffle(gameProducts);
         return gameProducts;
     }
-
+    
     @Override
     public boolean validate(SuperMarketInitialState initialState, SuperMarketSolution solution) {
         return true;
