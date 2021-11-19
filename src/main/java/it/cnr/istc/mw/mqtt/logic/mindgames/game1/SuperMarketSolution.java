@@ -87,7 +87,7 @@ public class SuperMarketSolution extends Solution{
              if(products.get(i).equals(products.get(j))){
                  
                  product = products.get(i);
-                 throw new ProductDuplicateException();
+                 throw new ProductDuplicateException(product);
              }
              
          }
