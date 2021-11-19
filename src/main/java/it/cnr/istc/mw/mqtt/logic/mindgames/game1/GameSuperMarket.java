@@ -70,18 +70,15 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         Collections.shuffle(prodotti);
 
         List<Product> gameProduct = generateProducts(howManyProducts);
-        
-        SuperMarketSolution solution = new SuperMarketSolution(gameProduct);
-        solution.checkDuplicate();
-        solution.checkReparts();
-        
-        SuperMarketInitialState initialState = new SuperMarketInitialState(prodotti);
-        
-        
-        
-        
 
-        return null;
+        
+        SuperMarketInitialState initialState = new SuperMarketInitialState(gameProduct);
+        initialState.getSolution().checkDuplicate();
+        initialState.getSolution().checkReparts();
+        
+        
+        
+        return initialState;
     }
 
 
