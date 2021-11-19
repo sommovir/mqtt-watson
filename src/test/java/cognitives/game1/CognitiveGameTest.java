@@ -5,8 +5,10 @@
  */
 package cognitives.game1;
 
+import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.mindgames.OLD_MindGameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import java.lang.ProcessHandle.Info;
 import java.util.LinkedList;
@@ -59,5 +61,24 @@ public class CognitiveGameTest {
         boolean check = OLD_MindGameEngine.getInstance().checkDuplicate(prodotti); 
         //assertFalse();
     }
+    
+   
+    @Test
+    @DisplayName("[checkEncapsulation]")
+    public void task170(){
+        Department department1= new Department(3L,null);
+        Department department2= new Department(3L,"");
+        Department department3= new Department(3L,"Gianni");
+        
+        assertEquals("unknown",department1.getName(),"mi aspettavo che il nome fosse unknown");
+        assertEquals(3L,department1.getId(),"mi aspettavo che l'id fosse uguale a 3L");
+        assertEquals("unknown",department2.getName(),"mi aspettavo che il nome fosse unknown ");
+        assertEquals("Gianni",department3.getName(),"mi aspettavo che il nome fosse Gianni");
+        
+        
+        
+        
+    }
+    
     
 }

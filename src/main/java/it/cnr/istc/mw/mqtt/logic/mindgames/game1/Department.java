@@ -5,7 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 /**
- *
+ * name non può essere vuota o nulla in caso contrario name sarà "unknown" 
  * @author Luca
  */
 public class Department {
