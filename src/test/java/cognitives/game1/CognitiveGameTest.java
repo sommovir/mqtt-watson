@@ -95,6 +95,28 @@ public class CognitiveGameTest {
         
         
     }
+    @Test
+    @DisplayName("[checkEqualsProduct]")
+    public void task168(){
+        Product product1 = new Product(5L,"Giorgio");
+        Product product2 = new Product(5L,"Giorgio");
+        Product product3 = new Product(6L,"Giorgio");
+        Product product4 = new Product(5L,"Giorgiogr");
+        
+        assertTrue(product1.equals(product2),"mi aspettavo true ma l'Equals mi ha ritornato false");
+        assertFalse(product1.equals(product3),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(product1.equals(product4),"mi aspettavo false ma l'Equals mi ha ritornato true");
+        assertFalse(product1.equals(null),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato null)");
+        assertFalse(product1.equals(new Object()),"mi aspettavo false ma l'Equals mi ha ritornato true (ti ho passato new Object())");
+
+        
+        
+        
+        
+        
+        
+        
+    }
     
     
 }
