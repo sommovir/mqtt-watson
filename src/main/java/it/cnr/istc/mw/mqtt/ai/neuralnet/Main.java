@@ -32,7 +32,7 @@ public class Main {
 
     int result;
     int i=0; 
-    for (Dataset datatest : dataTest.getDatasets()) {
+    for (Dataset datatest : Utilities.getTestData().getDatasets()) {
         try {
             result=perceptron1.test(datatest.getInputs());
             if(result==datatest.getDesiredAnswer()){
