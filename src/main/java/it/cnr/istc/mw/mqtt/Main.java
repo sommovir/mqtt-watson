@@ -352,7 +352,7 @@ public class Main {
 
                         } else if (line.equals("multichoice")) {
                             System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "multichoice" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
-                            MQTTClient.getInstance().publish("user/110/to_user/command", "multichoice:piazza,pasta,carne:cosa ti piace di più ?");
+                            MQTTClient.getInstance().publish("user/110/to_user/command", "multichoice<:>cosa ti piace di più ?<LIST>piazza,pasta,carne");
 
                         } else if (line.equals("youtube")) {
                             System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "youtube" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
