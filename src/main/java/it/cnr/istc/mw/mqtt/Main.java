@@ -177,35 +177,39 @@ public class Main {
                         } else if (line.equals("test on")) {
                             WatsonManager.getInstance().setTestMode(true);
                         } else if (line.equals("test off")) {
-                            WatsonManager.getInstance().setTestMode(false);
+                            if(LoggerManager.getInstance().isLogging()){
+                                System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_RED + "Impossibile interrompere la modalità di test, se è in corso un logging" + ConsoleColors.ANSI_RESET);
+                            }else{
+                                WatsonManager.getInstance().setTestMode(false);
+                            }
                         } else if (line.equals("print context")) {
                             WatsonManager.getInstance().printContext();
                         } else if (line.equals("log off")) {
-                            if (LoggerManager.getInstance().isPaused()) {
-                                System.out.println(LogTitles.LOGGER.getTitle() + "Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
-                                String risposta = reader.readLine();
-                                if (risposta.equals("Balzdof")) {
+                                if (LoggerManager.getInstance().isPaused()) {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
+                                    String risposta = reader.readLine();
+                                    if (risposta.equals("Balzdof")) {
+                                        System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
+                                        LoggerManager.getInstance().setLogActive(false);
+                                    } else {
+                                        System.out.println(LogTitles.LOGGER.getTitle() + "Mi spiace, non sei suddito abbastanza.");
+                                    }
+                                } else {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Vuoi eseguire un dump dei dati di log?");
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Digita y per eseguire");
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Digita n per continuare");
+                                    String risposta = reader.readLine();
+                                    if (risposta.equals("y")) {
+                                        System.out.println(LogTitles.LOGGER.getTitle() + "Dumping...");
+                                        LoggerManager.getInstance().dump();
+                                    } else if (risposta.equals("n")) {
+                                        System.out.println(LogTitles.LOGGER.getTitle() + "Clearing cache...");
+                                    } else {
+                                        System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
+                                    }
                                     System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
                                     LoggerManager.getInstance().setLogActive(false);
-                                } else {
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Mi spiace, non sei suddito abbastanza.");
                                 }
-                            } else {
-                                System.out.println(LogTitles.LOGGER.getTitle() + "Vuoi eseguire un dump dei dati di log?");
-                                System.out.println(LogTitles.LOGGER.getTitle() + "Digita y per eseguire");
-                                System.out.println(LogTitles.LOGGER.getTitle() + "Digita n per continuare");
-                                String risposta = reader.readLine();
-                                if (risposta.equals("y")) {
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Dumping...");
-                                    LoggerManager.getInstance().dump();
-                                } else if (risposta.equals("n")) {
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Clearing cache...");
-                                } else {
-                                    System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
-                                }
-                                System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
-                                LoggerManager.getInstance().setLogActive(false);
-                            }
                         } else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
                             if (LoggerManager.getInstance().isLogging()) {

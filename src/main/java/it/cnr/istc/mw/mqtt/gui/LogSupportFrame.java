@@ -774,6 +774,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 this.jButton_log_end_pretest.setEnabled(true);
                 setMainCommandsEnabled(true);
                 noteEnabled(true);
+                this.jToggleButton_TestMode.setEnabled(false);
             } else {
                 printError("nome file invalido");
             }
@@ -791,6 +792,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                     printWarning("The current logging file has been closed, no further log will be accepted on such file");
                     this.jButton_log_end_pretest.setEnabled(false);
                     noteEnabled(false);
+                    this.jToggleButton_TestMode.setEnabled(true);
                 } catch (LogOffException | InvalidAttemptToLogException ex) {
                     printError(ex.getGuiErrorMessage());
                 }
