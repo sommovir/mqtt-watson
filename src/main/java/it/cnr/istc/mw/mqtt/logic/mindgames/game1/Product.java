@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 public class Product{
     
     private long id;
-    private String name;
+    private String name;//carota:carote:carote:carote
     private Department department = null;
-    private String articolo;
+    private String articolo;//una:delle:un po' di:alcune
 
     public Product() {
     }
