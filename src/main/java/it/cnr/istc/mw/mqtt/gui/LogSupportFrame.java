@@ -65,6 +65,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     
     private void renderLogOnOffButton(boolean logActive) {
 
+        jToggleButton_TestMode.setEnabled(!logActive);
         this.jToggleButton_LogOff.setSelected(logActive);
         this.jLabel_logOn.setIcon(logActive ? Icons.GREEN_DOT.getIcon() : Icons.RED_DOT.getIcon());
         this.jToggleButton_LogOff.setText(logActive ? "Log ON" : "Log OFF");
