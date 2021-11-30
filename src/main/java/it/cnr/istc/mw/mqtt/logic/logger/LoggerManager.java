@@ -316,6 +316,43 @@ public class LoggerManager {
         return currentlyPaused;
     }
 
+    //WARNING, any modify to log method must be manually duplicated here
+    public void logByGUi(String textToLog, Date initTypingTime) throws LogOffException, InvalidAttemptToLogException {
+        if (!isLoggable(textToLog)) {
+            throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu
+        }
+        numberLine++;
+        String timestamp = new SimpleDateFormat("HH:mm:ss").format(initTypingTime);
+
+        if (!logActive) {
+            throw new LogOffException();
+        }
+
+        if (currentLogPath == null) {
+            throw new InvalidAttemptToLogException();
+        }
+        try ( FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);  BufferedWriter bw = new BufferedWriter(fw);  PrintWriter out = new PrintWriter(bw)) {
+
+            if (notDumping) {
+                cache.add(numberLine + ") " + timestamp + " " + textToLog);
+                out.println(numberLine + ") " + timestamp + " " + textToLog);
+            } else {
+                out.println(textToLog);
+            }
+            if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
+                systemTurns++;
+                totalTurns++;
+            } else if (textToLog.contains(LoggingTag.USER_TURNS.getTag())) {
+                userTurns++;
+                totalTurns++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         if (!isLoggable(textToLog)) {
             throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu

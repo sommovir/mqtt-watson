@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ import javax.swing.SpinnerNumberModel;
  */
 public class LogSupportFrame extends javax.swing.JFrame implements WindowListener, LoggerEventListener {
 
+    private Date startNoteTypingTime = null;
     /**
      * Creates new form LogSupportFrame
      */
@@ -108,7 +110,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                 if (text.isEmpty()) {
                     printError("Non puoi mandare note vuote");
                 } else {
-                    LoggerManager.getInstance().log(LoggingTag.NOTE.getTag() + " " + text);
+                    LoggerManager.getInstance().logByGUi(LoggingTag.NOTE.getTag() + " " + text,startNoteTypingTime);
                     printInfo(LogTitles.GUI.getTitle() + "New note tag logged");
                 }
             } catch (LogOffException | InvalidAttemptToLogException ex) {
@@ -738,9 +740,13 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }//GEN-LAST:event_jButton_NoteActionPerformed
 
     private void jTextField_NoteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_NoteKeyPressed
-        // TODO add your handling code here:
+        // TODO add your handling code here:s
+        if(this.startNoteTypingTime == null){
+            this.startNoteTypingTime = new Date();
+        }
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             newNote();
+            this.startNoteTypingTime = null;
         }
     }//GEN-LAST:event_jTextField_NoteKeyPressed
 
