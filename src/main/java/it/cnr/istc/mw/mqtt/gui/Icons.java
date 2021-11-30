@@ -6,6 +6,7 @@
 package it.cnr.istc.mw.mqtt.gui;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -13,18 +14,19 @@ import javax.swing.Icon;
  */
 public enum Icons {
     
-    GREEN_DOT(new javax.swing.ImageIcon(Icons.class.getResource("/icons/green16.png"))),
-    RED_DOT(new javax.swing.ImageIcon(Icons.class.getResource("/icons/red16.png"))),
-    YELLOW_DOT(new javax.swing.ImageIcon(Icons.class.getResource("/icons/yellow16.png")));
+    GREEN_DOT(new ImageIcon(Icons.class.getResource("/icons/green16.png"))),
+    RED_DOT(new ImageIcon(Icons.class.getResource("/icons/red16.png"))),
+    YELLOW_DOT(new ImageIcon(Icons.class.getResource("/icons/yellow16.png"))),
+    LOG_32(new ImageIcon(Icons.class.getResource("/icons/logf.png")));
     
     
-    private Icons(Icon icon){
+    private Icons(ImageIcon icon){
         this.icon = icon;
     }
     
-    private Icon icon;
+    private ImageIcon icon;
 
-    public Icon getIcon() {
+    public ImageIcon getIcon() {
         return icon;
     }
     

@@ -43,6 +43,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         this.setLocationRelativeTo(null);//Centra il frame
         this.setAlwaysOnTop(true);
         this.addWindowListener(this);
+        this.setIconImage(Icons.LOG_32.getIcon().getImage());
         SpinnerNumberModel modelAlpha = new SpinnerNumberModel(0.6d, 0d, 1d, 0.1d);
         this.jSpinnerAlpha.setModel(modelAlpha);//Prebdi valori da modelAlpha
         SpinnerNumberModel modelBeta = new SpinnerNumberModel(0.2d, 0d, 1d, 0.1d);
