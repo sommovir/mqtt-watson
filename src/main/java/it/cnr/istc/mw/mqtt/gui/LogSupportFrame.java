@@ -177,6 +177,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -484,6 +485,17 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         });
         jToolBar1.add(jButton1);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/open24.png"))); // NOI18N
+        jButton2.setText("Open Log Folder");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton2);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -515,7 +527,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 15, Short.MAX_VALUE)
                         .addComponent(jLabel_FeedBack, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -531,7 +543,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -943,8 +955,18 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     }//GEN-LAST:event_jButton_resumeActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       LoggerManager.getInstance().openPath(LoggerManager.getInstance().getCurrentLogPath());
+        String currentLogPath = LoggerManager.getInstance().getCurrentLogPath();
+        if(currentLogPath == null || currentLogPath.isEmpty()){
+            printError("non c'è ancora nessun log attivo");
+        }else{
+            LoggerManager.getInstance().openPath(currentLogPath);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        LoggerManager.getInstance().openPath(LoggerManager.LOG_FOLDER);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -989,6 +1011,7 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton_ApplyABG;
     private javax.swing.JButton jButton_ExtraInput;
     private javax.swing.JButton jButton_Note;

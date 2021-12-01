@@ -205,6 +205,7 @@ public class LoggerManager {
     
 
     public void openPath(String path) {
+        
         File fileLog = new File(path);
 
         Desktop desktop = Desktop.getDesktop();
