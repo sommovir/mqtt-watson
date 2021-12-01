@@ -76,10 +76,16 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         noteEnabled(logActive);
         setMainCommandsEnabled(logActive);
         this.jButton_log_end_pretest.setEnabled(logActive);
+        this.jToggleButton_LogOff.setToolTipText(logActive ? "<htmL>La modalità di logging è <font color=green><b>attiva</b></font>, premere per disattivarla.<br>"
+                + "La modalità di logging attiva consente di salvare i dati di test in un file di log" : "<htmL>La modalità di logging è <font color=red><b>disattivata</b></font>, premere per attivarla.<br>"
+                + "La modalità di logging attiva consente di salvare i dati di test in un file di log");
     }
 
     private void renderTestOnOffButton(boolean testActive) {
 
+        this.jToggleButton_TestMode.setToolTipText(testActive ? "<htmL>La modalità di test è <font color=green><b>attiva</b></font>, premere per disattivarla.<br>"
+                + "La modalità di test attiva non consente più di una connessione attiva al server." : "<htmL>La modalità di test è <font color=red><b>disattivata</b></font>, premere per attivarla.<br>"
+                + "La modalità di test attiva non consente più di una connessione attiva al server.");
         this.jToggleButton_TestMode.setSelected(testActive);
         this.jLabel_TestMode.setIcon(testActive ? Icons.GREEN_DOT.getIcon() : Icons.RED_DOT.getIcon());
         this.jToggleButton_TestMode.setText(testActive ? "Test ON" : "Test OFF");
