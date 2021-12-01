@@ -798,7 +798,10 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
      * @return
      */
     public boolean isValidFileName(String filename) {
-        return !filename.isEmpty();
+        if(filename==null || filename.isEmpty()){
+            return false;
+        }
+        return filename.matches("\\b[a-zA-Z][a-zA-Z0-9]*\\b");
     }
 
     private void jToggleButton_LogOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_LogOffActionPerformed
