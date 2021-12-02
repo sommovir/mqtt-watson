@@ -11,6 +11,7 @@ import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.logic.events.LoggerEventListener;
 import java.io.BufferedReader;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
@@ -49,6 +50,7 @@ public class LoggerManager {
     private int systemTurns = 0;
     private int totalTurns = 0;
     private String logName;
+    private String adminName = "";
     public static final String LOG_FOLDER = "./logs";
     private boolean currentlyPaused = false;
     private boolean alreadyPaused = false;
@@ -59,6 +61,8 @@ public class LoggerManager {
     private double totalIntents = 0;
     private double totalEntities = 0;
     private double totalIntentsWithFails = 0;
+    private List<LoggerEventListener> loggerListeners = new LinkedList<LoggerEventListener>();
+    private boolean adminSetByGui = false; //è true quando il logger admin è settato dalla gui e non dalla console
 
     public static LoggerManager getInstance() {
         if (_instance == null) {
@@ -66,6 +70,14 @@ public class LoggerManager {
 
         }
         return _instance;
+    }
+
+    public void addLoggerEventListener(LoggerEventListener listener) {
+        this.loggerListeners.add(listener);
+    }
+
+    public void removeLoggerEventListener(LoggerEventListener listener) {
+        this.loggerListeners.remove(listener);
     }
 
     public void newIntentDetected(double confidence) {
@@ -106,10 +118,10 @@ public class LoggerManager {
     }
 
     public boolean setLoggerAdmin() {
-        String adminName = "";
+
         BufferedReader reader
                 = new BufferedReader(new InputStreamReader(System.in));
-        
+
         System.out.println(LogTitles.LOGGER.getTitle() + "Inserire il nome del responsabile del log: ");
         try {
             adminName = reader.readLine();
@@ -117,7 +129,7 @@ public class LoggerManager {
             System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
         }
         if (adminName.isEmpty()) {
-            System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED +"Il nome del responsabile del log non può essere vuoto."+ConsoleColors.ANSI_RESET);
+            System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Il nome del responsabile del log non può essere vuoto." + ConsoleColors.ANSI_RESET);
             return false;
         } else {
             try {
@@ -125,7 +137,7 @@ public class LoggerManager {
             } catch (LogOffException | InvalidAttemptToLogException ex) {
                 System.out.println(LogTitles.SERVER.getTitle() + ex.getMessage());
             }
-            System.out.println(LogTitles.LOGGER.getTitle()+"Responsabile del log registrato a nome di: "+adminName);
+            System.out.println(LogTitles.LOGGER.getTitle() + "Responsabile del log registrato a nome di: " + adminName);
             return true;
         }
     }
@@ -158,10 +170,15 @@ public class LoggerManager {
             String timestamp = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
             log("[Server] START");
             log("del giorno " + timestamp);
-            boolean nameValid = false;
-            do {
-                nameValid = setLoggerAdmin();
-            } while (!nameValid);
+            if (!adminSetByGui) {
+                boolean nameValid = false;
+                do {
+                    nameValid = setLoggerAdmin();
+                } while (!nameValid);
+            }else{
+                log(LoggingTag.LOGGER_ADMIN.getTag() + adminName);
+                System.out.println(LogTitles.LOGGER.getTitle() + "Responsabile del log registrato a nome di: " + adminName);
+            }
             LoggerManager.getInstance().logConfigs();
 
         } catch (Exception ex) {
@@ -171,7 +188,24 @@ public class LoggerManager {
 
     }
 
+    public void setAdminSetByGui(boolean adminSetByGui) {
+        this.adminSetByGui = adminSetByGui;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+    public String getAdminName() {
+        return adminName;
+    }
+    
+    
+    
+    
+
     public void openPath(String path) {
+        
         File fileLog = new File(path);
 
         Desktop desktop = Desktop.getDesktop();
@@ -219,6 +253,10 @@ public class LoggerManager {
         this.startingLoggingTime = -1;
         this.alreadyPaused = false;
         clearAvg();
+        logActive = false;
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.loggingModeChanged(logActive);
+        }
     }
 
     public boolean isAlreadyPaused() {
@@ -279,6 +317,43 @@ public class LoggerManager {
         return currentlyPaused;
     }
 
+    //WARNING, any modify to log method must be manually duplicated here
+    public void logByGUi(String textToLog, Date initTypingTime) throws LogOffException, InvalidAttemptToLogException {
+        if (!isLoggable(textToLog)) {
+            throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu
+        }
+        numberLine++;
+        String timestamp = new SimpleDateFormat("HH:mm:ss").format(initTypingTime);
+
+        if (!logActive) {
+            throw new LogOffException();
+        }
+
+        if (currentLogPath == null) {
+            throw new InvalidAttemptToLogException();
+        }
+        try ( FileWriter fw = new FileWriter(currentLogPath, StandardCharsets.UTF_8, true);  BufferedWriter bw = new BufferedWriter(fw);  PrintWriter out = new PrintWriter(bw)) {
+
+            if (notDumping) {
+                cache.add(numberLine + ") " + timestamp + " " + textToLog);
+                out.println(numberLine + ") " + timestamp + " " + textToLog);
+            } else {
+                out.println(textToLog);
+            }
+            if (textToLog.contains(LoggingTag.SYSTEM_TURNS.getTag()) || textToLog.contains(LoggingTag.REJECTS.getTag())) {
+                systemTurns++;
+                totalTurns++;
+            } else if (textToLog.contains(LoggingTag.USER_TURNS.getTag())) {
+                userTurns++;
+                totalTurns++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     public void log(String textToLog) throws LogOffException, InvalidAttemptToLogException {
         if (!isLoggable(textToLog)) {
             throw new InvalidAttemptToLogException("Logging attempt detected, use command [log resume] to renable the logging module"); //seiunbufu
@@ -349,6 +424,12 @@ public class LoggerManager {
 
     }
 
+    public void fireTestModeChanged(boolean mode) {
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.testModeChanged(mode);
+        }
+    }
+
     public void setLogActive(boolean logActive) {
         if (!logActive) {
             try {
@@ -359,6 +440,9 @@ public class LoggerManager {
             cache.clear();
         }
         this.logActive = logActive;
+        for (LoggerEventListener loggerListener : loggerListeners) {
+            loggerListener.loggingModeChanged(logActive);
+        }
     }
 
     public boolean isLogActive() {

@@ -135,8 +135,13 @@ public class WatsonManager {
     }
 
     public void setTestMode(boolean testMode) {
-        //prova123456
         this.testMode = testMode;
+        if(testMode){
+            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now ACTIVE, it will be allowed only " + ConsoleColors.ANSI_RED + "1" + ConsoleColors.ANSI_GREEN + " connection" + ConsoleColors.ANSI_RESET);
+        }else{
+            System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
+        }
+        LoggerManager.getInstance().fireTestModeChanged(testMode);
     }
 
     public void mute() {
@@ -658,9 +663,9 @@ public class WatsonManager {
 
             LowDeltaResult lowDeltaExisting = isLowDeltaExisting(minDeltaThreshold, minSingleDeltaThreshold, intentsConfList);
             boolean watsonSuggestion = response.getOutput().getGeneric().get(0).responseType().equals("suggestion");
-            if (watsonSuggestion && !lowDeltaExisting.isLowDelta()) {
-                lowDeltaExisting = LowDeltaResult.WATSON_SUGGESTION;
-            }
+//            if (watsonSuggestion && !lowDeltaExisting.isLowDelta()) {
+//                lowDeltaExisting = LowDeltaResult.WATSON_SUGGESTION;
+//            }
             if (!isAppTextForced(context) && (hasNoEntitis(0.2f, entitiesConfList) && lowDeltaExisting.isLowDelta()) || watsonSuggestion) {
                 try {
                     LoggerManager.getInstance().log(LoggingTag.CONFIDENCE_INTENTS.getTag() + " -low delta- " + generateIntensLog(response.getOutput().getIntents()));
@@ -677,7 +682,7 @@ public class WatsonManager {
                     case INDECISION:
                         return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene" + BAD_LUCK;
                     case WATSON_SUGGESTION:
-                        return "<AUTOLISTEN>Perdonami <NAME>, mi potresti chiedere la stessa cosa in forma più semplice ?" + BAD_LUCK;
+                        return "<AUTOLISTEN>Perdonami, mi potresti chiedere la stessa cosa in forma più semplice ?"+BAD_LUCK;
                 }
                 return "<AUTOLISTEN>Scusa potresti essere più preciso?" + BAD_LUCK;
             }

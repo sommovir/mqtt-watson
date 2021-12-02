@@ -1,0 +1,11 @@
+[Server] START
+del giorno 16/11/2021
+<LOGGER ADMIN>Luca
+ALPHA: 0.6       BETA: 0.2       GAMMA: 1
+----------------------------------------------------------------
+<ELAPSED TIME> 0h 0m 5s 
+ | TOTAL USER TURNS: 0 | TOTAL SYSTEM TURNS: 0 | TOTAL TURNS: 0 | 
+<PRECISION INTENTS>: NaN | 
+<PRECISION FAILED INTENTS>: NaN | 
+<PRECISION ENTITIES>: NaN
+----------------------------------------------------------------

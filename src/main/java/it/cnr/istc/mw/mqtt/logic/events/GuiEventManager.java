@@ -58,6 +58,12 @@ public class GuiEventManager {
         }
     }
     
+    public void dispatchTestModeChange(boolean mode){
+        for (LoggerEventListener listener : loggerListeners) {
+            listener.testModeChanged(mode);
+        }
+    }
+    
     public void dispatchLoggingModeChange(boolean mode){
         for (LoggerEventListener listener : loggerListeners) {
             listener.loggingModeChanged(mode);
