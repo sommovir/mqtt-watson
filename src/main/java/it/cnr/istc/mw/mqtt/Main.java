@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.Icons;
 import it.cnr.istc.mw.mqtt.gui.LogSupportFrame;
+import it.cnr.istc.mw.mqtt.gui.LoggerAdminDialog;
 import it.cnr.istc.mw.mqtt.gui.MainFrame;
 import it.cnr.istc.mw.mqtt.logic.chad.ChadManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
@@ -34,6 +35,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import org.apache.commons.lang3.StringUtils;
@@ -571,7 +574,20 @@ public class Main {
                             String admin = null;
 
                             do {
-                                admin = (String) JOptionPane.showInputDialog(null, "Config Admin", "Logger Administrator:", JOptionPane.INFORMATION_MESSAGE, Icons.YELLOW_DOT.getIcon(), null, null);
+                                JFrame frame = new JFrame();
+                                frame.setIconImage(Icons.YELLOW_DOT.getIcon().getImage());
+                                LoggerAdminDialog dialog = new LoggerAdminDialog(frame, true);
+                                dialog.pack();
+                                dialog.requestFocus();
+                                dialog.setVisible(true);
+                                dialog.requestFocusInWindow();
+                                dialog.setAlwaysOnTop(true);
+                                admin = dialog.getAdmin();
+//                                JOptionPane jo = new JOptionPane("Logger Administrator:", JOptionPane.INFORMATION_MESSAGE);
+//                                jo.requestFocusInWindow();
+//                                JDialog dialog = jo.cre(frame, "Config Admin");
+//                                dialog.setVisible(true);
+                                //admin = (String) JOptionPane.showInputDialog(frame, "Config Admin", "Logger Administrator:", JOptionPane.INFORMATION_MESSAGE);
 
                             } while (admin == null || admin.isEmpty());
                             LoggerManager.getInstance().setAdminSetByGui(true);
