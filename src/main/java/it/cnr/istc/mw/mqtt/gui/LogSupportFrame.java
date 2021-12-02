@@ -878,35 +878,6 @@ public class LogSupportFrame extends javax.swing.JFrame implements WindowListene
         }
     }//GEN-LAST:event_jToggleButton_LogOffActionPerformed
 
-    private void jTextField_WallSpeakKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_WallSpeakKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (!jTextField_WallSpeak.getText().isEmpty()) {
-                try {
-                    LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + jTextField_WallSpeak.getText());
-                    System.out.println(LogTitles.GUI.getTitle() + "Wallspeak tag logged + ( " + jTextField_WallSpeak.getText() + " )");
-                    printInfo("Wallspeak tag logged + note");
-                    jTextField_WallSpeak.setText(null);
-                } catch (LogOffException | InvalidAttemptToLogException ex) {
-                    System.out.println(LogTitles.LOGGER.getTitle() + ex.getMessage());
-                    if (ex instanceof GuiPrintableException) {
-                        printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                    }
-                }
-            } else {
-                try {
-                    LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag());
-                    System.out.println(LogTitles.GUI.getTitle() + "Wallspeak tag logged");
-                    printInfo("Wallspeak tag logged");
-                } catch (LogOffException | InvalidAttemptToLogException ex) {
-                    System.out.println(LogTitles.LOGGER.getTitle() + ex.getMessage());
-                    if (ex instanceof GuiPrintableException) {
-                        printError(((GuiPrintableException) ex).getGuiErrorMessage());
-                    }
-                }
-            }
-        }
-    }//GEN-LAST:event_jTextField_WallSpeakKeyPressed
 
     private void jTextField_ExtraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_ExtraKeyPressed
         // TODO add your handling code here:
