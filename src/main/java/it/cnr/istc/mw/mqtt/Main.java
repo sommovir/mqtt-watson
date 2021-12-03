@@ -200,7 +200,16 @@ public class Main {
                                 System.out.println(LogTitles.LOGGER.getTitle()+"Logging has been deactivated");
                                 LoggerManager.getInstance().setLogActive(false);
                             }
-                        } else if (line.startsWith("new log ")) {
+                        } else if(line.equals("set topic")){
+                            System.out.println("Inserisci Topic:");
+                            String topic = reader.readLine();
+                            System.out.println("Inserire Messaggio: ");
+                            String message = reader.readLine();
+                            MQTTClient.getInstance().publish(topic, message);
+                            System.out.println("HO PUBBLICATO AL TOPIC: "+topic);
+                            System.out.println("HO PUBBLICATO IL MESSAGGIO: "+message);
+                        
+                        }else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
                             if (LoggerManager.getInstance().isLogging()) {
                                 try {
