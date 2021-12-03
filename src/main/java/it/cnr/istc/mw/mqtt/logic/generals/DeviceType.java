@@ -34,5 +34,14 @@ public enum DeviceType {
             default: return DeviceType.UNKNOWN;
         }
     }
+    
+    public static WatsonDeviceType toWatsonDeviceType(DeviceType device){
+        switch(device){
+            case MOBILE: return WatsonDeviceType.MOBILE;
+            case ROBOT: return WatsonDeviceType.ROBOT;
+            case TV: return WatsonDeviceType.TV;
+            default: return WatsonDeviceType.UNKNOWN;
+        }
+    }
 
 }

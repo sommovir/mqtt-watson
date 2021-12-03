@@ -6,7 +6,6 @@
 package it.cnr.istc.mw.mqtt;
 
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
-import com.google.common.collect.HashBiMap;
 import com.ibm.cloud.sdk.core.security.IamAuthenticator;
 import com.ibm.cloud.sdk.core.service.model.GenericModel;
 import com.ibm.watson.assistant.v2.model.MessageInput;
@@ -14,10 +13,7 @@ import com.ibm.watson.assistant.v2.model.MessageOptions;
 import com.ibm.watson.assistant.v2.model.MessageResponse;
 import com.ibm.watson.assistant.v2.Assistant;
 import com.ibm.watson.assistant.v2.model.CreateSessionOptions;
-import com.ibm.watson.assistant.v2.model.DeleteSessionOptions;
 import com.ibm.watson.assistant.v2.model.MessageContext;
-import com.ibm.watson.assistant.v2.model.MessageContextGlobal;
-import com.ibm.watson.assistant.v2.model.MessageContextGlobalSystem;
 import com.ibm.watson.assistant.v2.model.MessageContextSkill;
 import com.ibm.watson.assistant.v2.model.MessageInputOptions;
 import com.ibm.watson.assistant.v2.model.RuntimeEntity;
@@ -294,7 +290,10 @@ public class WatsonManager {
                         } catch (Exception e) {
                             System.out.println(LogTitles.LOGGER.getTitle()+e.getMessage());
                         }
-
+                        
+                    }
+                    if(command.startsWith("<ROBOT>")){
+                         MQTTClient.getInstance().publish(Topics.ROBOT.getTopic(), value);
                     }
                     if (command.equals("link")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";
