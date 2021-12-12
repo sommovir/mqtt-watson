@@ -20,6 +20,7 @@ import it.cnr.istc.mw.mqtt.gui.LoggerAdminDialog;
 import it.cnr.istc.mw.mqtt.gui.MainFrame;
 import it.cnr.istc.mw.mqtt.logic.chad.ChadManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
+import it.cnr.istc.mw.mqtt.logic.google.GoogleSheetManager;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
@@ -169,6 +170,9 @@ public class Main {
                         } else if (line.equals("test db")) {
                             System.out.println(LogTitles.DATABASE.getTitle() + "testing db");
                             DBManager.getInstance().test();
+                        } else if (line.equals("test google sheet")) {
+                            System.out.println(LogTitles.SERVER.getTitle() + "testing google sheet");
+                            GoogleSheetManager.getInstance().test();
                         } else if (line.equals("chad")) {
                             String chadFace = ChadManager.getInstance().getChadFace();
                             for (int i = 0; i < chadFace.length(); i++) {
