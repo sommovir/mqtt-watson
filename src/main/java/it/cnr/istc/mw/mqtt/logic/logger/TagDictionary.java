@@ -4,7 +4,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.logger;
 
-import java.util.List;
+
 import java.util.Map;
 
 /**
@@ -16,10 +16,11 @@ public class TagDictionary {
                
 
     public TagDictionary() {
-        //inizializza la lista
+        LoggingTag[] loggingTagValues = LoggingTag.values();
+        for (LoggingTag loggingTagValue : loggingTagValues) {
+            dictionary.put(loggingTagValue, 0);
+        }
     }
-    
-    
     
     
 }

@@ -40,7 +40,9 @@ public class AnalysisToolManager {
      * @return 
      */
     public TagDictionary countTag(File file){
+        TagDictionary dictionary = new TagDictionary();
         return null;
+        
     }
     
     private AnalysisToolManager() {
