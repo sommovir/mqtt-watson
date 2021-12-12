@@ -29,6 +29,7 @@ public class AnalysisToolManager {
      * @return 
      */
     public List<File> getAllLogFiles(String logpath){
+        
         return null;
     }
 

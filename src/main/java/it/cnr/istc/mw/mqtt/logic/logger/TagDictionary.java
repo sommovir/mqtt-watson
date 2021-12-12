@@ -4,10 +4,22 @@
  */
 package it.cnr.istc.mw.mqtt.logic.logger;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author sommovir
  */
 public class TagDictionary {
+    private Map<LoggingTag,Integer> dictionary;
+               
+
+    public TagDictionary() {
+        //inizializza la lista
+    }
+    
+    
+    
     
 }
