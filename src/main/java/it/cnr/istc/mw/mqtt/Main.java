@@ -172,7 +172,8 @@ public class Main {
                             DBManager.getInstance().test();
                         } else if (line.equals("test google sheet")) {
                             System.out.println(LogTitles.SERVER.getTitle() + "testing google sheet");
-                            GoogleSheetManager.getInstance().test();
+//                            GoogleSheetManager.getInstance().test();
+                            GoogleSheetManager.getInstance().write("A1", "E3", "ciao a tutti");
                         } else if (line.equals("chad")) {
                             String chadFace = ChadManager.getInstance().getChadFace();
                             for (int i = 0; i < chadFace.length(); i++) {
