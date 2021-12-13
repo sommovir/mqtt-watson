@@ -73,10 +73,12 @@ public class AnalysisToolManager {
             String line = scanner.nextLine();
             String[] words = line.split(" ");
             for (String word : words) {
-                //se la parola appartiene al logging tags allora aggiungo uno
+                if(dictionary.isLoggingTag(word)){
+                    dictionary.incrementTag(word);
+                }
             }
         }
-        return null;
+        return dictionary;
     }
 
     private AnalysisToolManager() {

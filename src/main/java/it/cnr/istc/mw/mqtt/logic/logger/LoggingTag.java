@@ -83,6 +83,55 @@ public enum LoggingTag {
         return tag;
     }
     
+    public static LoggingTag of(String tag){
+        switch(tag){
+            case "ELAPSED TIME": return LoggingTag.ELAPSED_TIME;
+            case "SYSTEM TURNS": return LoggingTag.SYSTEM_TURNS;
+            case "TOTAL SYSTEM TURNS" : return LoggingTag.TOTAL_SYSTEM_TURNS;
+            case "USER TURNS" : return LoggingTag.USER_TURNS;
+            case "TOTAL USER TURNS" : return LoggingTag.TOTAL_USER_TURNS;
+            case "TOTAL TURNS" : return LoggingTag.TOTAL_TURNS;
+            case "TIMEOUT" : return LoggingTag.TIMEOUT;
+            case "REJECTS" : return LoggingTag.REJECTS;
+            case "REPROMPT" : return LoggingTag.REPROMPT;
+            case "NOANSWER" : return LoggingTag.NOANSWER;
+            case "NO USER ANSWER" : return LoggingTag.NO_USER_ANSWER;
+            case "CANCEL" : return LoggingTag.CANCEL;
+            case "NOTE" : return LoggingTag.NOTE;
+//        BARGEINS("BARGEINS"),
+//        USER_CONNECTED("USER CONNECTED"),
+//        USER_DISCONNECTED("USER DISCONNECTED"),
+//        FACE("FACE"),
+//        TABLE("TABLE"),
+//        VIDEO("VIDEO"),
+//        IMG("IMG"),
+//        LINK("LINK"),
+//        CHANGE_USERNAME("CHANGE USERNAME"), //when the user change his username
+//        REC_BUTTON_PRESSED("REC BUTTON PRESSED BY USER"),
+//        WRONG_ANSWER("WRONG ANSWER"),
+//        NEGATIVE_ANS("NEGATIVE ANSWER"),
+//        BYPASS("BYPASS"),
+//        POSITIVE_ANS("POSITIVE ANSWER"),
+//        REPEAT("REPEAT"),
+//        END_PRETEST("END PRETEST"),
+//        SPEAK("SPEAK"), //no need to be "helped"
+//        LOW_DELTA("LOW DELTA"),
+//        WATSON_HARD_RESET("WATSON HARD RESET"),
+//        CONFIDENCE_INTENTS ("CONFIDENCE INTENTS"),
+//        CONFIDENCE_ENTITIES ("CONFIDENCE ENTITIES"),
+//        PRECISION_INTENTS ("PRECISION INTENTS"),
+//        PRECISION_FAILED_INTENTS ("PRECISION FAILED INTENTS"),
+//        PRECISION_ENTITIES ("PRECISION ENTITIES"),
+//        ALPHA("ALPHA"),
+//        BETA("BETA"),
+//        WALL_SPEAK("WALL SPEAK"),
+//        GAMMA("GAMMA"),
+//        EXTRA_INPUT("EXTRA_INPUT"),
+//        WRONG_INPUT("WRONG_INPUT"),
+//        LOGGER_ADMIN("LOGGER ADMIN");
+        }
+    }
+    
     public static void printAlphabeticOrder(){
         List<LoggingTag> asList = Arrays.asList(LoggingTag.values());
         List<String> stringhini = new ArrayList<>(asList.size());
