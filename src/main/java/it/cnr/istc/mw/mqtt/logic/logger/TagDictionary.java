@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.logger;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,10 +13,13 @@ import java.util.Map;
  * @author sommovir
  */
 public class TagDictionary {
-    private Map<LoggingTag,Integer> dictionary;
-               
+    private Map<LoggingTag,Integer> dictionary = new HashMap<>();
+    private Map<LoggingTag,Integer> rowMap = new HashMap<>();
+    private String columnOfLog; //la colonna dove verranno salvati i tag in esame
+                
 
-    public TagDictionary() {
+    public TagDictionary(String columnOfLog) {
+        this.columnOfLog = columnOfLog; 
         LoggingTag[] loggingTagValues = LoggingTag.values();
         for (LoggingTag loggingTagValue : loggingTagValues) {
             dictionary.put(loggingTagValue, 0);

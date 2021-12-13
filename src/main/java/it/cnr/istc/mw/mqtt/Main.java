@@ -21,6 +21,7 @@ import it.cnr.istc.mw.mqtt.gui.MainFrame;
 import it.cnr.istc.mw.mqtt.logic.chad.ChadManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleDriveManager;
 import it.cnr.istc.mw.mqtt.logic.google.GoogleSheetManager;
+import it.cnr.istc.mw.mqtt.logic.logger.AnalysisToolManager;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
@@ -174,6 +175,7 @@ public class Main {
                             System.out.println(LogTitles.SERVER.getTitle() + "testing google sheet");
 //                            GoogleSheetManager.getInstance().test();
                             GoogleSheetManager.getInstance().write("A1", "E3", "ciao a tutti");
+                            AnalysisToolManager.getInstance().getAllLogFiles();
                         } else if (line.equals("chad")) {
                             String chadFace = ChadManager.getInstance().getChadFace();
                             for (int i = 0; i < chadFace.length(); i++) {
