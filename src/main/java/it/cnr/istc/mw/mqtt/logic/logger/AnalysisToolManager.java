@@ -7,11 +7,13 @@ package it.cnr.istc.mw.mqtt.logic.logger;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  *
@@ -62,10 +64,19 @@ public class AnalysisToolManager {
      * @param file
      * @return
      */
-    public TagDictionary countTag(File file) {
+    public TagDictionary countTag(File file) throws IOException {
         TagDictionary dictionary = new TagDictionary(file.getName());
+        
+        //metodo palesemente rubato da internet
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] words = line.split(" ");
+            for (String word : words) {
+                //se la parola appartiene al logging tags allora aggiungo uno
+            }
+        }
         return null;
-
     }
 
     private AnalysisToolManager() {
