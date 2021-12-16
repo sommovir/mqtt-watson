@@ -5,28 +5,22 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
  * name non può essere vuoto o nullo in caso contrario deve essere "unknown"
+ *
  * @author Luca
  */
-public class Product{
-    
+public class Product {
+
     private long id;
     private String name;//carota:carote:carote:carote
     private Department department = null;
     private String alternatives;
     public final String separatore = ",";
 
-    public String getAlternatives() {
-        return alternatives;
-    }
-
-    public void setAlternatives(String alternatives) {
-        this.alternatives = alternatives;
-    }
-  
     public Product() {
     }
 
@@ -34,15 +28,15 @@ public class Product{
         this.id = id;
         this.name = name;
     }
-    
+
     public Product(long id, String name, Department dep, String alternatives) {
         this.id = id;
         this.name = name;
         this.department = dep;
         this.alternatives = alternatives;
-       
+
     }
-        
+
     public long getId() {
         return id;
     }
@@ -54,9 +48,17 @@ public class Product{
     public Department getDepartment() {
         return department;
     }
-    
+
+    public String getAlternatives() {
+        return alternatives;
+    }
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setAlternatives(String alternatives) {
+        this.alternatives = alternatives;
     }
 
     public void setName(String name) {
@@ -66,22 +68,26 @@ public class Product{
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+    public String get(){
+        String[] alternative=this.alternatives.split(separatore);
+        Random random = new Random();
+        int rnd = random.nextInt(alternative.length);
+        return alternative[rnd];
+    }
     
-
-    //ritorna una stringa a caso presa
-
     @Override
     public boolean equals(Object obj) {
-        if(obj == null){
+        if (obj == null) {
             return false;
         }
-        if(obj instanceof Product p){
-            if(p.getDepartment().equals(this.department)&&p.getName().equals(this.name)){
+        if (obj instanceof Product p) {
+            if (p.getDepartment().equals(this.department) && p.getName().equals(this.name)) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
-    }else{
+        } else {
             return false;
         }
     }
@@ -91,7 +97,4 @@ public class Product{
         return name;
     }
 
-    
-    
-   
 }
