@@ -26,25 +26,7 @@ public class Main {
 
     Perceptron perceptron1 = new Perceptron(6);
 
-    for (Dataset datatrain : Utilities.getTrainerData().getDatasets()) {
-        perceptron1.train(datatrain);
-    }
-
-    int result;
-    int i=0; 
-    for (Dataset datatest : dataTest.getDatasets()) {
-        try {
-            result=perceptron1.test(datatest.getInputs());
-            if(result==datatest.getDesiredAnswer()){
-                i++;
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    float percentuale=(i*100)/10;
-        System.out.println("la percentuale di corretti è "+percentuale);
-        
+    
         
         
         
