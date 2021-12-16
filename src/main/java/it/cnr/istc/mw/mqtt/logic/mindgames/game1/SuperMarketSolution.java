@@ -119,6 +119,25 @@ public class SuperMarketSolution extends Solution{
          }
      }   
     }
+    /**
+     * il metodo isValideProductList controlla che i metodi chekDuplicate
+     * e checkReparts non lancino un eccezione e ritorna true. 
+     * viceversa ritorna false
+     * @return tru
+     */
+    public boolean isValideProductList(){
+        try{
+            checkDuplicate();
+        }catch(ProductDuplicateException product){
+           return false; 
+        }
+         try{
+            checkReparts();
+        }catch(TooFewRepartsExceptions department){
+           return false; 
+        }
+        return true;
+    }
 
     @Override
     public String toMQTTString() {
