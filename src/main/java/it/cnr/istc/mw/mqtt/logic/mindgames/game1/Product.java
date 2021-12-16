@@ -16,20 +16,16 @@ public class Product{
     private long id;
     private String name;//carota:carote:carote:carote
     private Department department = null;
-    private String articolo;//una:delle:un po' di:alcune
-    private String[] Articoli; 
+    private String alternatives;
 
-
-
-    public String[] getArticoli() {
-        return Articoli;
+    public String getAlternatives() {
+        return alternatives;
     }
 
-    public void setArticoli(String[] Articoli) {
-        this.Articoli = Articoli;
+    public void setAlternatives(String alternatives) {
+        this.alternatives = alternatives;
     }
-    
-    
+  
     public Product() {
     }
 
@@ -38,16 +34,12 @@ public class Product{
         this.name = name;
     }
     
-    public Product(long id, String name, Department dep, String articolo) {
+    public Product(long id, String name, Department dep, String alternatives) {
         this.id = id;
         this.name = name;
         this.department = dep;
-        this.articolo = articolo;
+        this.alternatives = alternatives;
        
-    }
-
-    public String getArticolo() {
-        return articolo;
     }
         
     public long getId() {
@@ -61,12 +53,7 @@ public class Product{
     public Department getDepartment() {
         return department;
     }
-
-    public void setArticolo(String articolo) {
-        this.articolo = articolo;
-    }
     
-
     public void setId(long id) {
         this.id = id;
     }
@@ -78,6 +65,9 @@ public class Product{
     public void setDepartment(Department department) {
         this.department = department;
     }
+    
+
+    //ritorna una stringa a caso presa
 
     @Override
     public boolean equals(Object obj) {
@@ -97,7 +87,7 @@ public class Product{
 
     @Override
     public String toString() {
-        return articolo + " " + name;
+        return name;
     }
 
     
