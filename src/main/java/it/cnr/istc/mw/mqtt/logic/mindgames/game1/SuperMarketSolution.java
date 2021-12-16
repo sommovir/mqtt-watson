@@ -123,7 +123,8 @@ public class SuperMarketSolution extends Solution{
      * il metodo isValideProductList controlla che i metodi chekDuplicate
      * e checkReparts non lancino un eccezione e ritorna true. 
      * viceversa ritorna false
-     * @return tru
+     * @return retorna true se nessuna eccezione è stata lanciata viceversa
+     * ritorna false
      */
     public boolean isValideProductList(){
         try{
