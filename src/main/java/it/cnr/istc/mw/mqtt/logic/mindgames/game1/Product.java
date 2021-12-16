@@ -17,7 +17,19 @@ public class Product{
     private String name;//carota:carote:carote:carote
     private Department department = null;
     private String articolo;//una:delle:un po' di:alcune
+    private String[] Articoli; 
 
+
+
+    public String[] getArticoli() {
+        return Articoli;
+    }
+
+    public void setArticoli(String[] Articoli) {
+        this.Articoli = Articoli;
+    }
+    
+    
     public Product() {
     }
 
@@ -31,6 +43,7 @@ public class Product{
         this.name = name;
         this.department = dep;
         this.articolo = articolo;
+       
     }
 
     public String getArticolo() {

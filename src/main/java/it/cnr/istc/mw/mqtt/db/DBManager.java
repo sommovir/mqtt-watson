@@ -135,11 +135,14 @@ public class DBManager {
     //MOCKUP
     public List<Product> getAllProducts(){
         List<Product> prodotti = new LinkedList<Product>();
-        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una"));
-        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un"));
+        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
+        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un "));
         prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
-        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di"));
-        
+        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
+        prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
+        prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
+        prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
+        prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
         return prodotti;
         
         
@@ -152,6 +155,10 @@ public class DBManager {
     public <G extends MindGame> List<GameInstance<G>> getLast5GameInstances(Person user, G mindGame) {
         
         return null;
+    }
+
+    public Person getCurrentUser() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

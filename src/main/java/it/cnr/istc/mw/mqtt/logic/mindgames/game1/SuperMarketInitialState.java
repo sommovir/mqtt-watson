@@ -22,7 +22,12 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
         super(GameType.LISTA_SPESA);
         this.products = products;
         this.solution = new SuperMarketSolution(products);
+                
         
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     @Override

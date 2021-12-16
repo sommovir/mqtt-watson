@@ -22,9 +22,9 @@ import java.util.Set;
  */
 public class SuperMarketSolution extends Solution{
     
-    List<Product> products = null;
-    private Department selectedDepartment = null;
-    private List<Product> solutionProduct = null;
+    private List<Product> products = null;
+    private static Department selectedDepartment = null;
+    private static List<Product> solutionProduct = null;
     private static Map<Department, List<Product>> productMap = new HashMap<>();
     
   
@@ -40,6 +40,7 @@ public class SuperMarketSolution extends Solution{
             productMap.get(product.getDepartment()).add(product);
         }
         this.solutionProduct = productMap.get(selectedDepartment);
+        
 
     }
     
@@ -63,15 +64,15 @@ public class SuperMarketSolution extends Solution{
         return solutionProduct;
     }
     
-    public List<Product> charge(){
-    
-        for (Product product : products) {
-            if(product.getDepartment().equals(selectedDepartment)){
-                solutionProduct.add(product);
-            }
-        }
-        return solutionProduct;
-    }
+//    public List<Product> charge(){
+//    
+//        for (Product product : products) {
+//            if(product.getDepartment().equals(selectedDepartment)){
+//                solutionProduct.add(product);
+//            }
+//        }
+//        return solutionProduct;
+//    }
     
     /** 
      *  questo metodo controlla che ci siano almeno 3 reparti differenti,
