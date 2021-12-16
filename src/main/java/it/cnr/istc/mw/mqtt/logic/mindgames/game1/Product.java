@@ -17,6 +17,7 @@ public class Product{
     private String name;//carota:carote:carote:carote
     private Department department = null;
     private String alternatives;
+    public final String separatore = ",";
 
     public String getAlternatives() {
         return alternatives;
