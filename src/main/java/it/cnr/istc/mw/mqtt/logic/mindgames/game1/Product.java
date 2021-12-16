@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import java.util.Date;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -71,7 +72,7 @@ public class Product {
 
     public String get(){
         String[] alternative=this.alternatives.split(separatore);
-        Random random = new Random();
+        Random random = new Random(new Date().getTime());
         int rnd = random.nextInt(alternative.length);
         return alternative[rnd];
     }
