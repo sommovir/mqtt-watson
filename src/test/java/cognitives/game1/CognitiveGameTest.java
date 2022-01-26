@@ -30,7 +30,7 @@ import org.junit.jupiter.api.function.Executable;
  *
  * @author sommovir
  */
-@Disabled
+//@Disabled
 public class CognitiveGameTest {
 
     String message;
@@ -55,16 +55,6 @@ public class CognitiveGameTest {
     public void tearDown() {
     }
 
-    @Test
-    @DisplayName("[checkDuplicate]")
-    public void test1(Info info) {
-        //prova, da rimuovere. Luca
-        //@TODO
-        //assertFalse(LoggerManager.getInstance().isLogActive(),"Dovrebbe essere falso la prima volta");
-        prodotti.add(new Product(8, "carota"));
-        boolean check = OLD_MindGameEngine.getInstance().checkDuplicate(prodotti);
-        //assertFalse();
-    }
 
     @Test
     @DisplayName("[checkEncapsulationDepartment]")
@@ -146,7 +136,7 @@ public class CognitiveGameTest {
         SuperMarketSolution solution = new SuperMarketSolution(listaSbudellata);
         SuperMarketSolution solution1 = new SuperMarketSolution(listaGiusta);
         SuperMarketSolution solution2 = new SuperMarketSolution(listaVuota);
-        SuperMarketSolution solution3 = new SuperMarketSolution(listaNulla);
+//        SuperMarketSolution solution3 = new SuperMarketSolution(listaNulla);
 
         assertThrows(ProductDuplicateException.class, new Executable() {
             @Override
@@ -161,18 +151,19 @@ public class CognitiveGameTest {
                 solution1.checkDuplicate();
             }
         });
+        
         assertDoesNotThrow(new Executable() {
             @Override
             public void execute() throws Throwable {
                 solution2.checkDuplicate();
             }
         });
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                solution3.checkDuplicate();
-            }
-        });
+//        assertDoesNotThrow(new Executable() {
+//            @Override
+//            public void execute() throws Throwable {
+//                solution3.checkDuplicate();
+//            }
+//        });
 
     }
 

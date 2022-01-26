@@ -12,13 +12,14 @@ public class Department {
     
     private long id;
     private String name;
+    public static final String UNKNOWN = "unknown";
 
     public Department() {
     }
 
     public Department(long id, String name) {
         this.id = id;
-        this.name = name;
+        setName(name);
     }
 
     public long getId() {
@@ -34,8 +35,12 @@ public class Department {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public final void setName(String name) {
+       if (name == null || name.isEmpty()) {
+            this.name = UNKNOWN;
+        } else {
+            this.name = name;
+        }
     }
     
     @Override
@@ -43,7 +48,8 @@ public class Department {
         if(obj == null){
             return false;
         }
-        if(obj instanceof Department p){
+        if(obj instanceof Department){
+            Department p = (Department)obj;
             if(p.getName().equals(this.name)&&p.getId() == this.id){
                 return true;
             }else{

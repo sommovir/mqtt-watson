@@ -44,7 +44,7 @@ import org.mortbay.util.Scanner;
 public class Main {
 
     static MQTTServer server = new MQTTServer();
-    public static final String version = "1.1.2";
+    public static final String version = "1.1.9";
     private static LogSupportFrame logSupportFrame = null;
 
     public static void suppressLogSupportGUI() {

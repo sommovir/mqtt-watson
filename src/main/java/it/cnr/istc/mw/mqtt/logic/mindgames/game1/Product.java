@@ -21,18 +21,19 @@ public class Product {
     private Department department = null;
     private String alternatives;
     public final String separatore = ",";
+    public final String UNKNOWN = "unknown";
 
     public Product() {
     }
 
     public Product(long id, String name) {
         this.id = id;
-        this.name = name;
+        setName(name);
     }
 
     public Product(long id, String name, Department dep, String alternatives) {
         this.id = id;
-        this.name = name;
+        setName(name);
         this.department = dep;
         this.alternatives = alternatives;
 
@@ -62,28 +63,35 @@ public class Product {
         this.alternatives = alternatives;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public final void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            this.name = UNKNOWN;
+        } else {
+            this.name = name;
+        }
     }
 
     public void setDepartment(Department department) {
         this.department = department;
     }
 
-    public String get(){
-        String[] alternative=this.alternatives.split(separatore);
+    public String get() {
+        String[] alternative = this.alternatives.split(separatore);
         Random random = new Random(new Date().getTime());
         int rnd = random.nextInt(alternative.length);
         return alternative[rnd];
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
-        if (obj instanceof Product p) {
-            if (p.getDepartment().equals(this.department) && p.getName().equals(this.name)) {
+        if (obj instanceof Product) {
+            Product p = (Product) obj;
+            if ((p.getDepartment() == null && this.department == null || p.getDepartment().equals(this.department))
+                    && p.getName().equals(this.name)
+                    && p.getId() == this.getId()) {
                 return true;
             } else {
                 return false;
