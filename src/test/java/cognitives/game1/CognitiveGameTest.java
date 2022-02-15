@@ -7,14 +7,17 @@ package cognitives.game1;
 
 import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
+import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.mindgames.OLD_MindGameEngine;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketSolution;
 import java.lang.ProcessHandle.Info;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -165,6 +168,60 @@ public class CognitiveGameTest {
 //            }
 //        });
 
+
     }
+    @Test
+    @DisplayName("[checkReparts]")
+    public void task101(){
+        
+        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                SuperMarketSolution s =new SuperMarketSolution(null);
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                SuperMarketSolution s =new SuperMarketSolution(new LinkedList<>());
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                lista.add(new Product(1,"cipolle"));
+                lista.add(new Product(2,"ciaociao"));
+                
+                
+                SuperMarketSolution s =new SuperMarketSolution(lista);
+                
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                lista.add(new Product(1,"cipolle"));
+                lista.add(new Product(2,"ciaociao"));
+                lista.add(new Product(3,"quellodelbug"));
+                
+                
+                
+                
+                SuperMarketSolution s =new SuperMarketSolution(lista);
+                
+                s.checkReparts();
+            }
+        }, "mi aspettavo che non lanciasse un'eccezione");
+        
+        
+        
+       
+    }
+    
 
 }
