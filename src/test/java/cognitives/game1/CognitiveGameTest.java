@@ -58,7 +58,6 @@ public class CognitiveGameTest {
     public void tearDown() {
     }
 
-
     @Test
     @DisplayName("[checkEncapsulationDepartment]")
     public void task170() {
@@ -154,7 +153,7 @@ public class CognitiveGameTest {
                 solution1.checkDuplicate();
             }
         });
-        
+
         assertDoesNotThrow(new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -168,23 +167,23 @@ public class CognitiveGameTest {
 //            }
 //        });
 
-
     }
+
     @Test
     @DisplayName("[checkReparts]")
-    public void task101(){
-        
+    public void task101() {
+
         assertThrows(TooFewRepartsExceptions.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                SuperMarketSolution s =new SuperMarketSolution(null);
+                SuperMarketSolution s = new SuperMarketSolution(null);
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
         assertThrows(TooFewRepartsExceptions.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                SuperMarketSolution s =new SuperMarketSolution(new LinkedList<>());
+                SuperMarketSolution s = new SuperMarketSolution(new LinkedList<>());
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
@@ -192,12 +191,11 @@ public class CognitiveGameTest {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
-                lista.add(new Product(1,"cipolle"));
-                lista.add(new Product(2,"ciaociao"));
-                
-                
-                SuperMarketSolution s =new SuperMarketSolution(lista);
-                
+                lista.add(new Product(1, "cipolle"));
+                lista.add(new Product(2, "ciaociao"));
+
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
@@ -205,23 +203,47 @@ public class CognitiveGameTest {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
-                lista.add(new Product(1,"cipolle"));
-                lista.add(new Product(2,"ciaociao"));
-                lista.add(new Product(3,"quellodelbug"));
-                
-                
-                
-                
-                SuperMarketSolution s =new SuperMarketSolution(lista);
-                
+                lista.add(new Product(1, "cipolle"));
+                lista.add(new Product(2, "ciaociao"));
+                lista.add(new Product(3, "quellodelbug"));
+
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+
                 s.checkReparts();
             }
         }, "mi aspettavo che non lanciasse un'eccezione");
-        
-        
-        
-       
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                lista.add(new Product(1, null));
+                lista.add(new Product(2, null));
+                lista.add(new Product(3, null));
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                lista.add(new Product(1, null));
+                lista.add(new Product(2, "ciao"));
+                lista.add(new Product(3, null));
+                lista.add(new Product(4, "ciaociao"));
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+
     }
-    
 
 }
