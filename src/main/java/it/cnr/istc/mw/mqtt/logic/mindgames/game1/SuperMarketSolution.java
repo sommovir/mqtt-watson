@@ -67,6 +67,7 @@ public class SuperMarketSolution extends Solution {
         return solutionProduct;
     }
 
+//    #CLEAN 1
 //    public List<Product> charge(){
 //    
 //        for (Product product : products) {
@@ -84,6 +85,8 @@ public class SuperMarketSolution extends Solution {
      * @throws TooFewRepartsExceptions l'eccezione viene lanciata quando la
      * lista passata nel costruttore è vuota oppure nulla ed il set ha
      * all'interno meno di 3 reparti.
+     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions
+     * COMPLETARE
      */
     public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions {
         Set<Department> set = new HashSet<>();
