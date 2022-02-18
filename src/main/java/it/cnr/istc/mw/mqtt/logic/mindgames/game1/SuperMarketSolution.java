@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.Solution;
@@ -15,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -82,7 +85,7 @@ public class SuperMarketSolution extends Solution {
      * lista passata nel costruttore è vuota oppure nulla ed il set ha
      * all'interno meno di 3 reparti.
      */
-    public final void checkReparts() throws TooFewRepartsExceptions {
+    public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions {
         Set<Department> set = new HashSet<>();
 
         for (Product product : products) {
@@ -95,6 +98,9 @@ public class SuperMarketSolution extends Solution {
 
             throw new TooFewRepartsExceptions();
 
+        }
+        if(true){
+            throw new InvalidRepartsExceptions();
         }
 
     }
@@ -139,6 +145,8 @@ public class SuperMarketSolution extends Solution {
         try {
             checkReparts();
         } catch (TooFewRepartsExceptions department) {
+            return false;
+        } catch (InvalidRepartsExceptions ex) {
             return false;
         }
         return true;
