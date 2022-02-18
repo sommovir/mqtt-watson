@@ -24,6 +24,6 @@ public class GameInstance<G extends MindGame> {
         this.initialState = initialState;
         this.solution = solution;
     }
-    
+
     
 }

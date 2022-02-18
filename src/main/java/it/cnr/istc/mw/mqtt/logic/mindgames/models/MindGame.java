@@ -11,6 +11,8 @@ import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 /**
  * Bridge Pattern
  * @author sommovir
+ * @param <I>
+ * @param <S>
  */
 public abstract class MindGame<I extends InitialState, S extends Solution> {
     
