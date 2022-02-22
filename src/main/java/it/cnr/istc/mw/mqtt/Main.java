@@ -12,6 +12,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.gui.Icons;
@@ -158,7 +159,7 @@ public class Main {
                                 if (infoUser.getId().equals("Server")) {
                                     System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_RED + " " + infoUser.getId() + "\t\t\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 } else {
-                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId()+"["+MQTTServer.getDeviceType(infoUser.getId())+"]" + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
+                                    System.out.println(ConsoleColors.GREEN_BRIGHT + i + ") " + ConsoleColors.ANSI_CYAN + " " + infoUser.getId() + "[" + MQTTServer.getDeviceType(infoUser.getId()) + "]" + "\t" + ConsoleColors.ANSI_GREEN + "| " + ConsoleColors.ANSI_CYAN + infoUser.getTimestamp() + "\t" + ConsoleColors.ANSI_GREEN + "\t" + "| " + ConsoleColors.ANSI_CYAN + expireStatus + ConsoleColors.ANSI_GREEN + ConsoleColors.ANSI_RESET);
                                 }
                                 i++;
                             }
@@ -183,39 +184,39 @@ public class Main {
                         } else if (line.equals("test on")) {
                             WatsonManager.getInstance().setTestMode(true);
                         } else if (line.equals("test off")) {
-                            if(LoggerManager.getInstance().isLogging()){
+                            if (LoggerManager.getInstance().isLogging()) {
                                 System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_RED + "Impossibile interrompere la modalità di test, se è in corso un logging" + ConsoleColors.ANSI_RESET);
-                            }else{
+                            } else {
                                 WatsonManager.getInstance().setTestMode(false);
                             }
                         } else if (line.equals("print context")) {
                             WatsonManager.getInstance().printContext();
                         } else if (line.equals("log off")) {
-                                if (LoggerManager.getInstance().isPaused()) {
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
-                                    String risposta = reader.readLine();
-                                    if (risposta.equals("Balzdof")) {
-                                        System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
-                                        LoggerManager.getInstance().setLogActive(false);
-                                    } else {
-                                        System.out.println(LogTitles.LOGGER.getTitle() + "Mi spiace, non sei suddito abbastanza.");
-                                    }
-                                } else {
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Vuoi eseguire un dump dei dati di log?");
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Digita y per eseguire");
-                                    System.out.println(LogTitles.LOGGER.getTitle() + "Digita n per continuare");
-                                    String risposta = reader.readLine();
-                                    if (risposta.equals("y")) {
-                                        System.out.println(LogTitles.LOGGER.getTitle() + "Dumping...");
-                                        LoggerManager.getInstance().dump();
-                                    } else if (risposta.equals("n")) {
-                                        System.out.println(LogTitles.LOGGER.getTitle() + "Clearing cache...");
-                                    } else {
-                                        System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
-                                    }
+                            if (LoggerManager.getInstance().isPaused()) {
+                                System.out.println(LogTitles.LOGGER.getTitle() + "Il log è momentaneamente in pausa, scrivi chi è che comanda qua se vuoi davvero stoppare durante la pausa: ");
+                                String risposta = reader.readLine();
+                                if (risposta.equals("Balzdof")) {
                                     System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
                                     LoggerManager.getInstance().setLogActive(false);
+                                } else {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Mi spiace, non sei suddito abbastanza.");
                                 }
+                            } else {
+                                System.out.println(LogTitles.LOGGER.getTitle() + "Vuoi eseguire un dump dei dati di log?");
+                                System.out.println(LogTitles.LOGGER.getTitle() + "Digita y per eseguire");
+                                System.out.println(LogTitles.LOGGER.getTitle() + "Digita n per continuare");
+                                String risposta = reader.readLine();
+                                if (risposta.equals("y")) {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Dumping...");
+                                    LoggerManager.getInstance().dump();
+                                } else if (risposta.equals("n")) {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + "Clearing cache...");
+                                } else {
+                                    System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_RED + "Errore durante l'interpretazione di un comando (verificare la sintassi)" + ConsoleColors.ANSI_RESET);
+                                }
+                                System.out.println(LogTitles.LOGGER.getTitle() + "Logging has been deactivated");
+                                LoggerManager.getInstance().setLogActive(false);
+                            }
                         } else if (line.startsWith("new log ")) {
                             String nomeFile = line.split(" ")[2];
                             if (LoggerManager.getInstance().isLogging()) {
@@ -320,6 +321,18 @@ public class Main {
                             System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_GREEN + "face command [" + "table standard" + "] has been sent" + ConsoleColors.ANSI_RESET);
                             MQTTClient.getInstance().publish("user/110/to_user/table", "A<CELL>B<ROW>C<CELL>D");
 
+                        } else if (line.equals("db install")) {
+
+                            if (!DBManager.getInstance().isInstalled()) {
+                                try {
+                                    DBManager.getInstance().install();
+                                } catch (DBNotExistingException e) {
+                                    System.out.println(LogTitles.LOGGER.getTitle() + e.getMessage());
+                                }
+                            } else {
+                                System.out.println(LogTitles.LOGGER.getTitle() + "db già installato");
+                            }
+
                         } else if (line.startsWith("test table ")) {
                             String[] split = line.split(" ");
                             String message = split[2];
@@ -365,7 +378,7 @@ public class Main {
                             MQTTClient.getInstance().publish("user/110/to_user/command", "repeat");
 
                         } else if (line.equals("multichoice")) {
-                            System.out.println(LogTitles.SERVER.getTitle()+ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "multichoice" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
+                            System.out.println(LogTitles.SERVER.getTitle() + ConsoleColors.ANSI_GREEN + "command [" + ConsoleColors.ANSI_RED + "multichoice" + ConsoleColors.ANSI_GREEN + "] has been sent" + ConsoleColors.ANSI_RESET);
                             MQTTClient.getInstance().publish("user/110/to_user/command", "multichoice<:>cosa ti piace di più ?<LIST>piazza,pasta,carne");
 
                         } else if (line.equals("youtube")) {
@@ -571,7 +584,7 @@ public class Main {
                             try {
                                 UIManager.setLookAndFeel(new FlatDarkLaf());
                             } catch (Exception ex) {
-                                System.out.println(LogTitles.GUI.getTitle()+"Errore, tema FlatDarkLaf non trovato");
+                                System.out.println(LogTitles.GUI.getTitle() + "Errore, tema FlatDarkLaf non trovato");
                             }
 
                             String admin = null;
@@ -707,13 +720,12 @@ public class Main {
                                         mainFrame = new MainFrame();
                                         mainFrame.setVisible(true);
                                     } else {
-                                        System.out.println(LogTitles.GUI.getTitle()+ConsoleColors.RED_BRIGHT + "Errore. La MainFrame GUI è già attiva" + ConsoleColors.ANSI_RESET);
+                                        System.out.println(LogTitles.GUI.getTitle() + ConsoleColors.RED_BRIGHT + "Errore. La MainFrame GUI è già attiva" + ConsoleColors.ANSI_RESET);
                                     }
 
                                 }
                             });
-                        }
-                        else if (line.equals("help")) {
+                        } else if (line.equals("help")) {
 
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P -----------------------------" + ConsoleColors.ANSI_RESET);
                             System.out.println(ConsoleColors.ANSI_WHITE + "List of commands:" + ConsoleColors.ANSI_RESET);
@@ -789,6 +801,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tInserire n volte che un oytput può essere ripetuto");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "28) " + ConsoleColors.ANSI_CYAN + "get gamma");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di gamma");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "29) " + ConsoleColors.ANSI_CYAN + "db install");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tInstalla il db");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);
