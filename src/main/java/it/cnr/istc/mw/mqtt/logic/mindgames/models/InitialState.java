@@ -41,6 +41,11 @@ public abstract class InitialState<S extends Solution> {
      */
     public abstract String getDescriptionVocal();
     
+    public abstract String toJson();
+       
+      
+   
+    
     
     
     

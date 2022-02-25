@@ -59,4 +59,9 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
         return GameType.LISTA_SPESA.getDescrizioneVocale();
     }
 
+    @Override
+    public String toJson() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
