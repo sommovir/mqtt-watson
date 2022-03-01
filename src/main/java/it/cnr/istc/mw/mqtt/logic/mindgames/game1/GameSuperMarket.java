@@ -111,8 +111,8 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     }
     
     @Override
-    public boolean validate(SuperMarketInitialState initialState, SuperMarketSolution solution) {
-        return true;
+    public boolean validate(SuperMarketInitialState initialState) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

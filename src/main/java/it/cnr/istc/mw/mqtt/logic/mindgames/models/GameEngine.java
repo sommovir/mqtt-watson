@@ -62,10 +62,10 @@ public class GameEngine {
         InitialState initialState  = mindgame.generateInitialState(difficulty);
         Solution solution = initialState.getSolution();
         
-        boolean  valid = mindgame.validate(initialState,solution); //qua deve sparare eccezioni nel caso che..
+        boolean  valid = mindgame.validate(initialState); //qua deve sparare eccezioni nel caso che..
         
         
-        return new GameInstance(initialState, solution);
+        return new GameInstance(initialState, user, mindgame, GameResult.NOT_FINISHED);
     }
     
     /**
