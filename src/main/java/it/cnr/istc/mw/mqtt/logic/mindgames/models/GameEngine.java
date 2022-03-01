@@ -27,21 +27,42 @@ public class GameEngine {
     }
 
     private GameEngine() {
-        super();
     }
 
-    public GameInstance newGame(Person user, MindGame mindGame) throws InvalidGameInstanceException, MindGameException {
+    /**
+     * Genera un istanza di un nuovo gioco a seconda della policy utilizzata
+     *
+     * @param user utente che sta iniziando la partita
+     * @param mindGame il tipo di gioco selezionato
+     * @return L'istanza di gioco comprensiva della sua soluzione
+     * @throws MindGameException Eccezione che viene lanciata quando subentra un
+     * errore durante la creazione del MindGame
+     */
+    public GameInstance newGame(Person user, MindGame mindGame) throws MindGameException {
         GameDifficultyPolicy policy = getPolicy(user, mindGame);
         switch (policy) {
             case AUTO:
+            {
                 //utilizziamo il deepLearning per generare una Game Instance
                 GameInstance instance = generateDeepLearningGI(user, mindGame);
                 if (validateGameInstance(instance)) {
                     return instance;
-                }else{
+                } else {
                     throw new InvalidGameInstanceException();
                 }
-
+            }
+            case DECREASING:
+            {
+                return null;
+            }
+            case RAISING:
+            {
+                return null;
+            }
+            case RANDOM:
+            {
+                return null;
+            }               
             default:
                 return null;
         }
@@ -49,38 +70,40 @@ public class GameEngine {
     }
 
     /**
-     * Genera un istanza di un nuovo gioco a seconda dell'utente che sta giocando
-     * e del mindgame selezionato, tenendo conto dello storico della persona. 
-     * @param user
-     * @param mindgame
-     * @return 
+     * Genera un istanza di un nuovo gioco secondo la policy della difficoltà automatica(AUTO)
+     *
+     * @param user utente che sta iniziando la partita
+     * @param mindGame il tipo di gioco selezionato
+     * @return un istanza di gioco
      */
     private GameInstance generateDeepLearningGI(Person user, MindGame mindgame) throws MindGameException {
         //generate il livello
         GameDifficulty difficulty = calculateDifficultyByAI(user, mindgame);
-        
-        InitialState initialState  = mindgame.generateInitialState(difficulty);
+        InitialState initialState = mindgame.generateInitialState(difficulty);
         Solution solution = initialState.getSolution();
-        
-        boolean  valid = mindgame.validate(initialState); //qua deve sparare eccezioni nel caso che..
-        
-        
+        boolean valid = mindgame.validate(initialState); //qua deve sparare eccezioni nel caso che..
         return new GameInstance(initialState, user, mindgame, GameResult.NOT_FINISHED);
     }
-    
+
     /**
      * Genera la difficoltà del prossimo game a seconda del modulo di Machine
-     * Learning che tiene traccia dello storico delle ultime 5 partite. 
-     * @param user
-     * @param mindgame
-     * @return 
+     * Learning che tiene traccia dello storico delle ultime 5 partite.
+     *
+     * @param user utente che sta iniziando la partita
+     * @param mindGame il tipo di gioco selezionato
+     * @return la difficoltà calcolata dal deeplearning
      */
-    private <G extends MindGame>GameDifficulty calculateDifficultyByAI(Person user, G mindgame){
-        List<GameInstance<G>> gameInstances = DBManager.getInstance().getLast5GameInstances(user,mindgame);
+    private <G extends MindGame> GameDifficulty calculateDifficultyByAI(Person user, G mindgame) {
+        List<GameInstance<G>> gameInstances = DBManager.getInstance().getLast5GameInstances(user, mindgame);
         //INSERT DEEP LEARNING
         return GameDifficulty.Facile;
     }
 
+    /**
+     * valida l'istanza di gioco
+     * @param gameInstance instanza di gioco
+     * @return true se l'istanza è valida false viceversa
+     */
     private boolean validateGameInstance(GameInstance gameInstance) {
         return true;
     }
@@ -88,9 +111,10 @@ public class GameEngine {
     /**
      * Ritorna la corrente policy dato un utente e il gioco selezionato
      *
-     * @param user
-     * @param mindGame
-     * @return
+     * @param user utente di gioco
+     * @param mindGame il tipo di gioco selezionato
+     * @return la modalità con cui viene cambiata la difficoltà del gioco
+     * selezionato
      */
     private GameDifficultyPolicy getPolicy(Person user, MindGame mindGame) {
         return null;
