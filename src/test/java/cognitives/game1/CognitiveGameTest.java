@@ -9,7 +9,6 @@ import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
-import it.cnr.istc.mw.mqtt.logic.mindgames.OLD_MindGameEngine;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketSolution;
