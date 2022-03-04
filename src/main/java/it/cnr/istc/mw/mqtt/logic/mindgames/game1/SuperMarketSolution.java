@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidProductException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
@@ -77,9 +78,13 @@ public class SuperMarketSolution extends Solution {
      * lista passata nel costruttore è vuota oppure nulla ed il set ha
      * all'interno meno di 3 reparti.
      * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions
-     * COMPLETARE
+     * ritorna questa eccezione quando il singolo reparto è nullo o invalido.
+     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidProductException
+     * ritorna questa eccezione quando un prodotto della lista è nullo
+     * oppure invalido.
+     * 
      */
-    public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions {
+    public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException {
         Set<Department> set = new HashSet<>();
 
         for (Product product : products) {
@@ -100,7 +105,8 @@ public class SuperMarketSolution extends Solution {
     }
 
     /**
-     * Controlla la lista di prodotti e al primo duplicato lancia un eccezione
+     * Controlla la lista di prodotti e al primo duplicato lancia un eccezione,se nella lista
+     * è presente un elemento nullo, oppure la lista e nulla, il metodo finisce.
      *
      * @throws ProductDuplicateException
      */
@@ -141,6 +147,8 @@ public class SuperMarketSolution extends Solution {
         } catch (TooFewRepartsExceptions department) {
             return false;
         } catch (InvalidRepartsExceptions ex) {
+            return false;
+        } catch (InvalidProductException ex) {
             return false;
         }
         return true;
