@@ -10,20 +10,60 @@ import java.util.Date;
 /**
  *
  * @author Luca
+ * @param <G>
  */
 public class GameInstance<G extends MindGame> {
 
     private InitialState initialState;
-    private Solution solution ;
-    private Date date;
     private Person person;
     private G mindGame;
     private GameResult gameResult;      //- esito del gioco
 
-    public GameInstance(InitialState initialState, Solution solution) {
-        this.initialState = initialState;
-        this.solution = solution;
+    public GameInstance() {
     }
+
+    public GameInstance(InitialState initialState, Person person, G mindGame, GameResult gameResult) {
+        this.initialState = initialState;
+        this.person = person;
+        this.mindGame = mindGame;
+        this.gameResult = gameResult;
+    }
+
+    public InitialState getInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(InitialState initialState) {
+        this.initialState = initialState;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public G getMindGame() {
+        return mindGame;
+    }
+
+    public void setMindGame(G mindGame) {
+        this.mindGame = mindGame;
+    }
+
+    public GameResult getGameResult() {
+        return gameResult;
+    }
+
+    public void setGameResult(GameResult gameResult) {
+        this.gameResult = gameResult;
+    }
+
+
+
+
 
     
 }

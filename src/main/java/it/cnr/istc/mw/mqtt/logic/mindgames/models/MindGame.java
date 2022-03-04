@@ -14,7 +14,7 @@ import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
  * @param <I>
  * @param <S>
  */
-public abstract class MindGame<I extends InitialState, S extends Solution> {
+;public abstract class MindGame<I extends InitialState, S extends Solution> {
     
     private Long id ;
     private GameType type;
@@ -68,7 +68,7 @@ public abstract class MindGame<I extends InitialState, S extends Solution> {
     
    
     
-    public abstract boolean validate(I initialState,S solution);
+    public abstract boolean validate(I initialState);
     
     
     
