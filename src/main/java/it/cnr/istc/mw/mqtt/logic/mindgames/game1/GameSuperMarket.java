@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidProductException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
@@ -47,7 +48,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     }
 
     @Override
-    public SuperMarketInitialState generateInitialState(GameDifficulty difficulty) throws ProductDuplicateException, TooFewRepartsExceptions, InvalidRepartsExceptions {
+    public SuperMarketInitialState generateInitialState(GameDifficulty difficulty) throws ProductDuplicateException, TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException {
         int howManyProducts = 0;
 
         switch (difficulty) {
