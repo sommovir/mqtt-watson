@@ -4,9 +4,10 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
-import java.util.LinkedList;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -61,7 +62,20 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
 
     @Override
     public String toJson() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         ObjectMapper obj = new ObjectMapper();
+          String jsonStr = null;
+        try {
+
+             jsonStr = obj.writeValueAsString(this);
+
+        }
+ 
+        catch (IOException e) {
+            e.printStackTrace();
+  
+        }
+        return jsonStr;
+    
     }
 
 }
