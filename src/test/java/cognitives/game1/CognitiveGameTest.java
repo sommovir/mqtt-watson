@@ -131,15 +131,10 @@ public class CognitiveGameTest {
         listaGiusta.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
         listaGiusta.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
         List<Product> listaVuota = new LinkedList<>();
-        List<Product> listaNulla = new LinkedList<>();
-        listaNulla.add(new Product(3, null, new Department(2, null), null));
-        listaNulla.add(new Product(3, null, new Department(2, null), null));
-
         SuperMarketSolution solution = new SuperMarketSolution(listaSbudellata);
         SuperMarketSolution solution1 = new SuperMarketSolution(listaGiusta);
         SuperMarketSolution solution2 = new SuperMarketSolution(listaVuota);
-//        SuperMarketSolution solution3 = new SuperMarketSolution(listaNulla);
-
+        SuperMarketSolution solution3 = new SuperMarketSolution(null);
         assertThrows(ProductDuplicateException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -160,12 +155,12 @@ public class CognitiveGameTest {
                 solution2.checkDuplicate();
             }
         });
-//        assertDoesNotThrow(new Executable() {
-//            @Override
-//            public void execute() throws Throwable {
-//                solution3.checkDuplicate();
-//            }
-//        });
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                solution3.checkDuplicate();
+            }
+        });
 
     }
 
@@ -245,5 +240,6 @@ public class CognitiveGameTest {
         }, "mi aspettavo che lanciasse un'eccezione");
 
     }
+    
 
 }

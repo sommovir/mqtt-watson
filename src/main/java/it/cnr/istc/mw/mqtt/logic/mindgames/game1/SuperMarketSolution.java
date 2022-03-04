@@ -67,16 +67,7 @@ public class SuperMarketSolution extends Solution {
         return solutionProduct;
     }
 
-//    #CLEAN 1
-//    public List<Product> charge(){
-//    
-//        for (Product product : products) {
-//            if(product.getDepartment().equals(selectedDepartment)){
-//                solutionProduct.add(product);
-//            }
-//        }
-//        return solutionProduct;
-//    }
+
     /**
      * questo metodo controlla che ci siano almeno 3 reparti differenti, che la
      * lista che viene passata nel costruttore non sia vuota e che la lista non

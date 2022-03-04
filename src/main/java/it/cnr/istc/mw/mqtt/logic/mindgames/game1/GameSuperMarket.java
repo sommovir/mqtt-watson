@@ -28,7 +28,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
     private static List<Department> reparti = null;
     private static Map<Department, List<Product>> productMap = new HashMap<>();
     
-
+    
     static {
         prodotti = DBManager.getInstance().getAllProducts();
         reparti = DBManager.getInstance().getAllDepartments();
