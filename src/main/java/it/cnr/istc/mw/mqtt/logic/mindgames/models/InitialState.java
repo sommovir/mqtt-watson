@@ -58,7 +58,10 @@ public abstract class InitialState<S extends Solution> {
      * @return 
      */
     public abstract String getDescriptionVocal();
-    
+    /**
+     * metodo per generare una rappresentazione json di questa classe
+     * @return il file json rappresentato in stringa o null se subentrano degli errori di codifica
+     */
     public abstract String toJson();
        
       
