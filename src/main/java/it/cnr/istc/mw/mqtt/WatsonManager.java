@@ -360,8 +360,8 @@ public class WatsonManager {
     public boolean analyzeSentimentByTarget(String text, List<String> targets) {
 
         IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
-        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
-        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com");
 
         SentimentOptions sentiment = new SentimentOptions.Builder()
                 .targets(targets)
@@ -412,8 +412,8 @@ public class WatsonManager {
     public Emotion analyzeEmotionByTarget(String text, List<String> targets) {
 
         IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
-        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
-        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com");
 
         EmotionOptions emotion = new EmotionOptions.Builder()
                 .targets(targets)

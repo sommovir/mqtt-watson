@@ -32,7 +32,7 @@ import org.junit.jupiter.api.function.Executable;
  *
  * @author sommovir
  */
-//@Disabled
+@Disabled
 public class CognitiveGameTest {
 
     String message;
