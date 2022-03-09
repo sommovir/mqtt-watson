@@ -12,7 +12,7 @@ public class InvalidRepartsExceptions extends MindGameException {
 
     @Override
     public String errorMessage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return "la lista contiene un reparto nullo o invalido";
     }
     
 }
