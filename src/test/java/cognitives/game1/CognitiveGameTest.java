@@ -6,27 +6,41 @@
 package cognitives.game1;
 
 import io.moquette.spi.impl.security.ACLFileParser;
+import it.cnr.istc.mw.mqtt.db.Person;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketSolution;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameResult;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.lang.ProcessHandle.Info;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.function.Executable;
+import static org.mockito.Mockito.mock;
 
 /**
  *
@@ -213,7 +227,7 @@ public class CognitiveGameTest {
                 SuperMarketSolution s = new SuperMarketSolution(lista);
                 s.checkReparts();
             }
-        }, "mi aspettavo che lanciasse un'eccezione");
+        }, "mi aspettavo che non lanciasse un'eccezione");
         assertDoesNotThrow(new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -224,7 +238,7 @@ public class CognitiveGameTest {
                 SuperMarketSolution s = new SuperMarketSolution(lista);
                 s.checkReparts();
             }
-        }, "mi aspettavo che lanciasse un'eccezione");
+        }, "mi aspettavo che non lanciasse un'eccezione");
         assertDoesNotThrow(new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -236,9 +250,67 @@ public class CognitiveGameTest {
                 SuperMarketSolution s = new SuperMarketSolution(lista);
                 s.checkReparts();
             }
-        }, "mi aspettavo che lanciasse un'eccezione");
+        }, "mi aspettavo che non lanciasse un'eccezione");
 
     }
-    
+
+    @Test
+    @DisplayName("[newGame]")
+    public void newGameTest() {
+        Person personMock = mock(Person.class);
+        GameSuperMarket newGame1 = new GameSuperMarket();
+        assertThrows(MindGameException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                GameEngine.getInstance().newGame(null, null);
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertThrows(MindGameException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                GameEngine.getInstance().newGame(personMock, null);
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertThrows(MindGameException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                GameEngine.getInstance().newGame(null, newGame1);
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                GameEngine.getInstance().newGame(personMock, newGame1);
+            }
+        }, "mi aspettavo che non lanciasse un'eccezione");
+
+    }
+
+    @Test
+    @DisplayName("[Gameinstance]")
+    public void gameInstanceTest() {
+        Person personMock = mock(Person.class);
+        GameSuperMarket newGame1 = new GameSuperMarket();
+        
+        try {
+            GameInstance newGame = GameEngine.getInstance().newGame(personMock, newGame1);
+            InitialState stato = newGame.getInitialState();
+            Assumptions.assumeTrue(stato instanceof SuperMarketInitialState);
+            assertNotNull(newGame,"mi aspettavo che non fosse null");
+            assertNull(newGame.getGameResult(),"mi aspettavo che non fosse null");
+            assertNull(newGame.getInitialState(),"mi aspettavo che non fosse null");
+            assertNull(newGame.getPerson(),"mi aspettavo che non fosse null");
+            assertNull(newGame.getMindGame(),"mi aspettavo che non fosse null");
+            assertTrue(newGame1==newGame.getMindGame(),"mi aspettavo che l'oggetto ritornato da getMindGame fosse uguale al mindgame passato in argomento in newGame");
+            assertTrue(newGame.getGameResult()==GameResult.NOT_FINISHED,"mi aspettavo che il GameResult fosse NOT_FINISHED");
+            assertTrue(newGame.getMindGame().getType()==GameType.LISTA_SPESA,"mi aspettavo che il GameTyper fosse LISTA_SPESA");
+            assertNotNull(((SuperMarketInitialState)stato).getProducts(),"mi aspettavo che products non fosse null");
+            assertNotNull(stato.getSolution(),"mi aspettavo che Solution non fosse null");
+        } catch (MindGameException ex) {
+            assertFalse(true,"non dovresti essere qui");
+            Logger.getLogger(CognitiveGameTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 
 }
