@@ -5,6 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt.gui.panels;
 
+import com.itextpdf.text.pdf.LabColor;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.db.Laboratory;
 import it.cnr.istc.mw.mqtt.gui.mr.GenericListModel;
@@ -42,6 +43,7 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        laboratoryListModel1 = new it.cnr.istc.mw.mqtt.gui.mr.LaboratoryListModel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList_lab = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -52,11 +54,7 @@ public class LaboratoryPanel extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        jList_lab.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jList_lab.setModel(laboratoryListModel1);
         jScrollPane1.setViewportView(jList_lab);
 
         jLabel1.setText("Laboratorio:");
@@ -142,5 +140,6 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField_Name;
     private javax.swing.JToolBar jToolBar1;
+    private it.cnr.istc.mw.mqtt.gui.mr.LaboratoryListModel laboratoryListModel1;
     // End of variables declaration//GEN-END:variables
 }
