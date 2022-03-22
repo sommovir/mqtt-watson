@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidProductException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.Solution;
@@ -106,11 +107,11 @@ public class SuperMarketSolution extends Solution {
 
     /**
      * Controlla la lista di prodotti e al primo duplicato lancia un eccezione,se nella lista
-     * è presente un elemento nullo, oppure la lista e nulla, il metodo finisce.
+     * è presente un elemento nullo, oppure la lista e nulla, il metodo ritorna una MindGameException.
      *
-     * @throws ProductDuplicateException
+     * @throws ProductDuplicateException,MindGameException
      */
-    public final void checkDuplicate() throws ProductDuplicateException {
+    public final void checkDuplicate() throws ProductDuplicateException,MindGameException {
         Product product;
         if (this.products == null) {
             return;
@@ -140,6 +141,8 @@ public class SuperMarketSolution extends Solution {
         try {
             checkDuplicate();
         } catch (ProductDuplicateException product) {
+            return false;
+        } catch (MindGameException ex) {
             return false;
         }
         try {

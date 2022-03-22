@@ -144,10 +144,22 @@ public class CognitiveGameTest {
         listaGiusta.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
         listaGiusta.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
         List<Product> listaVuota = new LinkedList<>();
+         List<Product> listaNull = new LinkedList<>();
+        listaNull.add(null);
+        listaNull.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
+        listaNull.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+        listaNull.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
+        List<Product> listaNull2 = new LinkedList<>();
+        listaNull2.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
+        listaNull2.add(new Product(3, "no", null, "mamma"));
+        listaNull2.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+        listaNull2.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
         SuperMarketSolution solution = new SuperMarketSolution(listaSbudellata);
         SuperMarketSolution solution1 = new SuperMarketSolution(listaGiusta);
         SuperMarketSolution solution2 = new SuperMarketSolution(listaVuota);
         SuperMarketSolution solution3 = new SuperMarketSolution(null);
+        SuperMarketSolution solution4 = new SuperMarketSolution(listaNull);
+        SuperMarketSolution solution5 = new SuperMarketSolution(listaNull2);
         assertThrows(ProductDuplicateException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -174,6 +186,18 @@ public class CognitiveGameTest {
                 solution3.checkDuplicate();
             }
         });
+        assertThrows(MindGameException.class,new Executable() {
+            @Override
+            public void execute() throws Throwable {
+             solution4.checkDuplicate();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertThrows(MindGameException.class,new Executable() {
+            @Override
+            public void execute() throws Throwable {
+             solution5.checkDuplicate();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
 
     }
 
