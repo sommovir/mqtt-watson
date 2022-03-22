@@ -64,30 +64,34 @@ public class LaboratoryPanel extends javax.swing.JPanel {
 
         jTextField_Name.setEnabled(false);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ok16.png"))); // NOI18N
         jButton1.setText("Conferma");
         jButton1.setEnabled(false);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit16.png"))); // NOI18N
         jButton2.setText("Modifica");
         jButton2.setEnabled(false);
         jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton2);
 
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus16.png"))); // NOI18N
         jButton3.setText("Aggiungi");
         jButton3.setEnabled(false);
         jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton3);
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cestino16.png"))); // NOI18N
         jButton4.setText("Cancella");
         jButton4.setEnabled(false);
         jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(jButton4);
 
@@ -122,7 +126,7 @@ public class LaboratoryPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
