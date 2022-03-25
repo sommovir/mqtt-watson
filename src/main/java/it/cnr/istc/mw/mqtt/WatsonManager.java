@@ -16,10 +16,7 @@ import com.ibm.watson.assistant.v2.model.MessageOptions;
 import com.ibm.watson.assistant.v2.model.MessageResponse;
 import com.ibm.watson.assistant.v2.Assistant;
 import com.ibm.watson.assistant.v2.model.CreateSessionOptions;
-import com.ibm.watson.assistant.v2.model.DeleteSessionOptions;
 import com.ibm.watson.assistant.v2.model.MessageContext;
-import com.ibm.watson.assistant.v2.model.MessageContextGlobal;
-import com.ibm.watson.assistant.v2.model.MessageContextGlobalSystem;
 import com.ibm.watson.assistant.v2.model.MessageContextSkill;
 import com.ibm.watson.assistant.v2.model.MessageInputOptions;
 import com.ibm.watson.assistant.v2.model.RuntimeEntity;
@@ -34,6 +31,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
+import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.generals.Emotion;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
@@ -294,15 +292,34 @@ public class WatsonManager {
                         }
                     }
                     if (command.equals("table")) {
-                        String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
-                        if (value.contains("<CONTINUE>")) {
-                            String[] tables = value.split("<CONTINUE>");
-                            for (String table : tables) {
-                                MQTTClient.getInstance().publish(topic, "<CONTINUE>" + table);
-                                Thread.sleep(50);
+                        if (MQTTServer.getDeviceType(userId) != DeviceType.MOBILE) {
+                            System.out.println("TABLE MESSAGE ----- >>> " + string);
+                            String[] tttt = string.split("<:>");
+                            if (tttt.length > 1) {
+                                System.out.println("TABLE MESSAGE TTTTT   0----- >>> " + tttt[0]);
+                                System.out.println("TABLE MESSAGE TTTTT   1----- >>> " + tttt[1]);
+                                MQTTClient.getInstance().publish(Topics.COMMAND.getTopic() + "/" + userId + "/table", tttt[1]);
+                            }else{
+                                System.out.println("VAI A FARE IL WATSON TESTER");
                             }
                         } else {
-                            MQTTClient.getInstance().publish(topic, value);
+                            System.out.println("NON SEI UN ROBOT");
+                            String topic = Topics.COMMAND.getTopic() + "/" + userId + "/table";
+                            if (value.contains("<CONTINUE>")) {
+                                String[] tables = value.split("<CONTINUE>");
+                                for (String table : tables) {
+                                    MQTTClient.getInstance().publish(topic, "<CONTINUE>" + table);
+                                    Thread.sleep(50);
+                                }
+                            } else {
+                                MQTTClient.getInstance().publish(topic, value);
+                            }
+                            try {
+                                LoggerManager.getInstance().log(LoggingTag.TABLE.getTag() + " " + value);
+                            } catch (Exception e) {
+                                System.out.println(LogTitles.LOGGER.getTitle() + e.getMessage());
+                            }
+
                         }
                         try {
                             LoggerManager.getInstance().log(LoggingTag.TABLE.getTag() + " " + value);
@@ -310,6 +327,15 @@ public class WatsonManager {
                             System.out.println(LogTitles.LOGGER.getTitle() + e.getMessage());
                         }
 
+                    }
+                    if (command.startsWith("<ROBOT>")) {
+                        System.out.println("ROBOT MESSAGE: " + string);
+//                        if(MQTTServer.getDeviceType(userId) == DeviceType.ROBOT){
+                        MQTTClient.getInstance().publish(Topics.ROBOT.getTopic() + "/" + userId + "/movement", string);
+//                        }
+//                        else{
+//                            MQTTClient.getInstance().publish(Topics.RESPONSES.getTopic()+ "/" + userId + "/movement", "non sono un robot");
+//                        }
                     }
                     if (command.equals("link")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/link";
