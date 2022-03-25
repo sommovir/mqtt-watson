@@ -11,6 +11,8 @@ import it.cnr.istc.mw.mqtt.db.Laboratory;
 import it.cnr.istc.mw.mqtt.gui.mr.GenericListModel;
 import java.beans.Beans;
 import java.util.List;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -26,12 +28,27 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     public LaboratoryPanel() {
         initComponents();
         this.jList_lab.setModel(laboratoryListModel);
-        if (!Beans.isDesignTime() && DBManager.getInstance().isInstalled()) {
-            List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
-            for (Laboratory lab : allLaboratories) {
-                laboratoryListModel.addElement(lab);
+        
+        this.jList_lab.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                System.out.println("HO SELEZIONATO QUALOCSA !!");
+                int selectedIndex = jList_lab.getSelectedIndex();
+                jTextField_Name.setText(laboratoryListModel.getElementAt(selectedIndex).getName());
             }
+        });
+        
+        List<Laboratory> allLaboratories = List.of(new Laboratory(1L, "Labortorio di Cucina"), new Laboratory(2L, "Laboratorio di Filatelia"));
+        for (Laboratory lab : allLaboratories) {
+                laboratoryListModel.addElement(lab);
         }
+
+//        if (!Beans.isDesignTime() && DBManager.getInstance().isInstalled()) {
+//            List<Laboratory> allLaboratories = DBManager.getInstance().getAllLaboratories();
+//            for (Laboratory lab : allLaboratories) {
+//                laboratoryListModel.addElement(lab);
+//            }
+//        }
     }
 
     /**
@@ -43,7 +60,6 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        laboratoryListModel1 = new it.cnr.istc.mw.mqtt.gui.mr.LaboratoryListModel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList_lab = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
@@ -54,7 +70,6 @@ public class LaboratoryPanel extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        jList_lab.setModel(laboratoryListModel1);
         jScrollPane1.setViewportView(jList_lab);
 
         jLabel1.setText("Laboratorio:");
@@ -64,14 +79,12 @@ public class LaboratoryPanel extends javax.swing.JPanel {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ok16.png"))); // NOI18N
         jButton1.setText("Conferma");
-        jButton1.setEnabled(false);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit16.png"))); // NOI18N
         jButton2.setText("Modifica");
-        jButton2.setEnabled(false);
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -79,7 +92,6 @@ public class LaboratoryPanel extends javax.swing.JPanel {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus16.png"))); // NOI18N
         jButton3.setText("Aggiungi");
-        jButton3.setEnabled(false);
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -87,7 +99,6 @@ public class LaboratoryPanel extends javax.swing.JPanel {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cestino16.png"))); // NOI18N
         jButton4.setText("Cancella");
-        jButton4.setEnabled(false);
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -97,7 +108,7 @@ public class LaboratoryPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -140,6 +151,5 @@ public class LaboratoryPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField_Name;
     private javax.swing.JToolBar jToolBar1;
-    private it.cnr.istc.mw.mqtt.gui.mr.LaboratoryListModel laboratoryListModel1;
     // End of variables declaration//GEN-END:variables
 }
