@@ -21,44 +21,11 @@ public abstract class MindGame<I extends InitialState, S extends Solution> {
 
     private Long id;
     private GameType type;
-    private String code;
 
     public MindGame(GameType type) {
         this.id = -1l;
         this.type = type;
-        this.code = code;
     }
-
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * Controlla che il code passato sia valido
-     *
-     * @param code follia di balzerani che voleva i codici watson
-     * @throws CodeIsInvalidException eccezione che gestisce i vari motivi per
-     * cui code potrebbe non essere valido
-     */
-    public void setCode(String code) throws CodeIsInvalidException {
-
-        if (code == null) {
-            throw new CodeIsInvalidException("Il codice è nullo ");
-        }
-
-        if (code.isEmpty()) {
-            throw new CodeIsInvalidException("Il codice è vuoto ");
-        }
-
-        if (code.matches("[C]{1}[G]{1}[X,Y,Z]{1}[0-9,A-F]{3}")) {
-
-            this.code = code;
-
-        } else {
-            throw new CodeIsInvalidException("Il codice non segue le istruzione di formattazione ");
-        }
-    }
-
     public Long getId() {
         return id;
     }
