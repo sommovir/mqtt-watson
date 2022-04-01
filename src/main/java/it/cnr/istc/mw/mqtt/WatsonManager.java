@@ -258,6 +258,12 @@ public class WatsonManager {
         return null;
     }
 
+    //"*face<:>fun,3000<COMMAND>text<:>Perfetto, giochiamo a lista della spesa<COMMAND><GAME>START_GAME<:>CGX001</GAME>"
+    //1) isolare il testo del messaggio .. "Perfetto, giochiamo ... " e ritornarlo. 
+    //2) isolata la parte del GAME, e se dopo <GAME> c'è "START_GAME" , inizia il gioco
+    //3) quale gioco ? il gioco di codice CGX001. 
+    //4) devi parsare il codice in GameType e in base a questo instanziare il gioco giusto. 
+    
     public String parseAppText(String apptext, String userId) {
         apptext = apptext.replace("<AT>", "@");
         if (apptext.startsWith("*")) {

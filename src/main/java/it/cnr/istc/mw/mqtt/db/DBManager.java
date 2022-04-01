@@ -7,6 +7,7 @@ package it.cnr.istc.mw.mqtt.db;
 
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
+import it.cnr.istc.mw.mqtt.exceptions.DBLoginException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
@@ -30,6 +31,7 @@ public class DBManager {
 
     private static DBManager _instance = null;
     private SessionFactory sessionFactory;
+    private Person currentUser = null;
 
     public static DBManager getInstance() {
         if (_instance == null) {
@@ -43,6 +45,11 @@ public class DBManager {
     private DBManager() {
         super();
         initConnection();
+    }
+    
+    public Person login(String username, String password)throws DBLoginException{
+        this.currentUser = new Person("fantoccio", "super", "fantoccio", "fantapassowrd");
+        return this.currentUser;
     }
     
     private void initConnection(){
@@ -115,8 +122,8 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Person p1 = new Person("Luca", "Coraci");
-        Person p2 = new Person("Luana", "Mercuri");
+        Person p1 = new Person("Luca", "Coraci","sommovir","password1");
+        Person p2 = new Person("Luana", "Mercuri","lulu","password2");
 
         session.persist(p1);
         session.persist(p2);
@@ -158,7 +165,7 @@ public class DBManager {
     }
 
     public Person getCurrentUser() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return this.currentUser;
     }
 
     
