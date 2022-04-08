@@ -9,6 +9,7 @@ import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBLoginException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
@@ -17,6 +18,8 @@ import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -141,16 +144,21 @@ public class DBManager {
     
     //MOCKUP
     public List<Product> getAllProducts(){
-        List<Product> prodotti = new LinkedList<Product>();
-        prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
-        prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un "));
-        prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
-        prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
-        prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
-        prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
-        prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
-        prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
-        return prodotti;
+         List<Product> prodotti = new LinkedList<Product>();
+        try {
+           
+            prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
+            prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un "));
+            prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
+            prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
+            prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
+            prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
+            prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
+            prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
+            return prodotti;
+        } catch (MindGameException ex) {
+            return null;
+        }
         
         
     }
