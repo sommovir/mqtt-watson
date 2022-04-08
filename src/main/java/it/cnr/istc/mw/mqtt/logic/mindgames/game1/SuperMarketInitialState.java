@@ -5,6 +5,7 @@
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidProductException;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
     private List<Product> products = null;
     
 
-    public SuperMarketInitialState(List<Product> products) {
+    public SuperMarketInitialState(List<Product> products) throws InvalidProductException {
         super(GameType.LISTA_SPESA);
         this.products = products;
         this.solution = new SuperMarketSolution(products);

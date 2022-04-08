@@ -28,23 +28,19 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
 
     private static List<Product> prodotti = null;
     private static List<Department> reparti = null;
-    private static Map<Department, List<Product>> productMap = new HashMap<>();
-
- 
-    static {
-        prodotti = DBManager.getInstance().getAllProducts();
-        reparti = DBManager.getInstance().getAllDepartments();
-        for (Product product : prodotti) {
-            if (productMap.containsKey(product.getDepartment())) {
-                productMap.put(product.getDepartment(), new LinkedList<>());
-
-            }
-            productMap.get(product.getDepartment()).add(product);
-        }
-    }
+    private static Map<Long, List<Product>> productMap = new HashMap<>();
 
     public GameSuperMarket() {
         super(GameType.LISTA_SPESA);
+        prodotti = DBManager.getInstance().getAllProducts();
+        reparti = DBManager.getInstance().getAllDepartments();
+        for (Product product : prodotti) {
+            if (!productMap.containsKey(product.getDepartment())) {
+                productMap.put(product.getDepartment().getId(), new LinkedList<>());
+
+            }
+            productMap.get(product.getDepartment().getId()).add(product);
+        }
 
     }
 
@@ -74,21 +70,19 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
 
         List<Product> gameProduct = generateProducts(howManyProducts);
 
-        
         SuperMarketInitialState initialState = new SuperMarketInitialState(gameProduct);
         initialState.getSolution().checkDuplicate();
         initialState.getSolution().checkReparts();
-        
-        
-        
+
         return initialState;
     }
-
 
     public List<Product> generateProducts(int howmany) {
 
         List<Product> copiaProdotti = new LinkedList<Product>();
-        Collections.copy(copiaProdotti, prodotti);
+        for (Product product : prodotti) {
+            copiaProdotti.add(product);
+        }
 
         Collections.shuffle(this.reparti);
         List<Product> gameProducts = new LinkedList<Product>();
@@ -96,10 +90,14 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         for (int i = 0; i < h; i++) {
 
             Department dep = this.reparti.get(i);
-            List<Product> prod = this.productMap.get(dep);
+            List<Product> prod = this.productMap.get(dep.getId());
             Collections.shuffle(prod);
             gameProducts.add(prod.get(0));
+            
+            if(!copiaProdotti.isEmpty()){
+                
             copiaProdotti.remove(prod.get(0));
+            }
 
         }
         int last = howmany - h;
@@ -111,10 +109,10 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         Collections.shuffle(gameProducts);
         return gameProducts;
     }
-    
+
     @Override
     public boolean validate(SuperMarketInitialState initialState) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
 }

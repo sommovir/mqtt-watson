@@ -40,6 +40,14 @@ public class GameEngine {
      */
     public GameInstance newGame(Person user, MindGame mindGame) throws MindGameException {
         GameDifficultyPolicy policy = getPolicy(user, mindGame);
+        if(user == null || mindGame == null){
+            throw new MindGameException() {
+                @Override
+                public String errorMessage() {
+                    return "I DATI SONO NULL";
+                }
+            };
+        }
         switch (policy) {
             case AUTO:
             {
@@ -117,7 +125,7 @@ public class GameEngine {
      * selezionato
      */
     private GameDifficultyPolicy getPolicy(Person user, MindGame mindGame) {
-        return null;
+        return GameDifficultyPolicy.AUTO;
     }
 
 }

@@ -7,6 +7,8 @@ package cognitives.game1;
 
 import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.db.Person;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidProductException;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions;
 import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
 import it.cnr.istc.mw.mqtt.exceptions.TooFewRepartsExceptions;
@@ -46,7 +48,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author sommovir
  */
-@Disabled
+//@Disabled
 public class CognitiveGameTest {
 
     String message;
@@ -210,21 +212,21 @@ public class CognitiveGameTest {
     @DisplayName("[checkReparts]")
     public void task101() {
 
-        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+        assertThrows(InvalidProductException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 SuperMarketSolution s = new SuperMarketSolution(null);
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
-        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+        assertThrows(InvalidProductException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 SuperMarketSolution s = new SuperMarketSolution(new LinkedList<>());
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
-        assertThrows(TooFewRepartsExceptions.class, new Executable() {
+        assertThrows(InvalidRepartsExceptions.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
@@ -236,7 +238,7 @@ public class CognitiveGameTest {
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
-        assertDoesNotThrow(new Executable() {
+        assertThrows(InvalidRepartsExceptions.class,new Executable() {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
@@ -248,39 +250,40 @@ public class CognitiveGameTest {
 
                 s.checkReparts();
             }
-        }, "mi aspettavo che non lanciasse un'eccezione");
-        assertDoesNotThrow(new Executable() {
+        }, "mi aspettavo lanciasse un'eccezione");
+        assertThrows(TooFewRepartsExceptions.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
-                SuperMarketSolution s = new SuperMarketSolution(lista);
-                s.checkReparts();
-            }
-        }, "mi aspettavo che non lanciasse un'eccezione");
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                List<Product> lista = new LinkedList<Product>();
-                lista.add(new Product(1, null));
-                lista.add(new Product(2, null));
-                lista.add(new Product(3, null));
-                SuperMarketSolution s = new SuperMarketSolution(lista);
-                s.checkReparts();
-            }
-        }, "mi aspettavo che non lanciasse un'eccezione");
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                List<Product> lista = new LinkedList<Product>();
-                lista.add(new Product(1, null));
-                lista.add(new Product(2, "ciao"));
-                lista.add(new Product(3, null));
-                lista.add(new Product(4, "ciaociao"));
-                SuperMarketSolution s = new SuperMarketSolution(lista);
-                s.checkReparts();
-            }
-        }, "mi aspettavo che non lanciasse un'eccezione");
+                lista.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
+                lista.add(new Product(4, "ciaoc", new Department(4, "dada"), "padre"));
 
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+
+                s.checkReparts();
+            }
+        }, "mi aspettavo che lanciasse un'eccezione");
+        assertDoesNotThrow(new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                lista.add(new Product(3, "no", new Department(6, "cassa"), "mamma"));
+                lista.add(new Product(4, "ciaoc", new Department(4, "dada"), "padre"));
+                lista.add(new Product(1, "quellodelbug", new Department(5, "ioi"), "mirko"));
+
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+
+                s.checkReparts();
+            }
+        }, "mi aspettavo che non lanciasse un'eccezione");
+        assertThrows(InvalidProductException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                List<Product> lista = new LinkedList<Product>();
+                SuperMarketSolution s = new SuperMarketSolution(lista);
+                s.checkReparts();
+            }
+        }, "mi aspettavo chelanciasse un'eccezione");
     }
 
     @Test
