@@ -39,6 +39,9 @@ public class SuperMarketSolution extends Solution {
         }
         this.selectedDepartment = generateDepartment();
         for (Product product : products) {
+            if (product == null || product.getDepartment() == null) {
+                continue;
+            }
             if (!productMap.containsKey(product.getDepartment())) {
                 productMap.put(product.getDepartment(), new LinkedList<>());
 
@@ -69,7 +72,6 @@ public class SuperMarketSolution extends Solution {
         return solutionProduct;
     }
 
-
     /**
      * questo metodo controlla che ci siano almeno 3 reparti differenti, che la
      * lista che viene passata nel costruttore non sia vuota e che la lista non
@@ -78,12 +80,11 @@ public class SuperMarketSolution extends Solution {
      * @throws TooFewRepartsExceptions l'eccezione viene lanciata quando la
      * lista passata nel costruttore è vuota oppure nulla ed il set ha
      * all'interno meno di 3 reparti.
-     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions
-     * ritorna questa eccezione quando il singolo reparto è nullo o invalido.
-     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidProductException
-     * ritorna questa eccezione quando un prodotto della lista è nullo
-     * oppure invalido.
-     * 
+     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidRepartsExceptions ritorna
+     * questa eccezione quando il singolo reparto è nullo o invalido.
+     * @throws it.cnr.istc.mw.mqtt.exceptions.InvalidProductException ritorna
+     * questa eccezione quando un prodotto della lista è nullo oppure invalido.
+     *
      */
     public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException {
         Set<Department> set = new HashSet<>();
@@ -99,26 +100,42 @@ public class SuperMarketSolution extends Solution {
             throw new TooFewRepartsExceptions();
 
         }
-        if(true){
+        if (true) {
             throw new InvalidRepartsExceptions();
         }
 
     }
 
     /**
-     * Controlla la lista di prodotti e al primo duplicato lancia un eccezione,se nella lista
-     * è presente un elemento nullo, oppure la lista e nulla, il metodo ritorna una MindGameException.
+     * Controlla la lista di prodotti e al primo duplicato lancia un
+     * eccezione,se nella lista è presente un elemento nullo, oppure la lista e
+     * nulla, il metodo ritorna una MindGameException.
      *
      * @throws ProductDuplicateException,MindGameException
      */
-    public final void checkDuplicate() throws ProductDuplicateException,MindGameException {
+    public final void checkDuplicate() throws ProductDuplicateException, MindGameException {
         Product product;
         if (this.products == null) {
-            return;
+            throw new MindGameException() {
+                @Override
+                public String errorMessage() {
+                    return "NULL PRODUCT";
+                }
+            };
         }
+        
+        
 
         for (int i = 0; i < products.size(); i++) {
             for (int j = i + 1; j < products.size(); j++) {
+                if (products.get(i) == null || products.get(j) == null) {
+                    throw new MindGameException() {
+                        @Override
+                        public String errorMessage() {
+                            return "NULL PRODUCT";
+                        }
+                    };
+                }
                 if (products.get(i).equals(products.get(j))) {
 
                     product = products.get(i);

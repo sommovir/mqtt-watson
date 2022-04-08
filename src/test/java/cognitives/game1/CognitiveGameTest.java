@@ -133,6 +133,7 @@ public class CognitiveGameTest {
     @Test
     @Tag("MIND-G1-#98")
     public void task98() {
+        try{
         List<Product> listaSbudellata = new LinkedList<Product>();
         listaSbudellata.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
         listaSbudellata.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
@@ -160,6 +161,7 @@ public class CognitiveGameTest {
         SuperMarketSolution solution3 = new SuperMarketSolution(null);
         SuperMarketSolution solution4 = new SuperMarketSolution(listaNull);
         SuperMarketSolution solution5 = new SuperMarketSolution(listaNull2);
+        
         assertThrows(ProductDuplicateException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -180,7 +182,7 @@ public class CognitiveGameTest {
                 solution2.checkDuplicate();
             }
         });
-        assertDoesNotThrow(new Executable() {
+        assertThrows(MindGameException.class,new Executable() {
             @Override
             public void execute() throws Throwable {
                 solution3.checkDuplicate();
@@ -198,7 +200,10 @@ public class CognitiveGameTest {
              solution5.checkDuplicate();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
-
+        
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @Test

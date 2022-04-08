@@ -4,6 +4,7 @@
  */
 package it.cnr.istc.mw.mqtt.logic.mindgames.game1;
 
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import java.util.Date;
 import java.util.Random;
@@ -31,10 +32,10 @@ public class Product {
         setName(name);
     }
 
-    public Product(long id, String name, Department dep, String alternatives) {
+    public Product(long id, String name, Department dep, String alternatives) throws MindGameException {
         this.id = id;
         setName(name);
-        this.department = dep;
+        setDepartment(dep);
         this.alternatives = alternatives;
 
     }
@@ -71,7 +72,16 @@ public class Product {
         }
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(Department department) throws MindGameException {
+
+        if (department == null) {
+            throw new MindGameException() {
+                @Override
+                public String errorMessage() {
+                    return "NULL PRODUCT";
+                }
+            };
+        }
         this.department = department;
     }
 
