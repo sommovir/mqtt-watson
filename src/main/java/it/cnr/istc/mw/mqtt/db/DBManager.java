@@ -49,17 +49,17 @@ public class DBManager {
         super();
         initConnection();
     }
-    
-    public Person login(String username, String password)throws DBLoginException{
+
+    public Person login(String username, String password) throws DBLoginException {
         this.currentUser = new Person("fantoccio", "super", "fantoccio", "fantapassowrd");
         return this.currentUser;
     }
-    
-    private void initConnection(){
+
+    private void initConnection() {
         // configures settings from hibernate.cfg.xml 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
-            System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db "+ConsoleColors.PURPLE_BRIGHT+"[watsondb]"+ ConsoleColors.YELLOW_BRIGHT +" is already created .." + ConsoleColors.ANSI_RESET);
+            System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " checking if db " + ConsoleColors.PURPLE_BRIGHT + "[watsondb]" + ConsoleColors.YELLOW_BRIGHT + " is already created .." + ConsoleColors.ANSI_RESET);
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_GREEN + " YES" + ConsoleColors.ANSI_RESET);
 //             SessionFactory sessionFactory = new Configuration()
@@ -67,7 +67,7 @@ public class DBManager {
         } catch (Exception e) {
             // handle the exception
             System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_RED + " NO" + ConsoleColors.ANSI_RESET);
-            
+
         }
     }
 
@@ -93,7 +93,7 @@ public class DBManager {
             throw new DBAlreadyInstalledException();
         }
         System.out.println(ConsoleColors.ANSI_GREEN + " NO" + ConsoleColors.ANSI_RESET);
-        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " populating table "+ConsoleColors.CYAN_BOLD+"[Laboratory]"+ConsoleColors.YELLOW_BRIGHT +" .. " + ConsoleColors.ANSI_RESET);
+        System.out.print(LogTitles.DATABASE.getTitle() + ConsoleColors.YELLOW_BRIGHT + " populating table " + ConsoleColors.CYAN_BOLD + "[Laboratory]" + ConsoleColors.YELLOW_BRIGHT + " .. " + ConsoleColors.ANSI_RESET);
         session = sessionFactory.openSession();
         session.beginTransaction();
         Laboratory labCucina = new Laboratory();
@@ -125,8 +125,8 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Person p1 = new Person("Luca", "Coraci","sommovir","password1");
-        Person p2 = new Person("Luana", "Mercuri","lulu","password2");
+        Person p1 = new Person("Luca", "Coraci", "sommovir", "password1");
+        Person p2 = new Person("Luana", "Mercuri", "lulu", "password2");
 
         session.persist(p1);
         session.persist(p2);
@@ -140,15 +140,14 @@ public class DBManager {
         session.getTransaction().commit();
         session.close();
     }
-    
-    
+
     //MOCKUP
-    public List<Product> getAllProducts(){
-         List<Product> prodotti = new LinkedList<Product>();
+    public List<Product> getAllProducts() {
+        List<Product> prodotti = new LinkedList<Product>();
         try {
-           
+
             prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
-            prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un "));
+            prodotti.add(new Product(1, "Cetriolo", new Department(10, "Verdura"), "un "));
             prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
             prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
             prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
@@ -157,24 +156,27 @@ public class DBManager {
             prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
             return prodotti;
         } catch (MindGameException ex) {
+            ex.printStackTrace();
             return null;
         }
-        
-        
+
     }
 
     public List<Department> getAllDepartments() {
-        return null;
+        List<Department> reparti = new LinkedList<Department>();
+        reparti.add(new Department(1, "frutta"));
+        reparti.add(new Department(2, "sport"));
+        reparti.add(new Department(3, "Pesce"));
+        return reparti;
     }
 
     public <G extends MindGame> List<GameInstance<G>> getLast5GameInstances(Person user, G mindGame) {
-        
+
         return null;
     }
 
     public Person getCurrentUser() {
-       return this.currentUser;
+        return this.currentUser;
     }
 
-    
 }

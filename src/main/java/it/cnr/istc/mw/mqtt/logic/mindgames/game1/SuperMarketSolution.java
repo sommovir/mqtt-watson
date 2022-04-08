@@ -32,7 +32,7 @@ public class SuperMarketSolution extends Solution {
     private static List<Product> solutionProduct = null;
     private static Map<Department, List<Product>> productMap = new HashMap<>();
 
-    public SuperMarketSolution(List<Product> products) {
+    public SuperMarketSolution(List<Product> products) throws InvalidProductException {
         this.products = products;
         if (products == null || products.isEmpty()) {
             return;
@@ -88,21 +88,23 @@ public class SuperMarketSolution extends Solution {
      */
     public final void checkReparts() throws TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException {
         Set<Department> set = new HashSet<>();
-
+        
+        if(products == null || products.isEmpty()){
+            throw new InvalidProductException();
+        }
         for (Product product : products) {
-
+            if(product.getDepartment()== null){
+               throw new InvalidRepartsExceptions();
+            }
             set.add(product.getDepartment());
-
         }
 
-        if (products.isEmpty() || products == null || set.size() < 3) {
+        if (set.size() < 3) {
 
             throw new TooFewRepartsExceptions();
 
         }
-        if (true) {
-            throw new InvalidRepartsExceptions();
-        }
+       
 
     }
 
