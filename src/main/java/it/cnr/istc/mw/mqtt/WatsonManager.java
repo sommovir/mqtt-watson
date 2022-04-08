@@ -38,6 +38,9 @@ import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.logger.LowDeltaResult;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -265,6 +268,18 @@ public class WatsonManager {
     //4) devi parsare il codice in GameType e in base a questo instanziare il gioco giusto. 
     
     public String parseAppText(String apptext, String userId) {
+//        if(true){
+//            try{
+//                List<Product> of = List.of(new Product(2, "sa", new Department(1, "a"), "2"),
+//                        new Product(1, "sa", new Department(2, "a"), "2"),
+//                        new Product(4, "sa", new Department(3, "a"), "2"));
+//            MQTTClient.getInstance().sendGameData(null, new SuperMarketInitialState(of));
+//            return "Perfetto, giochiamo a lista della spesa";
+//            }catch(Exception ex){
+//                
+//            }
+//        }
+        
         apptext = apptext.replace("<AT>", "@");
         if (apptext.startsWith("*")) {
             String text = "";

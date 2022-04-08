@@ -9,6 +9,7 @@ import java.util.Date;
 /**
  *
  * @author Luca
+ * @param <S>
  */
 public abstract class InitialState<S extends Solution> {
     

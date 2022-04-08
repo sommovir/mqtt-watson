@@ -6,6 +6,7 @@
 package cognitives.game1;
 
 import io.moquette.spi.impl.security.ACLFileParser;
+import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.exceptions.ProductDuplicateException;
@@ -341,5 +342,5 @@ public class CognitiveGameTest {
         }
         
     }
-
+    
 }

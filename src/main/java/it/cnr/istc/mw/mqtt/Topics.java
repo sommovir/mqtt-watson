@@ -24,7 +24,8 @@ public enum Topics {
     COMMAND("commands"),
     BUTTON_PRESSED("button_pressed"),
     REPEAT("repeat"),
-    INFO("info_channel");
+    INFO("info_channel"),
+    MINDGAME("mindgames");
     
     private Topics(String topic) {
         this.topic = topic;
