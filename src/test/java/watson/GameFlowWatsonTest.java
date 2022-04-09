@@ -17,20 +17,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  *
  * @author Luca
  */
+//@Disabled
 public class GameFlowWatsonTest {
 
     public GameFlowWatsonTest() {
@@ -88,28 +93,42 @@ public class GameFlowWatsonTest {
 
         String commandTest = "*face<:>fun,3000<COMMAND>text<:>Perfetto, giochiamo a lista della spesa<COMMAND><GAME>START_GAME<:>CGX001</GAME>";
 
+        //MOCK Person
         Person mockPerson = mock(Person.class);
-        try {
-            WatsonManager.class.getConstructor().setAccessible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        //SPY WatsonManager
+        WatsonManager spyWatsonmanager = spy(WatsonManager.class);
+        //MOCK MqttClient
+        MQTTClient spyMQTTClient = spy(MQTTClient.class);
+        when(spyMQTTClient.isConnected()).thenReturn(true);
+        doNothing().when(spyMQTTClient).publish(any(), any());
+
+        
+        try (   
+                MockedStatic<WatsonManager> mockStaticWatsonManager = Mockito.mockStatic(WatsonManager.class);
+                MockedStatic<MQTTClient> mockStaticMqttClient = Mockito.mockStatic(MQTTClient.class)
+                ) {
+            mockStaticWatsonManager.when(WatsonManager::getInstance).thenReturn(spyWatsonmanager);
+            mockStaticMqttClient.when(MQTTClient::getInstance).thenReturn(spyMQTTClient);
+            
+            assertTrue(spyMQTTClient.isConnected());
+
+//        WatsonManager mockWatsonManager = mock(WatsonManager.class);
+            
+            //hackSingleton(spyWatsonManager, WatsonManager.class);
+//            hackSingleton(mockMQTTClient, MQTTClient.class);
+
+            String parsedTest = spyWatsonmanager.parseAppText(commandTest, "123");
+
+            ArgumentCaptor<SuperMarketInitialState> captor = ArgumentCaptor.forClass(SuperMarketInitialState.class);
+
+            verify(spyMQTTClient).sendGameData(any(), captor.capture());
+
+            SuperMarketInitialState value = captor.getValue();
+
+            assertEquals("CGX001", value.getGameType().getCode());
+
+            assertEquals("Perfetto, giochiamo a lista della spesa", parsedTest, "mi è arrivato il messaggio: ["+parsedTest+"]");
         }
-        WatsonManager spyWatsonManager = spy(WatsonManager.class);
-        MQTTClient mockMQTTClient = mock(MQTTClient.class);
-        //hackSingleton(spyWatsonManager, WatsonManager.class);
-        hackSingleton(mockMQTTClient, MQTTClient.class);
-
-        String parsedTest = spyWatsonManager.parseAppText(commandTest, "123");
-
-        ArgumentCaptor<SuperMarketInitialState> captor = ArgumentCaptor.forClass(SuperMarketInitialState.class);
-
-        verify(mockMQTTClient).sendGameData(any(), captor.capture());
-
-        SuperMarketInitialState value = captor.getValue();
-
-        assertEquals("CGX001", value.getGameType().getCode());
-
-        assertEquals("Perfetto, giochiamo a lista della spesa", parsedTest);
 
     }
 }

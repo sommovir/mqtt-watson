@@ -210,6 +210,7 @@ public class MQTTClient implements MqttCallback {
     }
 
     public void sendGameData(Person person, InitialState<?> initialState) {
+        System.out.println("SEND GAMONE");
         String personalChannel = this.personChannelMap.get(person);
         String jsonConfigFile = initialState.toJson();
         publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + jsonConfigFile);
