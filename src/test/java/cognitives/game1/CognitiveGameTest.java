@@ -49,7 +49,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author sommovir
  */
-@Disabled
+//@Disabled
 public class CognitiveGameTest {
 
     String message;

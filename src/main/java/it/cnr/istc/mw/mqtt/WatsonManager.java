@@ -40,8 +40,12 @@ import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.logger.LowDeltaResult;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -294,6 +298,22 @@ public class WatsonManager {
                     String[] commandAndValue = string.split("<:>");
                     String command = commandAndValue[0];
                     String value = commandAndValue[1];
+                    if (command.equals("<GAME>START_GAME")) {
+//                        GameEngine.getInstance().newGame(new Person(), )
+//                        MQTTClient.getInstance().sendGameData(new Person(), initialState);
+                        String codeGame = value.replace("</GAME>", "");
+                        GameType gameType = GameType.of(codeGame);
+                        MindGame mindgame = null;
+                        switch (gameType) {
+                            case LISTA_SPESA:
+                                mindgame = new GameSuperMarket();
+                                System.out.println("TODO");
+                                break;
+                            default: {
+                                System.out.println("TODO");
+                            }
+                        }
+                    }
                     if (command.equals("face")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/face";
                         MQTTClient.getInstance().publish(topic, value);

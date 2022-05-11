@@ -63,7 +63,7 @@ public class GameFlowWatsonTest {
 
             instance.setAccessible(true);
             instance.set(instance, singletoneMocked);
-        } catch (Exception e) {
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException e) {
             throw new RuntimeException(e);
         }
     }
@@ -111,12 +111,7 @@ public class GameFlowWatsonTest {
             mockStaticMqttClient.when(MQTTClient::getInstance).thenReturn(spyMQTTClient);
             
             assertTrue(spyMQTTClient.isConnected());
-
-//        WatsonManager mockWatsonManager = mock(WatsonManager.class);
             
-            //hackSingleton(spyWatsonManager, WatsonManager.class);
-//            hackSingleton(mockMQTTClient, MQTTClient.class);
-
             String parsedTest = spyWatsonmanager.parseAppText(commandTest, "123");
 
             ArgumentCaptor<SuperMarketInitialState> captor = ArgumentCaptor.forClass(SuperMarketInitialState.class);
