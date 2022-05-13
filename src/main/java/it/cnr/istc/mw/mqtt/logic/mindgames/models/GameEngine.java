@@ -38,7 +38,7 @@ public class GameEngine {
      * @throws MindGameException Eccezione che viene lanciata quando subentra un
      * errore durante la creazione del MindGame
      */
-    public GameInstance newGame(Person user, MindGame mindGame) throws MindGameException {
+    public <G extends MindGame> GameInstance<G> newGame(Person user, G mindGame) throws MindGameException {
         GameDifficultyPolicy policy = getPolicy(user, mindGame);
         if(user == null || mindGame == null){
             throw new MindGameException() {

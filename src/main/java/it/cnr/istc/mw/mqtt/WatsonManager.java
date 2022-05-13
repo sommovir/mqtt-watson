@@ -43,7 +43,9 @@ import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameDifficulty;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.lang.reflect.InvocationTargetException;
@@ -303,10 +305,12 @@ public class WatsonManager {
 //                        MQTTClient.getInstance().sendGameData(new Person(), initialState);
                         String codeGame = value.replace("</GAME>", "");
                         GameType gameType = GameType.of(codeGame);
-                        MindGame mindgame = null;
+                        MindGame<?,?> mindgame = null;
                         switch (gameType) {
                             case LISTA_SPESA:
                                 mindgame = new GameSuperMarket();
+                                mindgame.generateInitialState(GameDifficulty.Medio);
+                                GameInstance<GameSuperMarket> instance = GameEngine.getInstance().newGame(new Person(),(GameSuperMarket) mindgame);
                                 System.out.println("TODO");
                                 break;
                             default: {
