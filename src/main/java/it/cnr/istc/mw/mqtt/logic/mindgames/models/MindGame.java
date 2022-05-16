@@ -15,7 +15,6 @@ import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
  * @param <I>
  * @param <S>
  */
-;
 
 public abstract class MindGame<I extends InitialState, S extends Solution> {
 
@@ -40,7 +39,7 @@ public abstract class MindGame<I extends InitialState, S extends Solution> {
      * @return un istanza che contiene le informazioni iniziali del gioco
      * @throws MindGameException eccezione che lancia un messaggio di errore
      */
-    public abstract I generateInitialState(GameDifficulty difficulty) throws MindGameException;
+    protected abstract I generateInitialState(GameDifficulty difficulty) throws MindGameException;
     
     /**
      * 

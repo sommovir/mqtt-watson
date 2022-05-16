@@ -44,8 +44,18 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
 
     }
 
+    /**
+     * DO NOT CALL MANUALLY
+     * @param difficulty
+     * @return
+     * @throws ProductDuplicateException
+     * @throws TooFewRepartsExceptions
+     * @throws InvalidRepartsExceptions
+     * @throws InvalidProductException
+     * @throws MindGameException 
+     */
     @Override
-    public SuperMarketInitialState generateInitialState(GameDifficulty difficulty) throws ProductDuplicateException, TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException, MindGameException {
+    protected SuperMarketInitialState generateInitialState(GameDifficulty difficulty) throws ProductDuplicateException, TooFewRepartsExceptions, InvalidRepartsExceptions, InvalidProductException, MindGameException {
         int howManyProducts = 0;
 
         switch (difficulty) {
@@ -73,12 +83,23 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         SuperMarketInitialState initialState = new SuperMarketInitialState(gameProduct);
         initialState.getSolution().checkDuplicate();
         initialState.getSolution().checkReparts();
+ 
 
         return initialState;
     }
 
+    /**
+     * 
+     * @param howmany
+     * @return 
+     * null if the argument is lower or equals to zero.
+     */
     public List<Product> generateProducts(int howmany) {
 
+        if(howmany <= 0){
+            return null;
+        }
+        
         List<Product> copiaProdotti = new LinkedList<Product>();
         for (Product product : prodotti) {
             copiaProdotti.add(product);

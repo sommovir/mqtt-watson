@@ -309,8 +309,8 @@ public class WatsonManager {
                         switch (gameType) {
                             case LISTA_SPESA:
                                 mindgame = new GameSuperMarket();
-                                mindgame.generateInitialState(GameDifficulty.Medio);
                                 GameInstance<GameSuperMarket> instance = GameEngine.getInstance().newGame(new Person(),(GameSuperMarket) mindgame);
+                                String json = instance.getInitialState().toJson();
                                 System.out.println("TODO");
                                 break;
                             default: {

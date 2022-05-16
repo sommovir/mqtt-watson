@@ -1,9 +1,11 @@
+package cognitives.game1;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cognitives.game1;
+
 
 import io.moquette.spi.impl.security.ACLFileParser;
 import it.cnr.istc.mw.mqtt.WatsonManager;
@@ -51,19 +53,20 @@ import static org.mockito.Mockito.mock;
  *
  * @author sommovir
  */
-//@Disabled
+@Disabled
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class CognitiveGameTest {
 
     String message;
     List<Product> prodotti = new LinkedList<Product>();
-    Person personMock = mock(Person.class);
+    private Person personMock;
 
     public CognitiveGameTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
+        System.out.println("MINCHIA");
     }
 
     @AfterAll
@@ -72,6 +75,7 @@ public class CognitiveGameTest {
 
     @BeforeEach
     public void setUp() {
+        personMock = mock(Person.class);
     }
 
     @AfterEach
@@ -140,75 +144,80 @@ public class CognitiveGameTest {
     @Test
     @Tag("MIND-G1-#98")
     public void task98() {
-        try{
-        List<Product> listaSbudellata = new LinkedList<Product>();
-        listaSbudellata.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
-        listaSbudellata.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
-        listaSbudellata.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
-        listaSbudellata.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
-        List<Product> listaGiusta = new LinkedList<>();
-        listaGiusta.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
-        listaGiusta.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
-        listaGiusta.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
-        listaGiusta.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
-        List<Product> listaVuota = new LinkedList<>();
-         List<Product> listaNull = new LinkedList<>();
-        listaNull.add(null);
-        listaNull.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
-        listaNull.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
-        listaNull.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
-        List<Product> listaNull2 = new LinkedList<>();
-        listaNull2.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
-        listaNull2.add(new Product(3, "no", null, "mamma"));
-        listaNull2.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
-        listaNull2.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
-        SuperMarketSolution solution = new SuperMarketSolution(listaSbudellata);
-        SuperMarketSolution solution1 = new SuperMarketSolution(listaGiusta);
-        SuperMarketSolution solution2 = new SuperMarketSolution(listaVuota);
-        SuperMarketSolution solution3 = new SuperMarketSolution(null);
-        SuperMarketSolution solution4 = new SuperMarketSolution(listaNull);
-        SuperMarketSolution solution5 = new SuperMarketSolution(listaNull2);
-        
-        assertThrows(ProductDuplicateException.class, new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                solution.checkDuplicate();
-            }
-        });
+        try {
+            List<Product> listaSbudellata = new LinkedList<Product>();
+            listaSbudellata.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
+            listaSbudellata.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
+            listaSbudellata.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
+            listaSbudellata.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+            List<Product> listaGiusta = new LinkedList<>();
+            listaGiusta.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
+            listaGiusta.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
+            listaGiusta.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+            listaGiusta.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
+            List<Product> listaVuota = new LinkedList<>();
+            List<Product> listaNull = new LinkedList<>();
+            listaNull.add(null);
+            listaNull.add(new Product(3, "no", new Department(4, "cassa"), "mamma"));
+            listaNull.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+            listaNull.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
+            List<Product> listaNull2 = new LinkedList<>();
+            listaNull2.add(new Product(1, "ciao", new Department(2, "libri"), "casa"));
+            assertThrows(MindGameException.class, new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    listaNull2.add(new Product(3, "no", null, "mamma"));
+                }
+            });
+            listaNull2.add(new Product(5, "lol", new Department(6, "sippe"), "dove"));
+            listaNull2.add(new Product(7, "dimmi", new Department(6, "sippe"), "ecco"));
+            SuperMarketSolution solution = new SuperMarketSolution(listaSbudellata);
+            SuperMarketSolution solution1 = new SuperMarketSolution(listaGiusta);
+            SuperMarketSolution solution2 = new SuperMarketSolution(listaVuota);
+            SuperMarketSolution solution3 = new SuperMarketSolution(null);
+            SuperMarketSolution solution4 = new SuperMarketSolution(listaNull);
+            SuperMarketSolution solution5 = new SuperMarketSolution(listaNull2);
 
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                solution1.checkDuplicate();
-            }
-        });
+            assertThrows(ProductDuplicateException.class, new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution.checkDuplicate();
+                }
+            });
 
-        assertDoesNotThrow(new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                solution2.checkDuplicate();
-            }
-        });
-        assertThrows(MindGameException.class,new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                solution3.checkDuplicate();
-            }
-        });
-        assertThrows(MindGameException.class,new Executable() {
-            @Override
-            public void execute() throws Throwable {
-             solution4.checkDuplicate();
-            }
-        }, "mi aspettavo che lanciasse un'eccezione");
-        assertThrows(MindGameException.class,new Executable() {
-            @Override
-            public void execute() throws Throwable {
-             solution5.checkDuplicate();
-            }
-        }, "mi aspettavo che lanciasse un'eccezione");
-        
-        }catch(Exception ex){
+            assertDoesNotThrow(new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution1.checkDuplicate();
+                }
+            });
+
+            assertDoesNotThrow(new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution2.checkDuplicate();
+                }
+            });
+            assertThrows(MindGameException.class, new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution3.checkDuplicate();
+                }
+            });
+            assertThrows(MindGameException.class, new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution4.checkDuplicate();
+                }
+            }, "mi aspettavo che lanciasse un'eccezione");
+            assertThrows(MindGameException.class, new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    solution5.checkDuplicate();
+                }
+            }, "mi aspettavo che lanciasse un'eccezione");
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -243,7 +252,7 @@ public class CognitiveGameTest {
                 s.checkReparts();
             }
         }, "mi aspettavo che lanciasse un'eccezione");
-        assertThrows(InvalidRepartsExceptions.class,new Executable() {
+        assertThrows(InvalidRepartsExceptions.class, new Executable() {
             @Override
             public void execute() throws Throwable {
                 List<Product> lista = new LinkedList<Product>();
@@ -295,7 +304,7 @@ public class CognitiveGameTest {
     @DisplayName("[newGame]")
     public void newGameTest() {
 //        Person personMock = mock(Person.class);
-        if(personMock == null){
+        if (personMock == null) {
             System.out.println("CIAo");
         }
         GameSuperMarket newGame1 = new GameSuperMarket();
@@ -317,6 +326,7 @@ public class CognitiveGameTest {
                 GameEngine.getInstance().newGame(null, newGame1);
             }
         }, "mi aspettavo che lanciasse un'eccezione");
+        Assumptions.assumeFalse(personMock == null);
         assertDoesNotThrow(new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -329,28 +339,28 @@ public class CognitiveGameTest {
     @Test
     @DisplayName("[Gameinstance]")
     public void gameInstanceTest() {
-       
+
         GameSuperMarket newGame1 = new GameSuperMarket();
-        
+        Assumptions.assumeTrue(newGame1 != null);
         try {
             GameInstance newGame = GameEngine.getInstance().newGame(personMock, newGame1);
             InitialState stato = newGame.getInitialState();
             Assumptions.assumeTrue(stato instanceof SuperMarketInitialState);
-            assertNotNull(newGame,"mi aspettavo che non fosse null");
-            assertNotNull(newGame.getGameResult(),"mi aspettavo che non fosse null");
-            assertNotNull(newGame.getInitialState(),"mi aspettavo che non fosse null");
-            assertNotNull(newGame.getPerson(),"mi aspettavo che non fosse null");
-            assertNotNull(newGame.getMindGame(),"mi aspettavo che non fosse null");
-            assertTrue(newGame1==newGame.getMindGame(),"mi aspettavo che l'oggetto ritornato da getMindGame fosse uguale al mindgame passato in argomento in newGame");
-            assertTrue(newGame.getGameResult()==GameResult.NOT_FINISHED,"mi aspettavo che il GameResult fosse NOT_FINISHED");
-            assertTrue(newGame.getMindGame().getType()==GameType.LISTA_SPESA,"mi aspettavo che il GameTyper fosse LISTA_SPESA");
-            assertNotNull(((SuperMarketInitialState)stato).getProducts(),"mi aspettavo che products non fosse null");
-            assertNotNull(stato.getSolution(),"mi aspettavo che Solution non fosse null");
+            assertNotNull(newGame, "mi aspettavo che non fosse null");
+            assertNotNull(newGame.getGameResult(), "mi aspettavo che non fosse null");
+            assertNotNull(newGame.getInitialState(), "mi aspettavo che non fosse null");
+            assertNotNull(newGame.getPerson(), "mi aspettavo che non fosse null");
+            assertNotNull(newGame.getMindGame(), "mi aspettavo che non fosse null");
+            assertTrue(newGame1 == newGame.getMindGame(), "mi aspettavo che l'oggetto ritornato da getMindGame fosse uguale al mindgame passato in argomento in newGame");
+            assertTrue(newGame.getGameResult() == GameResult.NOT_FINISHED, "mi aspettavo che il GameResult fosse NOT_FINISHED");
+            assertTrue(newGame.getMindGame().getType() == GameType.LISTA_SPESA, "mi aspettavo che il GameTyper fosse LISTA_SPESA");
+            assertNotNull(((SuperMarketInitialState) stato).getProducts(), "mi aspettavo che products non fosse null");
+            assertNotNull(stato.getSolution(), "mi aspettavo che Solution non fosse null");
         } catch (MindGameException ex) {
-            assertFalse(true,"non dovresti essere qui");
+            assertFalse(true, "non dovresti essere qui");
             Logger.getLogger(CognitiveGameTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
 }

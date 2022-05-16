@@ -41,6 +41,9 @@ public class GameEngine {
     public <G extends MindGame> GameInstance<G> newGame(Person user, G mindGame) throws MindGameException {
         GameDifficultyPolicy policy = getPolicy(user, mindGame);
         if(user == null || mindGame == null){
+            System.out.println("NULLIFORMI :");
+            System.out.println("user: "+user);
+            System.out.println("mindgame: "+mindGame);
             throw new MindGameException() {
                 @Override
                 public String errorMessage() {
@@ -89,6 +92,7 @@ public class GameEngine {
         GameDifficulty difficulty = calculateDifficultyByAI(user, mindgame);
         InitialState initialState = mindgame.generateInitialState(difficulty);
         Solution solution = initialState.getSolution();
+        
         boolean valid = mindgame.validate(initialState); //qua deve sparare eccezioni nel caso che..
         return new GameInstance(initialState, user, mindgame, GameResult.NOT_FINISHED);
     }
