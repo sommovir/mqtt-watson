@@ -31,6 +31,8 @@ import com.ibm.watson.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
+import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
+import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.generals.Emotion;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
@@ -58,13 +60,14 @@ public class WatsonManager {
 
     private static WatsonManager _instance = null;
     private Assistant assistant = null;
-   // String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
+    // String assistant_id = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private static final String API_KEY = "iUhzEKP2PffgFKd8C4XvrdjP9yrELYqt5ev-Fhccot_P";
     private static final String GLOBAL_API_KEY = "xynjZYfqFm3aPX247P3qiDSZq76BgdsIGbY1oEzQFqPM";
     private static final String CLIENT_ID = "165ef413-b2c1-44f6-a9a9-2e44d20ae2ec";
     private static final String VERSION = "2021-06-14";
     private static final String URL = "https://api.eu-de.assistant.watson.cloud.ibm.com/instances/eacf1cec-f25a-4638-95e7-9a2432fbe388";
-    
+    private static final String REPEAT = "<REPEAT-ANSWER>";
+
     private Map<String, String> sessionIdMap = new HashMap<>();
     private Map<String, Long> expireTimeMap = new HashMap<>();
     private double minSingleDeltaThreshold = 0.6d; //alpha
@@ -134,9 +137,9 @@ public class WatsonManager {
 
     public void setTestMode(boolean testMode) {
         this.testMode = testMode;
-        if(testMode){
+        if (testMode) {
             System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now ACTIVE, it will be allowed only " + ConsoleColors.ANSI_RED + "1" + ConsoleColors.ANSI_GREEN + " connection" + ConsoleColors.ANSI_RESET);
-        }else{
+        } else {
             System.out.println(LogTitles.LOGGER.getTitle() + ConsoleColors.ANSI_GREEN + "Testing procedure is now OFF" + ConsoleColors.ANSI_RESET);
         }
         LoggerManager.getInstance().fireTestModeChanged(testMode);
@@ -271,12 +274,29 @@ public class WatsonManager {
         return null;
     }
 
+    public void repeat() {
+        MQTTClient.getInstance().publish(Topics.COMMAND.getTopic(), MQTTClient.getInstance().getRispostaPrecedente());
+        try {
+            LoggerManager.getInstance().log(LoggingTag.REPEAT.getTag());
+        } catch (Exception e) {
+            System.out.println(LogTitles.LOGGER.getTitle() + e.getMessage());
+        }
+    }
+
     public String parseAppText(String apptext, String userId) {
         apptext = apptext.replace("<AT>", "@");
         if (apptext.startsWith("*")) {
             String text = "";
             try {
                 String mixedString = apptext.substring(1);
+                if (mixedString.equals(REPEAT)) {
+                    try {
+                        LoggerManager.getInstance().log(LoggingTag.REPEAT.getTag());
+                    } catch (Exception e) {
+                        System.out.println(LogTitles.LOGGER.getTitle() + e.getMessage());
+                    }
+                    return MQTTClient.getInstance().getRispostaPrecedente();
+                }
                 String[] split = mixedString.split("<COMMAND>");
                 for (String string : split) {
                     String[] commandAndValue = string.split("<:>");
@@ -299,7 +319,7 @@ public class WatsonManager {
                                 System.out.println("TABLE MESSAGE TTTTT   0----- >>> " + tttt[0]);
                                 System.out.println("TABLE MESSAGE TTTTT   1----- >>> " + tttt[1]);
                                 MQTTClient.getInstance().publish(Topics.COMMAND.getTopic() + "/" + userId + "/table", tttt[1]);
-                            }else{
+                            } else {
                                 System.out.println("VAI A FARE IL WATSON TESTER");
                             }
                         } else {
@@ -708,7 +728,7 @@ public class WatsonManager {
                     case INDECISION:
                         return "Aspetta scusa, chiedimi una cosa alla volta, che non ci sento bene" + BAD_LUCK;
                     case WATSON_SUGGESTION:
-                        return "<AUTOLISTEN>Perdonami, mi potresti chiedere la stessa cosa in forma più semplice ?"+BAD_LUCK;
+                        return "<AUTOLISTEN>Perdonami, mi potresti chiedere la stessa cosa in forma più semplice ?" + BAD_LUCK;
                 }
                 return "<AUTOLISTEN>Scusa potresti essere più preciso?" + BAD_LUCK;
             }

@@ -668,7 +668,9 @@ public class Main {
                         } else if (line.equals("get gamma")) {
                             System.out.println(LogTitles.LOGGER.getTitle() + "Gamma: MaxDeadlocks = " + WatsonManager.getInstance().getMaxDeadlocks());
 
-                        } else if (line.startsWith("log ws ") && !line.replace("log ws ", "").isEmpty()) {
+                        }else if(line.equals("repeat")){
+                            WatsonManager.getInstance().repeat();
+                        }else if (line.startsWith("log ws ") && !line.replace("log ws ", "").isEmpty()) {
                             String free_text = line.substring(7, line.length());
                             LoggerManager.getInstance().log(LoggingTag.WALL_SPEAK.getTag() + " " + free_text);
                             System.out.println(LogTitles.LOGGER.getTitle() + "Note has been added");
@@ -812,6 +814,8 @@ public class Main {
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tMostra il valore di gamma");
                             System.out.println(ConsoleColors.ANSI_YELLOW + "29) " + ConsoleColors.ANSI_CYAN + "db install");
                             System.out.println(ConsoleColors.ANSI_WHITE + "\tInstalla il db");
+                            System.out.println(ConsoleColors.ANSI_YELLOW + "30) " + ConsoleColors.ANSI_CYAN + "repeat");
+                            System.out.println(ConsoleColors.ANSI_WHITE + "\tRipete la risposta precedente");
                             System.out.println(ConsoleColors.ANSI_GREEN + "----------------------------------------------------------------" + ConsoleColors.ANSI_RESET);
                         } else if (line.equals("help log")) {
                             System.out.println(ConsoleColors.ANSI_GREEN + "------------------------- H E L P  L O G-----------------------------" + ConsoleColors.ANSI_RESET);

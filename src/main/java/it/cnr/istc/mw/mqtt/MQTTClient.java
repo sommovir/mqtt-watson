@@ -102,6 +102,10 @@ public class MQTTClient implements MqttCallback {
     public String getSecret() {
         return secret;
     }
+    
+    public String getRispostaPrecedente(){
+        return rispostaPrecedente;
+    }
 
     public void setSecret(String secret) {
         this.secret = secret;
