@@ -41,7 +41,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.function.Executable;
 import static org.mockito.Mockito.mock;
 
@@ -50,10 +52,12 @@ import static org.mockito.Mockito.mock;
  * @author sommovir
  */
 //@Disabled
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class CognitiveGameTest {
 
     String message;
     List<Product> prodotti = new LinkedList<Product>();
+    Person personMock = mock(Person.class);
 
     public CognitiveGameTest() {
     }
@@ -290,7 +294,10 @@ public class CognitiveGameTest {
     @Test
     @DisplayName("[newGame]")
     public void newGameTest() {
-        Person personMock = mock(Person.class);
+//        Person personMock = mock(Person.class);
+        if(personMock == null){
+            System.out.println("CIAo");
+        }
         GameSuperMarket newGame1 = new GameSuperMarket();
         assertThrows(MindGameException.class, new Executable() {
             @Override
@@ -322,7 +329,7 @@ public class CognitiveGameTest {
     @Test
     @DisplayName("[Gameinstance]")
     public void gameInstanceTest() {
-        Person personMock = mock(Person.class);
+       
         GameSuperMarket newGame1 = new GameSuperMarket();
         
         try {
@@ -330,10 +337,10 @@ public class CognitiveGameTest {
             InitialState stato = newGame.getInitialState();
             Assumptions.assumeTrue(stato instanceof SuperMarketInitialState);
             assertNotNull(newGame,"mi aspettavo che non fosse null");
-            assertNull(newGame.getGameResult(),"mi aspettavo che non fosse null");
-            assertNull(newGame.getInitialState(),"mi aspettavo che non fosse null");
-            assertNull(newGame.getPerson(),"mi aspettavo che non fosse null");
-            assertNull(newGame.getMindGame(),"mi aspettavo che non fosse null");
+            assertNotNull(newGame.getGameResult(),"mi aspettavo che non fosse null");
+            assertNotNull(newGame.getInitialState(),"mi aspettavo che non fosse null");
+            assertNotNull(newGame.getPerson(),"mi aspettavo che non fosse null");
+            assertNotNull(newGame.getMindGame(),"mi aspettavo che non fosse null");
             assertTrue(newGame1==newGame.getMindGame(),"mi aspettavo che l'oggetto ritornato da getMindGame fosse uguale al mindgame passato in argomento in newGame");
             assertTrue(newGame.getGameResult()==GameResult.NOT_FINISHED,"mi aspettavo che il GameResult fosse NOT_FINISHED");
             assertTrue(newGame.getMindGame().getType()==GameType.LISTA_SPESA,"mi aspettavo che il GameTyper fosse LISTA_SPESA");
