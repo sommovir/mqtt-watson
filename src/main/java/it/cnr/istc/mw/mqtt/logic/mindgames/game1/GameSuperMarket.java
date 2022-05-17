@@ -92,11 +92,11 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
      * 
      * @param howmany
      * @return 
-     * null if the argument is lower or equals to zero.
+     * null if the argument is lower or equals to 3.
      */
     public List<Product> generateProducts(int howmany) {
 
-        if(howmany <= 0){
+        if(howmany < 3){
             return null;
         }
         
@@ -107,22 +107,25 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
 
         Collections.shuffle(this.reparti);
         List<Product> gameProducts = new LinkedList<Product>();
-        int h = ThreadLocalRandom.current().nextInt(3, howmany + 1);
+        System.out.println("reparti size :"+this.reparti.size());
+        System.out.println("howmany +1:"+(howmany+1));
+        int h = ThreadLocalRandom.current().nextInt(3, Math.min(howmany + 1,this.reparti.size()));
+        System.out.println("chosen reparti: "+h);
         for (int i = 0; i < h; i++) {
 
             Department dep = this.reparti.get(i);
             List<Product> prod = this.productMap.get(dep.getId());
-            Collections.shuffle(prod);
+            Collections.shuffle(prod); // sostituire con un get random index invece di sortare ad mentula
             gameProducts.add(prod.get(0));
             
             if(!copiaProdotti.isEmpty()){
                 
-            copiaProdotti.remove(prod.get(0));
+                copiaProdotti.remove(prod.get(0));
             }
 
         }
         int last = howmany - h;
-
+        System.out.println("last: "+last);
         for (int i = 0; i < last; i++) {
             gameProducts.add(copiaProdotti.get(i));
 

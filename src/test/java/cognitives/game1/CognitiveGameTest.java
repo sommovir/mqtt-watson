@@ -53,7 +53,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author sommovir
  */
-@Disabled
+//@Disabled
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class CognitiveGameTest {
 

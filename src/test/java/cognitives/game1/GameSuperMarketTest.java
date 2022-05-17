@@ -4,10 +4,11 @@
  */
 package cognitives.game1;
 
-import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.mock;
 
 /**
  *
@@ -50,14 +50,30 @@ public class GameSuperMarketTest {
         List<Product> list0 = game.generateProducts(0);
         List<Product> listMinus1 = game.generateProducts(-1);
         List<Product> listMinus40 = game.generateProducts(-40);
-        List<Product> list1 = game.generateProducts(1);
-//        List<Product> list3 = game.generateProducts(3);
-//        List<Product> list10 = game.generateProducts(10);
+        List<Product> list2 = game.generateProducts(2);
+        List<Product> list3 = game.generateProducts(3);
+        List<Product> list10 = game.generateProducts(10);
         
         Assertions.assertNull(list0);
         Assertions.assertNull(listMinus1);
         Assertions.assertNull(listMinus40);
-        Assertions.assertEquals(1,list1.size());
+        Assertions.assertNull(list2);
+        Assertions.assertEquals(3,list3.size());
+        Assertions.assertNotEquals(list3.get(0).getId(), list3.get(1).getId());
+        Assertions.assertNotEquals(list3.get(1).getId(), list3.get(2).getId());
+        Assertions.assertNotEquals(list3.get(0).getId(), list3.get(2).getId());
+        Assertions.assertNotEquals(list3.get(0).getDepartment().getId(), list3.get(1).getDepartment().getId());
+        Assertions.assertNotEquals(list3.get(1).getDepartment().getId(), list3.get(2).getDepartment().getId());
+        Assertions.assertNotEquals(list3.get(0).getDepartment().getId(), list3.get(2).getDepartment().getId());
+        
+        Assertions.assertEquals(10,list10.size());
+        
+        Set<Product> ss = new HashSet<>();
+        for (Product product : list10) {
+            ss.add(product);
+        }
+        Assertions.assertEquals(10,ss.size());
+        
     
     }
 }

@@ -7,6 +7,7 @@ package watson;
 
 import it.cnr.istc.mw.mqtt.MQTTClient;
 import it.cnr.istc.mw.mqtt.MQTTServer;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.MINCHIA;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.Disabled;
  *
  * @author sommovir
  */
-//@Disabled
+@Disabled
 public class BasicWatsonTest {
     
     public BasicWatsonTest() {
@@ -45,9 +46,11 @@ public class BasicWatsonTest {
     
     @Test
     public void testG(){
+        
         //test di prova delle Assumption
         boolean connected  =MQTTClient.getInstance().isConnected();
 //        org.junit.jupiter.api.Assumptions.assumeTrue(connected, "Server non connesso");
+System.out.println("mincshshhs");
         Assumptions.assumeThat(connected).withFailMessage("ciaaia").isTrue();
         assertTrue(MQTTClient.getInstance().getIP().startsWith("192"),"L'ip è strano");
         

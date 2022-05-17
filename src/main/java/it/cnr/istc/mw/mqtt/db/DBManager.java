@@ -154,6 +154,10 @@ public class DBManager {
             prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
             prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
             prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
+            prodotti.add(new Product(8, "Bastoncini Findus", new Department(5, "Surgelati"), "i "));
+            prodotti.add(new Product(9, "Riso", new Department(5, "Pasta"), "il "));
+            prodotti.add(new Product(10, "Petto di pollo", new Department(5, "Carne"), "del "));
+            
             return prodotti;
         } catch (MindGameException ex) {
             ex.printStackTrace();
@@ -162,11 +166,13 @@ public class DBManager {
 
     }
 
+    //ce ne devono essere almeno 4 se no esplode tutto. 
     public List<Department> getAllDepartments() {
         List<Department> reparti = new LinkedList<Department>();
         reparti.add(new Department(1, "frutta"));
         reparti.add(new Department(2, "sport"));
         reparti.add(new Department(3, "Pesce"));
+        reparti.add(new Department(4, "Surgelati"));
         return reparti;
     }
 
