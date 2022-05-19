@@ -5,6 +5,7 @@
 package watson;
 
 import it.cnr.istc.mw.mqtt.MQTTClient;
+import it.cnr.istc.mw.mqtt.Topics;
 import it.cnr.istc.mw.mqtt.WatsonManager;
 import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
@@ -115,8 +116,16 @@ public class GameFlowWatsonTest {
             String parsedTest = spyWatsonmanager.parseAppText(commandTest, "123");
 
             ArgumentCaptor<SuperMarketInitialState> captor = ArgumentCaptor.forClass(SuperMarketInitialState.class);
+            ArgumentCaptor<String> captorTopic = ArgumentCaptor.forClass(String.class);
+            ArgumentCaptor<String> captorMessage = ArgumentCaptor.forClass(String.class);
 
             verify(spyMQTTClient).sendGameData(any(), captor.capture());
+            verify(spyMQTTClient).publish(captorTopic.capture(), captorMessage.capture());
+            
+            assertTrue(captorTopic.getValue().startsWith(Topics.MINDGAME.getTopic()),"Topic errato");
+            
+            System.out.println("JSON: \n");
+            System.out.println(captorMessage.getValue());
 
             SuperMarketInitialState value = captor.getValue();
 

@@ -7,7 +7,7 @@ package watson;
 
 import it.cnr.istc.mw.mqtt.MQTTClient;
 import it.cnr.istc.mw.mqtt.MQTTServer;
-import it.cnr.istc.mw.mqtt.logic.mindgames.game1.MINCHIA;
+//import it.cnr.istc.mw.mqtt.logic.mindgames.game1.MINCHIA;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;

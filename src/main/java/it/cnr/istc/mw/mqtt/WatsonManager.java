@@ -310,7 +310,7 @@ public class WatsonManager {
                             case LISTA_SPESA:
                                 mindgame = new GameSuperMarket();
                                 GameInstance<GameSuperMarket> instance = GameEngine.getInstance().newGame(new Person(),(GameSuperMarket) mindgame);
-                                String json = instance.getInitialState().toJson();
+                                MQTTClient.getInstance().sendGameData(new Person(), instance.getInitialState());
                                 System.out.println("TODO");
                                 break;
                             default: {
@@ -320,7 +320,7 @@ public class WatsonManager {
                     }
                     if (command.equals("face")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/face";
-                        MQTTClient.getInstance().publish(topic, value);
+//                        MQTTClient.getInstance().publish(topic, value);
                         try {
                             LoggerManager.getInstance().log(LoggingTag.FACE.getTag() + " " + value);
                         } catch (Exception e) {

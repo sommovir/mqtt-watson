@@ -9,7 +9,7 @@ package it.cnr.istc.mw.mqtt.logic.mindgames.models;
  *
  * @author Federico
  */
-public enum MindGamesInterraptDetail {
+public enum MindGamesInterruptDetail {
     VLNTR("VLNTR"),
     EXCPT("EXCPT"),
     FNLFS("FNLFS"),
@@ -18,7 +18,7 @@ public enum MindGamesInterraptDetail {
     
     private String cause;
 
-    private MindGamesInterraptDetail(String cause) {
+    private MindGamesInterruptDetail(String cause) {
         this.cause = cause;
     }
 
@@ -26,13 +26,13 @@ public enum MindGamesInterraptDetail {
         return cause;
     }
     
-    public static MindGamesInterraptDetail of(String cause){
+    public static MindGamesInterruptDetail of(String cause){
         switch(cause){
-            case "VLNTR": return MindGamesInterraptDetail.VLNTR;
-            case "EXCPT": return MindGamesInterraptDetail.EXCPT;
-            case "FNLFS": return MindGamesInterraptDetail.FNLFS;
-            case "LNTMT": return MindGamesInterraptDetail.LNTMT;
-            default: return MindGamesInterraptDetail.UNKNOWN;
+            case "VLNTR": return MindGamesInterruptDetail.VLNTR;
+            case "EXCPT": return MindGamesInterruptDetail.EXCPT;
+            case "FNLFS": return MindGamesInterruptDetail.FNLFS;
+            case "LNTMT": return MindGamesInterruptDetail.LNTMT;
+            default: return MindGamesInterruptDetail.UNKNOWN;
         }
     }  
     

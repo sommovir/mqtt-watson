@@ -63,11 +63,12 @@ public class SuperMarketInitialState extends InitialState<SuperMarketSolution> {
 
     @Override
     public String toJson() {
+        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
          ObjectMapper obj = new ObjectMapper();
           String jsonStr = null;
         try {
 
-             jsonStr = obj.writeValueAsString(this);
+             jsonStr = obj.writerWithDefaultPrettyPrinter().writeValueAsString(this);
 
         }
  
