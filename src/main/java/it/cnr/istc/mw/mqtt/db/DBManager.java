@@ -8,10 +8,18 @@ package it.cnr.istc.mw.mqtt.db;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.DBAlreadyInstalledException;
 import it.cnr.istc.mw.mqtt.exceptions.DBBadParamaterException;
+import it.cnr.istc.mw.mqtt.exceptions.DBLoginException;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.exceptions.DBUniqueViolationException;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import java.sql.SQLIntegrityConstraintViolationException;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.PersistenceException;
 import javax.swing.JOptionPane;
@@ -33,8 +41,7 @@ public class DBManager {
     private static DBManager _instance = null;
     private SessionFactory sessionFactory;
     private boolean installed = false;
-    
-    
+    private Person currentUser = null;
 
     public static DBManager getInstance() {
         if (_instance == null) {
@@ -50,16 +57,17 @@ public class DBManager {
         initConnection();
     }
 
-    /**
-     * controlla se il database è già installato
-     *
-     * @return true se il db è già esistente e funzionante. False altrimenti.
-     */
+    public Person login(String username, String password) throws DBLoginException {
+        this.currentUser = new Person("fantoccio", "super", "fantoccio", "fantapassowrd");
+        return this.currentUser;
+    }
+
     public boolean isInstalled() {
         return installed;
     }
-
+    
     private void initConnection() {
+    
         // configures settings from hibernate.cfg.xml 
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         try {
@@ -202,8 +210,8 @@ public class DBManager {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Person p1 = new Person("Luca", "Coraci");
-        Person p2 = new Person("Luana", "Mercuri");
+        Person p1 = new Person("Luca", "Coraci", "sommovir", "password1");
+        Person p2 = new Person("Luana", "Mercuri", "lulu", "password2");
 
         Laboratory lab = new Laboratory();
         lab.setName("Laboratorio di Lettura");
@@ -311,6 +319,50 @@ public class DBManager {
 
         session.getTransaction().commit();
         session.close();
+    }
+
+    //MOCKUP
+    public List<Product> getAllProducts() {
+        List<Product> prodotti = new LinkedList<Product>();
+        try {
+
+            prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
+            prodotti.add(new Product(1, "Cetriolo", new Department(10, "Verdura"), "un "));
+            prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
+            prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
+            prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
+            prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
+            prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
+            prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
+            prodotti.add(new Product(8, "Bastoncini Findus", new Department(5, "Surgelati"), "i "));
+            prodotti.add(new Product(9, "Riso", new Department(5, "Pasta"), "il "));
+            prodotti.add(new Product(10, "Petto di pollo", new Department(5, "Carne"), "del "));
+            
+            return prodotti;
+        } catch (MindGameException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    //ce ne devono essere almeno 4 se no esplode tutto. 
+    public List<Department> getAllDepartments() {
+        List<Department> reparti = new LinkedList<Department>();
+        reparti.add(new Department(1, "frutta"));
+        reparti.add(new Department(2, "sport"));
+        reparti.add(new Department(3, "Pesce"));
+        reparti.add(new Department(4, "Surgelati"));
+        return reparti;
+    }
+
+    public <G extends MindGame> List<GameInstance<G>> getLast5GameInstances(Person user, G mindGame) {
+
+        return null;
+    }
+
+    public Person getCurrentUser() {
+        return this.currentUser;
     }
 
 }

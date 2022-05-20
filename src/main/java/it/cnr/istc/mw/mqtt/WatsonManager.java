@@ -31,6 +31,7 @@ import com.ibm.watson.natural_language_understanding.v1.model.AnalyzeOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.EmotionOptions;
 import com.ibm.watson.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.natural_language_understanding.v1.model.SentimentOptions;
+import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
 import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
@@ -40,12 +41,22 @@ import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.logger.LowDeltaResult;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameDifficulty;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameType;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.MindGame;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -283,7 +294,27 @@ public class WatsonManager {
         }
     }
 
+    //"*face<:>fun,3000<COMMAND>text<:>Perfetto, giochiamo a lista della spesa<COMMAND><GAME>START_GAME<:>CGX001</GAME>"
+    //1) isolare il testo del messaggio .. "Perfetto, giochiamo ... " e ritornarlo. 
+    //2) isolata la parte del GAME, e se dopo <GAME> c'è "START_GAME" , inizia il gioco
+    //3) quale gioco ? il gioco di codice CGX001. 
+    //4) devi parsare il codice in GameType e in base a questo instanziare il gioco giusto. 
     public String parseAppText(String apptext, String userId) {
+//   uncomment for testing the mockito test :D
+//        if (true) {
+//            try {
+//                List<Product> of = List.of(new Product(2, "sa", new Department(1, "a"), "2"),
+//                        new Product(1, "sa", new Department(2, "a"), "2"),
+//                        new Product(4, "sa", new Department(3, "a"), "2"));
+//                MQTTClient.getInstance().sendGameData(new Person(), new SuperMarketInitialState(new LinkedList<Product>(of)));
+//                return "Perfetto, giochiamo a lista della spesa";
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }else{
+//            System.out.println("BZ");
+//        }
+
         apptext = apptext.replace("<AT>", "@");
         if (apptext.startsWith("*")) {
             String text = "";
@@ -302,9 +333,27 @@ public class WatsonManager {
                     String[] commandAndValue = string.split("<:>");
                     String command = commandAndValue[0];
                     String value = commandAndValue[1];
+                    if (command.equals("<GAME>START_GAME")) {
+//                        GameEngine.getInstance().newGame(new Person(), )
+//                        MQTTClient.getInstance().sendGameData(new Person(), initialState);
+                        String codeGame = value.replace("</GAME>", "");
+                        GameType gameType = GameType.of(codeGame);
+                        MindGame<?,?> mindgame = null;
+                        switch (gameType) {
+                            case LISTA_SPESA:
+                                mindgame = new GameSuperMarket();
+                                GameInstance<GameSuperMarket> instance = GameEngine.getInstance().newGame(new Person(),(GameSuperMarket) mindgame);
+                                MQTTClient.getInstance().sendGameData(new Person(), instance.getInitialState());
+                                System.out.println("TODO");
+                                break;
+                            default: {
+                                System.out.println("TODO");
+                            }
+                        }
+                    }
                     if (command.equals("face")) {
                         String topic = Topics.COMMAND.getTopic() + "/" + userId + "/face";
-                        MQTTClient.getInstance().publish(topic, value);
+//                        MQTTClient.getInstance().publish(topic, value);
                         try {
                             LoggerManager.getInstance().log(LoggingTag.FACE.getTag() + " " + value);
                         } catch (Exception e) {
@@ -421,8 +470,8 @@ public class WatsonManager {
     public boolean analyzeSentimentByTarget(String text, List<String> targets) {
 
         IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
-        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
-        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com");
 
         SentimentOptions sentiment = new SentimentOptions.Builder()
                 .targets(targets)
@@ -473,8 +522,8 @@ public class WatsonManager {
     public Emotion analyzeEmotionByTarget(String text, List<String> targets) {
 
         IamAuthenticator authenticator = new IamAuthenticator("heVbLRGb-xJiYVUGpJbNmB_OwxKAByyIQxD-E96EPP5_");
-        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2020-08-01", authenticator);
-        naturalLanguageUnderstanding.setServiceUrl("https://gateway-lon.watsonplatform.net/natural-language-understanding/api");
+        NaturalLanguageUnderstanding naturalLanguageUnderstanding = new NaturalLanguageUnderstanding("2021-08-01", authenticator);
+        naturalLanguageUnderstanding.setServiceUrl("https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com");
 
         EmotionOptions emotion = new EmotionOptions.Builder()
                 .targets(targets)

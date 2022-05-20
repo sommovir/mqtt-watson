@@ -5,6 +5,7 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
@@ -13,6 +14,7 @@ import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -46,6 +48,8 @@ public class MQTTClient implements MqttCallback {
     private String secret = "bumbu";
     private String rispostaPrecedente = "";
     private Map<String, String> idNameMap = new HashMap<String, String>();
+    //to implement
+    private Map<Person, String> personChannelMap = new HashMap<>();
 
     String content = "Tester message";
 
@@ -209,6 +213,13 @@ public class MQTTClient implements MqttCallback {
     public void sendChatMessage(String message) {
         publish(Topics.CHAT.getTopic(), myNickName + ":" + message);
 
+    }
+
+    public void sendGameData(Person person, InitialState<?> initialState) {
+        System.out.println("SEND GAMONE");
+        String personalChannel = this.personChannelMap.get(person);
+        String jsonConfigFile = initialState.toJson();
+        publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + jsonConfigFile);
     }
 
     public void reconnect() {

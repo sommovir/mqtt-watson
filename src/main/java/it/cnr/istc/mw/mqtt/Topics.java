@@ -27,6 +27,7 @@ public enum Topics {
     INFO("info_channel"),
     GETDEVICE("get_device"),
     ROBOT("robot");
+    MINDGAME("mindgames");
     
     private Topics(String topic) {
         this.topic = topic;

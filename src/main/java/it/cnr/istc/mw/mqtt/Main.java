@@ -41,7 +41,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import org.apache.commons.lang3.StringUtils;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 import org.mortbay.util.Scanner;
@@ -306,17 +305,18 @@ public class Main {
                         } else if (line.equals("test emotion")) {
                             System.out.println(LogTitles.SERVER.getTitle() + "testing sentiment API");
                             List<String> targets = new LinkedList<>();
-                            targets.add("Luca");
-                            WatsonManager.getInstance().analyzeEmotionByTarget("I'm Luca. Today was a day that started badly and ended worse, plus my mother-in-law doesn't answer my phone", targets);
+                            targets.add("Putin");
+                            targets.add("Ukranian president");
+                            WatsonManager.getInstance().analyzeEmotionByTarget("we can be disagree if Putin actions are justified or not, but I hope that we all agree that the Ukranian president needs to be wrapped in the main Moscow square by his Russian people anyway this story end, right ? ", targets);
                         } else if (line.equals("log all tags")) {
                             LoggingTag.printAlphabeticOrder();
                         } else if (line.equals("test sentiment")) {
                             System.out.println(LogTitles.SERVER.getTitle() + "testing sentiment API");
                             List<String> targets = new LinkedList<>();
-                            targets.add("Luca");
-                            targets.add("Fabio");
-                            targets.add("Io");
-                            WatsonManager.getInstance().analyzeSentimentByTarget("Oggi è stata una giornata cominciata male e finita peggio, e in più mia suocera non mi risponde al telefono", targets);
+                            targets.add("Putin");
+                            targets.add("Ukranian president");
+//                            targets.add("Io");
+                            WatsonManager.getInstance().analyzeSentimentByTarget("we can be disagree if Putin actions are justified or not, but I hope that we all agree that the Ukranian president needs to be wrapped in the main Moscow square by his Russian people anyway this story end, right ? ", targets);
                         } else if (line.equals("test translate")) {
                             String en = WatsonManager.getInstance().toEnglish("Oggi è stata una giornata cominciata male e finita peggio, e in più mia suocera non mi risponde al telefono");
                             System.out.println(LogTitles.SERVER.getTitle() + "ENGLISH TEXT: " + en);

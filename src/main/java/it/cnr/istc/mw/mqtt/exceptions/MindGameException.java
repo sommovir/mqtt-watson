@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.cnr.istc.mw.mqtt.logic.mindgames;
+package it.cnr.istc.mw.mqtt.exceptions;
 
 /**
  *
- * @author sommovir
+ * @author Federico
  */
-public class MindGameEngine {
+public abstract class MindGameException extends Exception{
     
+    public abstract String errorMessage();
+            
+   
 }
