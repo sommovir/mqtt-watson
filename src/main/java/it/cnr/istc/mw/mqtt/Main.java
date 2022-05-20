@@ -12,6 +12,7 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import it.cnr.istc.mw.mqtt.db.DBManager;
+import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.exceptions.DBNotExistingException;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
@@ -27,6 +28,9 @@ import it.cnr.istc.mw.mqtt.logic.logger.HistoryElement;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.GameSuperMarket;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameEngine;
+import it.cnr.istc.mw.mqtt.logic.mindgames.models.GameInstance;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -633,6 +637,7 @@ public class Main {
                                 }
                             });
                         }else if (line.equals("test game1")) {
+                            System.out.println("[TEST GAME1] sto per testare l'amore");
                                 MQTTClient.getInstance().publish(Topics.MINDGAME.getTopic()+"/demo", "{\n" +
 "  \"initialMessage\" : \"Buongiorno, se passi al supermercato mi puoi comprare:  una Bistecca, un pacco di Spaghetti, del  Petto di pollo, una Ciabattina, e infine un barattolo di Ceci\",\n" +
 "  \"solutionProducts\" : [ {\n" +
@@ -691,7 +696,11 @@ public class Main {
 "  \"textualDescription\" : \"Dopo aver elencato una lista di cose da acquistare al supermercato e\\nlasciato il tempo di memorizzarla, chiedere di ricordare cosa bisogna comprare in base ad uno specifico\\nreparto\"\n" +
 "}");
                                 
-                        }                        
+                        }         
+                         else if (line.equals("test game1 -random")) {
+                                GameInstance<GameSuperMarket> instance = GameEngine.getInstance().newGame(new Person(),new GameSuperMarket());
+                                MQTTClient.getInstance().sendGameData(new Person(), instance.getInitialState());
+                         }
                         else if (line.equals("log gui -white")) {
 
                             try {

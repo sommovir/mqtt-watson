@@ -108,7 +108,7 @@ public class GameEngine {
     private <G extends MindGame> GameDifficulty calculateDifficultyByAI(Person user, G mindgame) {
         List<GameInstance<G>> gameInstances = DBManager.getInstance().getLast5GameInstances(user, mindgame);
         //INSERT DEEP LEARNING
-        return GameDifficulty.Facile;
+        return GameDifficulty.Medio;
     }
 
     /**

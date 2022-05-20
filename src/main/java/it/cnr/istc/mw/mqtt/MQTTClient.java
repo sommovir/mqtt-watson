@@ -14,6 +14,7 @@ import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Department;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketBlob;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
@@ -26,6 +27,7 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -229,6 +231,16 @@ public class MQTTClient implements MqttCallback {
         for (Product product : prodotti) {
             System.out.println("PRODUCTO: "+product.getName());
         }
+        Department department = solutionProduct.get(0).getDepartment();
+        Iterator<Product> iterator = prodotti.iterator();
+        while(iterator.hasNext()){
+            Product prodotto = iterator.next();
+            if(!prodotto.getDepartment().equals(department)){
+                iterator.remove();
+            }
+        }
+        
+        
         SuperMarketBlob blob = new SuperMarketBlob(
                 initialState.getWatsonText(),
                 prodotti,
