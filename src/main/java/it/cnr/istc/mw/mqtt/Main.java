@@ -632,7 +632,67 @@ public class Main {
 
                                 }
                             });
-                        } else if (line.equals("log gui -white")) {
+                        }else if (line.equals("test game1")) {
+                                MQTTClient.getInstance().publish(Topics.MINDGAME.getTopic()+"/demo", "{\n" +
+"  \"initialMessage\" : \"Buongiorno, se passi al supermercato mi puoi comprare:  una Bistecca, un pacco di Spaghetti, del  Petto di pollo, una Ciabattina, e infine un barattolo di Ceci\",\n" +
+"  \"solutionProducts\" : [ {\n" +
+"    \"id\" : 6,\n" +
+"    \"name\" : \"Bistecca\",\n" +
+"    \"department\" : {\n" +
+"      \"id\" : 1,\n" +
+"      \"name\" : \"Carne\"\n" +
+"    },\n" +
+"    \"alternatives\" : \"una\",\n" +
+"    \"separatore\" : \",\",\n" +
+"    \"UNKNOWN\" : \"unknown\"\n" +
+"  }, {\n" +
+"    \"id\" : 3,\n" +
+"    \"name\" : \"Spaghetti\",\n" +
+"    \"department\" : {\n" +
+"      \"id\" : 2,\n" +
+"      \"name\" : \"Pasta\"\n" +
+"    },\n" +
+"    \"alternatives\" : \"un pacco di,3 pacchi di\",\n" +
+"    \"separatore\" : \",\",\n" +
+"    \"UNKNOWN\" : \"unknown\"\n" +
+"  }, {\n" +
+"    \"id\" : 10,\n" +
+"    \"name\" : \"Petto di pollo\",\n" +
+"    \"department\" : {\n" +
+"      \"id\" : 5,\n" +
+"      \"name\" : \"Carne\"\n" +
+"    },\n" +
+"    \"alternatives\" : \"del \",\n" +
+"    \"separatore\" : \",\",\n" +
+"    \"UNKNOWN\" : \"unknown\"\n" +
+"  }, {\n" +
+"    \"id\" : 4,\n" +
+"    \"name\" : \"Ciabattina\",\n" +
+"    \"department\" : {\n" +
+"      \"id\" : 3,\n" +
+"      \"name\" : \"Pane\"\n" +
+"    },\n" +
+"    \"alternatives\" : \"una,una piccola\",\n" +
+"    \"separatore\" : \",\",\n" +
+"    \"UNKNOWN\" : \"unknown\"\n" +
+"  }, {\n" +
+"    \"id\" : 5,\n" +
+"    \"name\" : \"Ceci\",\n" +
+"    \"department\" : {\n" +
+"      \"id\" : 4,\n" +
+"      \"name\" : \"Legumi \"\n" +
+"    },\n" +
+"    \"alternatives\" : \"un barattolo di, un po' di\",\n" +
+"    \"separatore\" : \",\",\n" +
+"    \"UNKNOWN\" : \"unknown\"\n" +
+"  } ],\n" +
+"  \"request\" : \"Sono nel reparto Carne, che cosa devo prendere ? \",\n" +
+"  \"vocalDescription\" : \"Dopo aver elencato, una lista di cose da acquistare al supermercato ,e lasciato il tempo di memorizzarla, ti verrà chiesto di ricordareh cosa bisogna acquistare in base ad uno specifico repartoh\",\n" +
+"  \"textualDescription\" : \"Dopo aver elencato una lista di cose da acquistare al supermercato e\\nlasciato il tempo di memorizzarla, chiedere di ricordare cosa bisogna comprare in base ad uno specifico\\nreparto\"\n" +
+"}");
+                                
+                        }                        
+                        else if (line.equals("log gui -white")) {
 
                             try {
                                 UIManager.setLookAndFeel(new FlatIntelliJLaf());

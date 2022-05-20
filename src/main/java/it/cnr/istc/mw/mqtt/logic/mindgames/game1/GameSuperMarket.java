@@ -35,7 +35,7 @@ public class GameSuperMarket extends MindGame<SuperMarketInitialState, SuperMark
         prodotti = DBManager.getInstance().getAllProducts();
         reparti = DBManager.getInstance().getAllDepartments();
         for (Product product : prodotti) {
-            if (!productMap.containsKey(product.getDepartment())) {
+            if (!productMap.containsKey(product.getDepartment().getId())) {
                 productMap.put(product.getDepartment().getId(), new LinkedList<>());
 
             }

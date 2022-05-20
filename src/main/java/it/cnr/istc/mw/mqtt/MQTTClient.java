@@ -16,6 +16,7 @@ import it.cnr.istc.mw.mqtt.logic.logger.LoggerManager;
 import it.cnr.istc.mw.mqtt.logic.logger.LoggingTag;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.Product;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketBlob;
+import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketInitialState;
 import it.cnr.istc.mw.mqtt.logic.mindgames.game1.SuperMarketSolution;
 import it.cnr.istc.mw.mqtt.logic.mindgames.models.InitialState;
 import java.net.DatagramSocket;
@@ -224,14 +225,19 @@ public class MQTTClient implements MqttCallback {
         String jsonConfigFile = initialState.toJson();
         List<Product> solutionProduct = ((SuperMarketSolution)initialState.getSolution()).getSolutionProduct();
         String request = "Sono nel reparto "+solutionProduct.get(0).getDepartment().getName() + ", che cosa devo prendere ? ";
+        List<Product> prodotti = ((SuperMarketInitialState)initialState).getProducts();
+        for (Product product : prodotti) {
+            System.out.println("PRODUCTO: "+product.getName());
+        }
         SuperMarketBlob blob = new SuperMarketBlob(
                 initialState.getWatsonText(),
-                ((SuperMarketSolution)initialState.getSolution()).getSolutionProduct(),
+                prodotti,
                 request,
                 initialState.getDescriptionVocal(),
                 initialState.getDescriptionText());
                 
-        publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + blob.toJson());
+        //publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + blob.toJson());
+        publish(Topics.MINDGAME.getTopic()+"/"+"demo",blob.toJson());
     }
 
     public void reconnect() {

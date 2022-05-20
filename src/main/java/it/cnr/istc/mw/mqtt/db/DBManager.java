@@ -326,13 +326,13 @@ public class DBManager {
         List<Product> prodotti = new LinkedList<Product>();
         try {
 
-            prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una "));
-            prodotti.add(new Product(1, "Cetriolo", new Department(10, "Verdura"), "un "));
-            prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una "));
-            prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di "));
-            prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una "));
-            prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "alcuni "));
-            prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una "));
+            prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una, una bella"));
+            prodotti.add(new Product(1, "Cetriolo", new Department(10, "Verdura"), "un,due anzi un"));
+            prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una,della"));
+            prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di,3 pacchi di"));
+            prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una,una piccola"));
+            prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "un barattolo di, un po' di"));
+            prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una"));
             prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
             prodotti.add(new Product(8, "Bastoncini Findus", new Department(5, "Surgelati"), "i "));
             prodotti.add(new Product(9, "Riso", new Department(5, "Pasta"), "il "));

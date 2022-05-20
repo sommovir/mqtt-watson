@@ -113,7 +113,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return this.name + " " + this.alternatives;
+        return this.alternatives.split(",")[0] + " " + this.name;
     }
 
 }
