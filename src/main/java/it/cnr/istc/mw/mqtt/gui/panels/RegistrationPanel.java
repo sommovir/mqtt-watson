@@ -64,7 +64,7 @@ public class RegistrationPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            PDFManager.getInstance().createRegistrationPDF(new Person("Luca", "Coraci"));
+            PDFManager.getInstance().createRegistrationPDF(new Person("Nome", "Cognome", "nick", "pass"));
         } catch (URISyntaxException ex) {
             ex.printStackTrace();
         } catch (DocumentException ex) {

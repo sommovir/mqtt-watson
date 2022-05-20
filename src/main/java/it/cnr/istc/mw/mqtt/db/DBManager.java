@@ -231,7 +231,7 @@ public class DBManager {
         session.persist(p1);
         session.persist(p2);
 
-        Person p3 = new Person("Alfonso", "Alfonzini");
+        Person p3 = new Person("Alfonso", "Alfonsini", "alfio", "alfio");
         Laboratory lab4 = new Laboratory();
         lab4.setName("Laboratorio da rimuovere");
         p3.addLaboratory(lab4);

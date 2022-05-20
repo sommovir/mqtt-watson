@@ -26,7 +26,7 @@ public enum Topics {
     REPEAT("repeat"),
     INFO("info_channel"),
     GETDEVICE("get_device"),
-    ROBOT("robot");
+    ROBOT("robot"),
     MINDGAME("mindgames");
     
     private Topics(String topic) {
