@@ -5,10 +5,12 @@
  */
 package it.cnr.istc.mw.mqtt;
 
+import it.cnr.istc.mw.mqtt.db.DBManager;
 import it.cnr.istc.mw.mqtt.db.Person;
 import it.cnr.istc.mw.mqtt.logic.generals.ConsoleColors;
 import it.cnr.istc.mw.mqtt.exceptions.InvalidAttemptToLogException;
 import it.cnr.istc.mw.mqtt.exceptions.LogOffException;
+import it.cnr.istc.mw.mqtt.exceptions.MindGameException;
 import it.cnr.istc.mw.mqtt.logic.generals.DeviceType;
 import it.cnr.istc.mw.mqtt.logic.logger.HistoryBook;
 import it.cnr.istc.mw.mqtt.logic.logger.LogTitles;
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -222,34 +225,42 @@ public class MQTTClient implements MqttCallback {
     }
 
     public void sendGameData(Person person, InitialState<?> initialState) {
-        System.out.println("SEND GAMONE");
-        String personalChannel = this.personChannelMap.get(person);
-        String jsonConfigFile = initialState.toJson();
-        List<Product> solutionProduct = ((SuperMarketSolution)initialState.getSolution()).getSolutionProduct();
-        String request = "Sono nel reparto "+solutionProduct.get(0).getDepartment().getName() + ", che cosa devo prendere ? ";
-        List<Product> prodotti = ((SuperMarketInitialState)initialState).getProducts();
-        for (Product product : prodotti) {
-            System.out.println("PRODUCTO: "+product.getName());
-        }
-        Department department = solutionProduct.get(0).getDepartment();
-        Iterator<Product> iterator = prodotti.iterator();
-        while(iterator.hasNext()){
-            Product prodotto = iterator.next();
-            if(!prodotto.getDepartment().equals(department)){
-                iterator.remove();
+        try {
+            System.out.println("SEND GAMONE");
+            String personalChannel = this.personChannelMap.get(person);
+            String jsonConfigFile = initialState.toJson();
+            List<Product> solutionProduct = ((SuperMarketSolution)initialState.getSolution()).getSolutionProduct();
+            String request = "Sono nel reparto "+solutionProduct.get(0).getDepartment().getName() + ", che cosa devo prendere ? ";
+            List<Product> prodotti = ((SuperMarketInitialState)initialState).getProducts();
+            Product fakeProduct = DBManager.getInstance().getFakeProduct(solutionProduct.get(0).getDepartment());
+            prodotti.add(fakeProduct);
+            for (Product product : prodotti) {
+                System.out.println("PRODUCTO: "+product.getName());
             }
+            Department department = solutionProduct.get(0).getDepartment();
+            List<Product> copia = new ArrayList<Product>(prodotti);
+            
+            Iterator<Product> iterator = copia.iterator();
+            while(iterator.hasNext()){
+                Product prodotto = iterator.next();
+                if(!prodotto.getDepartment().equals(department)){
+                    iterator.remove();
+                }
+            }
+            
+            
+            SuperMarketBlob blob = new SuperMarketBlob(
+                    initialState.getWatsonText(),
+                    copia,
+                    request,
+                    initialState.getDescriptionVocal(),
+                    initialState.getDescriptionText());
+            
+            //publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + blob.toJson());
+            publish(Topics.MINDGAME.getTopic()+"/"+"demo",blob.toJson());
+        } catch (MindGameException ex) {
+            Logger.getLogger(MQTTClient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        SuperMarketBlob blob = new SuperMarketBlob(
-                initialState.getWatsonText(),
-                prodotti,
-                request,
-                initialState.getDescriptionVocal(),
-                initialState.getDescriptionText());
-                
-        //publish(Topics.MINDGAME.getTopic()+"/"+personalChannel, myNickName + ":" + blob.toJson());
-        publish(Topics.MINDGAME.getTopic()+"/"+"demo",blob.toJson());
     }
 
     public void reconnect() {

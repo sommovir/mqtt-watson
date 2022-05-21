@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Luca
  */
-//@Disabled
+@Disabled
 public class GameFlowWatsonTest {
 
     public GameFlowWatsonTest() {

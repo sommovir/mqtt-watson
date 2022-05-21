@@ -83,6 +83,27 @@ public class DBManager {
 
         }
     }
+    
+//     reparti.add(new Department(0, "Verdura"));
+//        reparti.add(new Department(1, "Carne"));
+//        reparti.add(new Department(2, "Pasta"));
+//        reparti.add(new Department(4, "Legumi"));
+//        reparti.add(new Department(5, "Surgelati"));
+//        reparti.add(new Department(6, "Pesce"));
+    public Product getFakeProduct(Department d) throws MindGameException{
+        int id =Integer.parseInt(""+d.getId());
+        return switch(id){
+            case 0 -> new Product(41, "Pomodori", d, "quattro");
+            case 1 -> new Product(42, "Costolette di agnello", d, "una decina di");
+            case 2 -> new Product(43, "Farfalle", d, "tre pacchi di");
+            case 3 -> new Product(44, "Sorpresa", d, "una");
+            case 4 -> new Product(45, "Lenticchie", d, "un sacchetto di");
+            case 5 -> new Product(46, "Gelato", d, "una vaschetta di");
+            case 6 -> new Product(47, "Vongole", d, "mezzo chilo di ");
+            default -> null;
+        
+        };
+    }
 
     public void install() throws DBAlreadyInstalledException, DBNotExistingException {
         System.out.println(LogTitles.DATABASE.getTitle() + ConsoleColors.ANSI_GREEN + " installing database .." + ConsoleColors.ANSI_RESET);
@@ -327,16 +348,18 @@ public class DBManager {
         try {
 
             prodotti.add(new Product(0, "Carota", new Department(0, "Verdura"), "una, una bella"));
-            prodotti.add(new Product(1, "Cetriolo", new Department(10, "Verdura"), "un,due anzi un"));
+            prodotti.add(new Product(1, "Cetriolo", new Department(0, "Verdura"), "un,due anzi un"));
             prodotti.add(new Product(2, "Salsiccia", new Department(1, "Carne"), "una,della"));
             prodotti.add(new Product(3, "Spaghetti", new Department(2, "Pasta"), "un pacco di,3 pacchi di"));
             prodotti.add(new Product(4, "Ciabattina", new Department(3, "Pane"), "una,una piccola"));
             prodotti.add(new Product(5, "Ceci", new Department(4, "Legumi "), "un barattolo di, un po' di"));
             prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una"));
-            prodotti.add(new Product(7, "Salmone", new Department(5, "Pesce"), "del"));
+            prodotti.add(new Product(7, "Salmone", new Department(6, "Pesce"), "del"));
             prodotti.add(new Product(8, "Bastoncini Findus", new Department(5, "Surgelati"), "i "));
             prodotti.add(new Product(9, "Riso", new Department(5, "Pasta"), "il "));
             prodotti.add(new Product(10, "Petto di pollo", new Department(5, "Carne"), "del "));
+            prodotti.add(new Product(11, "Fagioli", new Department(4, "Legumi"), "un barattolo di "));
+            prodotti.add(new Product(12, "Rigatoni", new Department(2, "Pasta"), "un chilo di "));
             
             return prodotti;
         } catch (MindGameException ex) {
@@ -349,10 +372,12 @@ public class DBManager {
     //ce ne devono essere almeno 4 se no esplode tutto. 
     public List<Department> getAllDepartments() {
         List<Department> reparti = new LinkedList<Department>();
-        reparti.add(new Department(1, "frutta"));
-        reparti.add(new Department(2, "sport"));
-        reparti.add(new Department(3, "Pesce"));
-        reparti.add(new Department(4, "Surgelati"));
+        reparti.add(new Department(0, "Verdura"));
+        reparti.add(new Department(1, "Carne"));
+        reparti.add(new Department(2, "Pasta"));
+        reparti.add(new Department(4, "Legumi"));
+        reparti.add(new Department(5, "Surgelati"));
+        reparti.add(new Department(6, "Pesce"));
         return reparti;
     }
 
