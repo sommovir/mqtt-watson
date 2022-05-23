@@ -16,7 +16,8 @@ public class SuperMarketBlob {
 
     private String initialMessage; //watson text
     private List<Product> solutionProducts;
-    private String request;
+    private String textualRequest;
+    private String vocalRequest;
     private String vocalDescription;
     private String textualDescription;
 
@@ -39,13 +40,22 @@ public class SuperMarketBlob {
         this.solutionProducts = solutionProducts;
     }
 
-    public String getRequest() {
-        return request;
+    public String getTextualRequest() {
+        return textualRequest;
     }
 
-    public void setRequest(String request) {
-        this.request = request;
+    public void setTextualRequest(String textualRequest) {
+        this.textualRequest = textualRequest;
     }
+
+    public String getVocalRequest() {
+        return vocalRequest;
+    }
+
+    public void setVocalRequest(String vocalRequest) {
+        this.vocalRequest = vocalRequest;
+    }
+
 
     public String getVocalDescription() {
         return vocalDescription;
@@ -63,14 +73,14 @@ public class SuperMarketBlob {
         this.textualDescription = textualDescription;
     }
 
-    public SuperMarketBlob(String initialMessage, List<Product> solutionProducts, String request, String vocalDescription, String textualDescription) {
+    public SuperMarketBlob(String initialMessage, List<Product> solutionProducts, String textualRequest, String vocalRequest, String vocalDescription, String textualDescription) {
         this.initialMessage = initialMessage;
         this.solutionProducts = solutionProducts;
-        this.request = request;
+        this.textualRequest = textualRequest;
+        this.vocalRequest = vocalRequest;
         this.vocalDescription = vocalDescription;
         this.textualDescription = textualDescription;
     }
-
 
     public String toJson() {
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();

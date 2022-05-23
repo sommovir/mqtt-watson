@@ -13,7 +13,7 @@ import it.cnr.istc.mw.mqtt.exceptions.CodeIsInvalidException;
 public enum GameType {
     LISTA_SPESA("CGX001","Lista della spesa","Dopo aver elencato una lista di cose da acquistare al supermercato e\n" +
         "lasciato il tempo di memorizzarla, chiedere di ricordare cosa bisogna comprare in base ad uno specifico\n" +
-        "reparto","Dopo aver elencato, una lista di cose da acquistare al supermercato ,e lasciato il tempo di memorizzarla, ti verrà chiesto di ricordareh cosa bisogna acquistare in base ad uno specifico repartoh"),
+        "reparto","Dopo aver elencato, una lista di cose da acquistare al supermercato, ti verrà chiesto di ricordareh cosa bisogna acquistare in base ad uno specifico repartoh. Premi il bottone, nomina un prodotto e attendi la risposta."),
     DUE("CGX002","","",""),
     TRE("CGX003","","",""),
     UNKNOWN_GAME("","","","");
