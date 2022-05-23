@@ -226,11 +226,11 @@ public class MQTTClient implements MqttCallback {
 
     public void sendGameData(Person person, InitialState<?> initialState) {
         try {
-            System.out.println("SEND GAMONE");
+            System.out.println("----------------------------------------- SEND GAMONE");
             String personalChannel = this.personChannelMap.get(person);
             String jsonConfigFile = initialState.toJson();
             List<Product> solutionProduct = ((SuperMarketSolution)initialState.getSolution()).getSolutionProduct();
-            String textualRequest = "<html>Sono nel reparto <b><font color=red>"+solutionProduct.get(0).getDepartment().getName() + "</b></font>, che cosa devo prendere ? ";
+            String textualRequest = "<html>Sono nel reparto <b><font color=yellow>"+solutionProduct.get(0).getDepartment().getName() + "</b></font>, che cosa devo prendere ? ";
             String vocalRequest = "Sono nel reparto "+solutionProduct.get(0).getDepartment().getName() + ", che cosa devo prendere ? ";
             List<Product> prodotti = ((SuperMarketInitialState)initialState).getProducts();
             Product fakeProduct = DBManager.getInstance().getFakeProduct(solutionProduct.get(0).getDepartment());

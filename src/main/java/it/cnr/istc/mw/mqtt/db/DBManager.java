@@ -356,10 +356,19 @@ public class DBManager {
             prodotti.add(new Product(6, "Bistecca", new Department(1, "Carne"), "una"));
             prodotti.add(new Product(7, "Salmone", new Department(6, "Pesce"), "del"));
             prodotti.add(new Product(8, "Bastoncini Findus", new Department(5, "Surgelati"), "i "));
-            prodotti.add(new Product(9, "Riso", new Department(5, "Pasta"), "il "));
-            prodotti.add(new Product(10, "Petto di pollo", new Department(5, "Carne"), "del "));
+            prodotti.add(new Product(9, "Riso", new Department(2, "Pasta"), "il "));
+            prodotti.add(new Product(10, "Petto di pollo", new Department(1, "Carne"), "del "));
             prodotti.add(new Product(11, "Fagioli", new Department(4, "Legumi"), "un barattolo di "));
             prodotti.add(new Product(12, "Rigatoni", new Department(2, "Pasta"), "un chilo di "));
+            
+//            
+//            case 0 -> new Product(41, "Pomodori", d, "quattro");
+//            case 1 -> new Product(42, "Costolette di agnello", d, "una decina di");
+//            case 2 -> new Product(43, "Farfalle", d, "tre pacchi di");
+//            case 3 -> new Product(44, "Sorpresa", d, "una");
+//            case 4 -> new Product(45, "Lenticchie", d, "un sacchetto di");
+//            case 5 -> new Product(46, "Gelato", d, "una vaschetta di");
+//            case 6 -> new Product(47, "Vongole", d, "mezzo chilo di ");
             
             return prodotti;
         } catch (MindGameException ex) {
