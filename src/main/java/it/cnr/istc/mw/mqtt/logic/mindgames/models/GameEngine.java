@@ -32,6 +32,7 @@ public class GameEngine {
     /**
      * Genera un istanza di un nuovo gioco a seconda della policy utilizzata
      *
+     * @param <G>
      * @param user utente che sta iniziando la partita
      * @param mindGame il tipo di gioco selezionato
      * @return L'istanza di gioco comprensiva della sua soluzione
@@ -108,7 +109,7 @@ public class GameEngine {
     private <G extends MindGame> GameDifficulty calculateDifficultyByAI(Person user, G mindgame) {
         List<GameInstance<G>> gameInstances = DBManager.getInstance().getLast5GameInstances(user, mindgame);
         //INSERT DEEP LEARNING
-        return GameDifficulty.Medio;
+        return GameDifficulty.Facile;
     }
 
     /**
